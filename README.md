@@ -7,7 +7,12 @@
 - [ ] import homepage (selling points)
 - [ ] import asciidoc book, [ClojureScript Unraveled](https://leanpub.com/clojurescript-unraveled)
 - [ ] import [API/Syntax docs](https://github.com/cljsinfo/cljs-api-docs)
+- [ ] import [cheatsheet](http://cljs.info/cheatsheet)
 - [ ] create _News_ page (blog posts)
+
+###### On the horizon (owners needed)
+
+- [ ] [REPL page](http://chimeces.com/cljs-browser-repl/)
 
 ## Instructions
 

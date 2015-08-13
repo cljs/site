@@ -16,4 +16,8 @@
 
 ## Instructions
 
+```
+gem install jekyll jekyll-asciidoc
+```
+
 TBD

@@ -1,14 +1,20 @@
 # Site settings
-title: Your awesome title
-email: your-email@domain.com
+title: ClojureScript
 description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  The Clojure to JavaScript compiler.
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://yourdomain.com" # the base hostname & protocol for your site
-twitter_username: jekyllrb
-github_username:  jekyll
 
 # Build settings
-markdown: kramdown
+markdown: redcarpet
+
+# RedCarpet markdown parser
+# (tuned to be like GitHub-Flavored Markdown)
+# (more options here: https://github.com/vmg/redcarpet/blob/v3.2.2/README.markdown#and-its-like-really-simple-to-use)
+redcarpet:
+  autolink: true            # parse links even when they are not enclosed in <> characters
+  fenced_code_blocks: true  # parse fenced code blocks, PHP-Markdown style
+  tables: true              # parse tables, PHP-Markdown style.
+  strikethrough: true       # parse strikethrough, PHP-Markdown style
+  no_intra_emphasis: true   # do not parse emphasis inside of words. Strings such as foo_bar_baz
+

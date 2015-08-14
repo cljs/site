@@ -2,6 +2,7 @@
 layout: post
 release_version: "0.0-2014"
 title: "r0.0-2014 - source maps, incremental compilation, and internal changes"
+author: "David Nolen"
 google_group_msg: 'clojurescript/isf7k35pThA/CXyJr4v4seYJ'
 ---
 

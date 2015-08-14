@@ -2,6 +2,7 @@
 layout: post
 release_version: '0.0-2644'
 title:  "r0.0-2644 - enhanced REPLs"
+author: "David Nolen"
 google_group_msg: 'clojurescript/mRAED4TFlCM/VMi-AOQBzFQJ'
 ---
 

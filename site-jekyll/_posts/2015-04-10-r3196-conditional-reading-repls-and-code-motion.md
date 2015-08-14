@@ -2,6 +2,7 @@
 layout: post
 release_version: "0.0-3196"
 title:  "r0.0-3196 - Conditional Reading, REPLs, and Code Motion"
+author: "David Nolen"
 google_group_msg: "clojurescript/pdZVL6gAPio/Jtv7WmuEK9QJ"
 ---
 

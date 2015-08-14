@@ -2,6 +2,7 @@
 layout: post
 release_version: "0.0-3255"
 title:  "r0.0-3255 - Pretty Printer and Latest Closure Compiler/Library"
+author: "David Nolen"
 google_group_msg: "clojurescript/A--qv0JxfO8/FoCzLNQ-D4EJ"
 ---
 

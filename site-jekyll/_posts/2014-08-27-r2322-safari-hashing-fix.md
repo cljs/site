@@ -2,6 +2,7 @@
 layout: post
 release_version: "0.0-2322"
 title: "r0.0-2322 - Safari Hashing Fix"
+author: "David Nolen"
 google_group_msg: 'clojurescript/n0sfFX09Vbw/9Icme54Z-X0J'
 ---
 

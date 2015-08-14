@@ -2,6 +2,7 @@
 layout: post
 release_version: "0.0-2341"
 title: "r0.0-2341 - Improved Analysis & Transducers"
+author: "David Nolen"
 google_group_msg: 'clojurescript/kBo9pSNScm8/-Ovdkc6ZSwMJ'
 ---
 

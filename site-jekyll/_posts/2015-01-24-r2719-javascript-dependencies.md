@@ -2,6 +2,7 @@
 layout: post
 release_version: '0.0-2719'
 title:  "r0.0-2719 - JavaScript Dependencies"
+author: "David Nolen"
 google_group_msg: 'clojurescript/pJ_EYHkYAUs/mLi8XfiQxZsJ'
 ---
 

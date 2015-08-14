@@ -2,6 +2,7 @@
 layout: post
 release_version: "0.0-2913"
 title:  "r0.0-2913 - Google Closure Modules, improved nREPL support"
+author: "David Nolen"
 google_group_msg: "clojurescript/n_8WHnlcOGI/1kmATGABVi0J"
 ---
 

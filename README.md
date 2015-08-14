@@ -9,6 +9,9 @@
 - [ ] import [API/Syntax docs](https://github.com/cljsinfo/cljs-api-docs)
 - [ ] import [cheatsheet](http://cljs.info/cheatsheet)
 - [ ] create _News_ page (blog posts)
+- [ ] copy over [_ANN ClojureScript_] release emails to _News_
+
+[_ANN ClojureScript_]:https://groups.google.com/forum/#!topicsearchin/clojurescript/%22the$20Clojure$20compiler$20that$20emits$20JavaScript$20source$20code%22
 
 ###### On the horizon (owners needed)
 

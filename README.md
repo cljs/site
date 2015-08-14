@@ -19,8 +19,15 @@
 
 ## Instructions
 
-```
-gem install jekyll jekyll-asciidoc
-```
+I couldn't find a static site generator as good as Jekyll, so we gotta use Ruby!
+We're using it with [bundler](http://bundler.io) to have deterministic dependencies.
 
-TBD
+```
+# setup
+$ cd site-jekyll
+$ gem install bundle
+$ bundle install
+
+# start the website
+$ bundle exec jekyll serve
+```

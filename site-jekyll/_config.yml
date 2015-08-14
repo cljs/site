@@ -7,7 +7,7 @@ url: "http://yourdomain.com" # the base hostname & protocol for your site
 
 # Build settings
 exclude: ['Gemfile', 'Gemfile.lock'] # don't process these when generating the site
-markdown: redcarpet
+markdown: RedcarpetCLJS # wraps redcarpet with some cljs things (see _plugins/)
 permalink: pretty
 
 # RedCarpet markdown parser

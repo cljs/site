@@ -22,7 +22,7 @@
 I couldn't find a static site generator as good as Jekyll, so we gotta use Ruby!
 We're using it with [bundler](http://bundler.io) to have deterministic dependencies.
 
-```
+```shell
 # setup
 $ cd site-jekyll
 $ gem install bundle

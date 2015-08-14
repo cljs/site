@@ -8,7 +8,13 @@ require 'jekyll'
 require 'redcarpet'
 
 def preprocess_for_cljs(content)
-  content
+
+  # Create Jira links from CLJS-NNNN occurrences.
+  # (We only want this to apply to plain text outside of code blocks, URLs, etc.
+  #  but we can't really do that here. It should at least be easy to track down by
+  #  grepping _site/ for jira links.)
+  content.gsub(/\bCLJS-\d+\b/, '[\0](http://dev.clojure.org/jira/browse/\0)')
+
 end
 
 # THIS IS PASTED from the jekyll repo v2.5.3:

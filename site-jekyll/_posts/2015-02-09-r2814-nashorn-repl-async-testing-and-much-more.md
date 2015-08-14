@@ -1,13 +1,9 @@
 ---
 layout: post
+release_version: "0.0-2814"
 title:  "r0.0-2814 - Nashorn REPL, async testing, and much more"
+google_group_ann: "KTOhX-QvpRo/j9-st6WUnI8J"
 ---
-
-([original Mailing List post](https://groups.google.com/d/msg/clojurescript/KTOhX-QvpRo/j9-st6WUnI8J))
-
-Leiningen dependency information:
-
-    [org.clojure/clojurescript "0.0-2814"]
 
 There are numerous enhancements in this release including: a Nashorn
 REPL, Node.js 0.12 support, cljs.test async testing support,

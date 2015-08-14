@@ -1,13 +1,9 @@
 ---
 layout: post
+release_version: "0.0-3058"
 title:  "r0.0-3058 - Enhanced REPLs, faster compile times"
+google_group_ann: "fdT3f1HxJzM/rCbi7L1AI24J"
 ---
-
-([original Mailing List post](https://groups.google.com/d/msg/clojurescript/fdT3f1HxJzM/rCbi7L1AI24J))
-
-Leiningen dependency information:
-
-    [org.clojure/clojurescript "0.0-3058"]
 
 This is a significant enhancement release around REPLs and compile times.
 

@@ -1,13 +1,9 @@
 ---
 layout: post
+release_version: "0.0-2843"
 title:  "r0.0-2843 - Node, Node, Node"
+google_group_ann: 9ZrGYIhRzqM/-6GM31HTz7wJ
 ---
-
-([original Mailing List post](https://groups.google.com/d/msg/clojurescript/9ZrGYIhRzqM/-6GM31HTz7wJ))
-
-Leiningen dependency information:
-
-    [org.clojure/clojurescript "0.0-2843"]
 
 This release is primarily about outstanding Node.js target
 issues. Further changes have been made to support Node.js v0.12

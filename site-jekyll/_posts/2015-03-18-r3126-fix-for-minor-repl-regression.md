@@ -1,13 +1,9 @@
 ---
 layout: post
+release_version: "0.0-3126"
 title:  "r0.0-3126 - fix for minor REPL regression"
+google_group_ann: "rt7Fc86v1aU/u5G56vi5M6sJ"
 ---
-
-([original Mailing List post](https://groups.google.com/d/msg/clojurescript/rt7Fc86v1aU/u5G56vi5M6sJ))
-
-Leiningen dependency information:
-
-    [org.clojure/clojurescript "0.0-3126"]
 
 This release just fixes a minor REPL related regression.
 

@@ -1,13 +1,9 @@
 ---
 layout: post
+release_version: "0.0-3196"
 title:  "r0.0-3196 - Conditional Reading, REPLs, and Code Motion"
+google_group_ann: "pdZVL6gAPio/Jtv7WmuEK9QJ"
 ---
-
-([original Mailing List post](https://groups.google.com/d/msg/clojurescript/pdZVL6gAPio/Jtv7WmuEK9QJ))
-
-Leiningen dependency information:
-
-    [org.clojure/clojurescript "0.0-3196"]
 
 This release is intended to coincide with Clojure 1.7.0-beta1. Besides
 conditional reading support, it includes a number of improvements and

@@ -1,13 +1,9 @@
 ---
 layout: post
+release_version: '0.0-2644'
 title:  "r0.0-2644 - enhanced REPLs"
+google_group_ann: 'mRAED4TFlCM/VMi-AOQBzFQJ'
 ---
-
-([original Mailing List post](https://groups.google.com/d/msg/clojurescript/mRAED4TFlCM/VMi-AOQBzFQJ))
-
-Leiningen dependency information: 
-
-    [org.clojure/clojurescript "0.0-2644"] 
 
 This release is one of the most significant in a very long while - it includes 
 enhanced REPLs that are far closer to the experience provided by Clojure 

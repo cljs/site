@@ -1,13 +1,9 @@
 ---
 layout: post
+release_version: '0.0-2719'
 title:  "r0.0-2719 - JavaScript Dependencies"
+google_group_ann: 'pJ_EYHkYAUs/mLi8XfiQxZsJ'
 ---
-
-([original Mailing List post](https://groups.google.com/d/msg/clojurescript/pJ_EYHkYAUs/mLi8XfiQxZsJ))
-
-Leiningen dependency information:
-
-    [org.clojure/clojurescript "0.0-2719"]
 
 ClojureScript is not an island, like Clojure on the JVM, ClojureScript
 embraces the many benefits provided by the host. However this goal

@@ -1,13 +1,9 @@
 ---
 layout: post
+release_version: "0.0-2913"
 title:  "r0.0-2913 - Google Closure Modules, improved nREPL support"
+google_group_ann: "n_8WHnlcOGI/1kmATGABVi0J"
 ---
-
-([original Mailing List post](https://groups.google.com/d/msg/clojurescript/n_8WHnlcOGI/1kmATGABVi0J))
-
-Leiningen dependency information:
-
-    [org.clojure/clojurescript "0.0-2913"]
 
 This release comes with two very big enhancements.
 

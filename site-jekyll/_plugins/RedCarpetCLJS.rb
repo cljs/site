@@ -1,6 +1,8 @@
 # We just want to make some ClojureScript-specific things to the markdown processor:
 # - CLJS-NNNN -> jira issue links
 # - ...
+#
+# guidance from: http://stackoverflow.com/a/24760839/142317
 
 require 'jekyll'
 require 'redcarpet'

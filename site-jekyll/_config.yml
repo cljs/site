@@ -8,6 +8,7 @@ url: "http://yourdomain.com" # the base hostname & protocol for your site
 # Build settings
 exclude: ['Gemfile', 'Gemfile.lock'] # don't process these when generating the site
 markdown: redcarpet
+permalink: pretty
 
 # RedCarpet markdown parser
 # (tuned to be like GitHub-Flavored Markdown)

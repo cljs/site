@@ -2,7 +2,7 @@
 layout: post
 release_version: "0.0-2341"
 title: "r0.0-2341 - Improved Analysis & Transducers"
-google_group_ann: 'kBo9pSNScm8/-Ovdkc6ZSwMJ'
+google_group_ann: 'clojurescript/kBo9pSNScm8/-Ovdkc6ZSwMJ'
 ---
 
 This releases comes with considerably better analysis. Vars from other 

@@ -1,13 +1,9 @@
 ---
 layout: post
+release_version: "0.0-3308"
 title:  "r0.0-3308 - Fixes and Enhancements"
+google_group_ann: "clojurescript/kNIKpsFgvyk/y1u_AjChLfYJ"
 ---
-
-([original Mailing List post](https://groups.google.com/d/msg/clojurescript/kNIKpsFgvyk/y1u_AjChLfYJ))
-
-Leiningen dependency information:
-
-    [org.clojure/clojurescript "0.0-3308"]
 
 This release bumps the Clojure dependecy to 1.7.0-RC1 and includes fixes and minor
 enhancements.

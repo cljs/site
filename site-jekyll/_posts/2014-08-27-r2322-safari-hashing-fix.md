@@ -2,7 +2,7 @@
 layout: post
 release_version: "0.0-2322"
 title: "r0.0-2322 - Safari Hashing Fix"
-google_group_ann: 'n0sfFX09Vbw/9Icme54Z-X0J'
+google_group_ann: 'clojurescript/n0sfFX09Vbw/9Icme54Z-X0J'
 ---
 
 The primary reason for this release is a critical hashing bug 

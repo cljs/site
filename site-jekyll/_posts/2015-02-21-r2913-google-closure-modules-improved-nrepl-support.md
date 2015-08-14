@@ -2,7 +2,7 @@
 layout: post
 release_version: "0.0-2913"
 title:  "r0.0-2913 - Google Closure Modules, improved nREPL support"
-google_group_ann: "n_8WHnlcOGI/1kmATGABVi0J"
+google_group_ann: "clojurescript/n_8WHnlcOGI/1kmATGABVi0J"
 ---
 
 This release comes with two very big enhancements.

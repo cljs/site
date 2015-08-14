@@ -2,7 +2,7 @@
 layout: post
 release_version: '0.0-2644'
 title:  "r0.0-2644 - enhanced REPLs"
-google_group_ann: 'mRAED4TFlCM/VMi-AOQBzFQJ'
+google_group_ann: 'clojurescript/mRAED4TFlCM/VMi-AOQBzFQJ'
 ---
 
 This release is one of the most significant in a very long while - it includes 

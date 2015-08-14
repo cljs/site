@@ -2,7 +2,7 @@
 layout: post
 release_version: "0.0-3255"
 title:  "r0.0-3255 - Pretty Printer and Latest Closure Compiler/Library"
-google_group_ann: "A--qv0JxfO8/FoCzLNQ-D4EJ"
+google_group_ann: "clojurescript/A--qv0JxfO8/FoCzLNQ-D4EJ"
 ---
 
 A big thanks goes out to Jonathan Boston and Shaun Lebron for this

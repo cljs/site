@@ -2,7 +2,7 @@
 layout: post
 release_version: "0.0-2014"
 title: "r0.0-2014 - source maps, incremental compilation, and internal changes"
-google_group_ann: 'isf7k35pThA/CXyJr4v4seYJ'
+google_group_ann: 'clojurescript/isf7k35pThA/CXyJr4v4seYJ'
 ---
 
 There are a number of significant enhancements in this

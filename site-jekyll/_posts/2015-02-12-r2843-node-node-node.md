@@ -2,7 +2,7 @@
 layout: post
 release_version: "0.0-2843"
 title:  "r0.0-2843 - Node, Node, Node"
-google_group_ann: "clojurescript/9ZrGYIhRzqM/-6GM31HTz7wJ"
+google_group_msg: "clojurescript/9ZrGYIhRzqM/-6GM31HTz7wJ"
 ---
 
 This release is primarily about outstanding Node.js target

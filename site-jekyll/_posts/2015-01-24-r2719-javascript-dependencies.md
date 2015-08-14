@@ -2,7 +2,7 @@
 layout: post
 release_version: '0.0-2719'
 title:  "r0.0-2719 - JavaScript Dependencies"
-google_group_ann: 'clojurescript/pJ_EYHkYAUs/mLi8XfiQxZsJ'
+google_group_msg: 'clojurescript/pJ_EYHkYAUs/mLi8XfiQxZsJ'
 ---
 
 ClojureScript is not an island, like Clojure on the JVM, ClojureScript

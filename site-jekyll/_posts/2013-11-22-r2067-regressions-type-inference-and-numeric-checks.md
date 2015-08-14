@@ -2,7 +2,7 @@
 layout: post
 release_version: "0.0-2067"
 title: "r0.0-2067 - regressions, type inference & numeric checks"
-google_group_ann: 'clojurescript/CcIFD5q9kqg/TNJMLdLRCkAJ'
+google_group_msg: 'clojurescript/CcIFD5q9kqg/TNJMLdLRCkAJ'
 ---
 
 This release fixes issues introduced by the source map checks, the

@@ -13,4 +13,6 @@ Clojure to JS compiler. Power of Clojure. Reach of JavaScript.
 
 Please use this Clojure mailing list for ClojureScript discussion.
 
-We plan to have a recording of tonight's talk posted soon. (<https://youtu.be/tVooR-dF_Ag>)
+We plan to have a recording of tonight's talk posted soon.
+
+__Talk recording__: https://youtu.be/tVooR-dF_Ag

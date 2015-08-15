@@ -8,6 +8,14 @@ dl, dd, ol, ul, figure {
     padding: 0;
 }
 
+// from facebook react's website
+hr {
+  height: 0;
+  border: 0;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #eee;
+}
+
 
 
 /**

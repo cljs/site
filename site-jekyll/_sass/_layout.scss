@@ -1,80 +1,130 @@
+
+/**
+ * Whole Container
+ */
+.container {
+  min-width: $content-width + (2 * $content-padding);
+}
+
+/**
+ * Wrapper
+ */
+.wrapper {
+    max-width: $content-width;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: $content-padding;
+    padding-left: $content-padding;
+    @extend %clearfix;
+}
+
+
 /**
  * Site header
  */
 .site-header {
-    background: #F7F7F7;
+  background: #F7F7F7;
 
-    #logo {
-      float: left;
-      width: 64px;
-      margin: 12px 0;
+  .logo {
+    float: left;
+    width: 64px;
+    margin: 12px 0;
+  }
+
+  .title {
+    float: left;
+
+    font-size: 22px;
+    margin: 1em;
+    line-height: 1em;
+    letter-spacing: 0.015em;
+
+    .subtitle {
+      font-size: 14px;
+      font-weight: 300;
+      opacity: 0.5;
     }
+  }
 
-    #title {
-      float: left;
-
-      font-size: 22px;
-      margin: 1em;
-      line-height: 1em;
-      letter-spacing: 0.015em;
-
-      #subtitle {
-        font-size: 14px;
-        font-weight: 300;
-        opacity: 0.5;
-      }
-    }
-
-}
-
-.site-nav {
+  .site-nav {
     float: right;
     line-height: 86px;
 
     .page-link {
-        color: $text-color;
-        line-height: $base-line-height;
+      color: $text-color;
+      line-height: $base-line-height;
 
-        // Gaps between nav items, but not on the first one
-        &:not(:first-child) {
-            margin-left: 20px;
-        }
+      // Gaps between nav items, but not on the first one
+      &:not(:first-child) {
+        margin-left: 20px;
+      }
     }
+  }
+}
 
+/**
+ * Site Inner Content (main body)
+ */
+
+.pageContent {
+  padding-top: (2 * $content-padding);
+}
+
+.newsContent {
+  padding-top: (2 * $content-padding);
+}
+
+.inner-content {
+  float: right;
+  width: $inner-width;
+}
+
+.nosidebar .inner-content {
+  float: none;
+  margin: 0 auto;
 }
 
 
 /**
  * Page content
  */
-.page-content {
-    padding: $spacing-unit 0;
-}
 
 .page-heading {
     font-size: 20px;
 }
 
-.post-list {
-    margin-left: 0;
-    list-style: none;
+.news-title {
+  font-size: 32px;
+  line-height: 1;
+}
 
-    > li {
-        margin-bottom: $spacing-unit;
-    }
+.rss-subscribe {
+  font-size: $small-font-size;
+  color: $grey-color;
+}
+
+.news-table {
+  margin-bottom: $spacing-unit;
+
+  .news-date {
+    width: 100px;
+    text-align: right;
+    padding-right: 0.5em;
+    vertical-align: top;
+
+    opacity: 0.6;
+  }
+
+  .news-link {
+    font-weight: 600;
+  }
+
 }
 
 .post-meta {
     font-size: $small-font-size;
     color: $grey-color;
 }
-
-.post-link {
-    display: block;
-    font-size: 24px;
-}
-
-
 
 /**
  * Posts
@@ -84,22 +134,9 @@
 }
 
 .post-title {
-    font-size: 42px;
     line-height: 1;
 }
 
 .post-content {
     margin-bottom: $spacing-unit;
-
-    h2 {
-        font-size: 32px;
-    }
-
-    h3 {
-        font-size: 26px;
-    }
-
-    h4 {
-        font-size: 20px;
-    }
 }

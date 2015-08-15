@@ -1,0 +1,29 @@
+---
+layout: default
+title: News
+---
+
+<div class="wrapper nosidebar newsContent">
+
+  <div class="inner-content">
+
+    <h1 class="news-title">News</h1>
+
+    <table class="news-table">
+      {% for post in site.posts %}
+      <tr>
+        <td class="news-date">
+          {{ post.date | date: "%b %-d, %Y" }}
+        </td>
+        <td>
+          <a class="news-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+
+  </div>
+
+</div>

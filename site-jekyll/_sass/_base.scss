@@ -122,7 +122,7 @@ code {
     font-size: 15px;
     border: 1px solid $grey-color-light;
     border-radius: 3px;
-    background-color: #eef;
+    background-color: #f7f7f7;
 }
 
 code {
@@ -141,21 +141,6 @@ pre {
 }
 
 
-
-/**
- * Wrapper
- */
-.wrapper {
-    max-width: $content-width;
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: $spacing-unit;
-    padding-left: $spacing-unit;
-    @extend %clearfix;
-}
-
-
-
 /**
  * Clearfix
  */
@@ -167,6 +152,4 @@ pre {
         clear: both;
     }
 }
-
-
 

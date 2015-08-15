@@ -7,10 +7,11 @@ title: About
 _This meta page will be removed after this "early website preview" phase._
 </div>
 
-Follow the development of this website for ClojureScript:
+This website for ClojureScript is being developed in Jekyll
+to simplify deployment and content management:
 
-- [twitter.com/cljsinfo](http://twitter.com/cljsinfo)
-- [github.com/cljsinfo](http://github.com/cljsinfo)
+- source code: [github.com/cljsinfo/site](http://github.com/cljsinfo/site)
+- twitter updates: [@cljsinfo](http://twitter.com/cljsinfo)
 
 Cheers,  
 [@shaunlebron](http://twitter.com/shaunlebron)

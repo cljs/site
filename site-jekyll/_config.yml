@@ -14,9 +14,11 @@ permalink: pretty
 # (tuned to be like GitHub-Flavored Markdown)
 # (more options here: https://github.com/vmg/redcarpet/blob/v3.2.2/README.markdown#and-its-like-really-simple-to-use)
 redcarpet:
-  autolink: true            # parse links even when they are not enclosed in <> characters
-  fenced_code_blocks: true  # parse fenced code blocks, PHP-Markdown style
-  tables: true              # parse tables, PHP-Markdown style.
-  strikethrough: true       # parse strikethrough, PHP-Markdown style
-  no_intra_emphasis: true   # do not parse emphasis inside of words. Strings such as foo_bar_baz
+  extensions: [
+    "autolink",            # parse links even when they are not enclosed in <> characters
+    "fenced_code_blocks",  # parse fenced code blocks, PHP-Markdown style
+    "tables",              # parse tables, PHP-Markdown style.
+    "strikethrough",       # parse strikethrough, PHP-Markdown style
+    "no_intra_emphasis"   # do not parse emphasis inside of words. Strings such as foo_bar_baz
+  ]
 

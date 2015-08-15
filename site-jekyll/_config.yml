@@ -3,7 +3,7 @@ title: ClojureScript
 description: > # this means to ignore newlines until "baseurl:"
   The Clojure to JavaScript compiler.
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://yourdomain.com" # the base hostname & protocol for your site
+url: "http://cljsinfo.github.io" # the base hostname & protocol for your site
 
 # Build settings
 exclude: ['Gemfile', 'Gemfile.lock'] # don't process these when generating the site

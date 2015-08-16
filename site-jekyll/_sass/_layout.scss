@@ -65,26 +65,39 @@
     float: right;
   }
 
-  .page-link {
+  %page-link-common {
     display: inline-block;
     padding-left: 10px;
     padding-right: 10px;
 
-    line-height: $header-height;
     color: $text-color;
 
     letter-spacing: 0.03em;
-    opacity: 0.65;
-
-    &.active {
-      opacity: 1;
-      border-bottom: 3px solid #EEE;
-    }
 
     &:hover {
-      opacity: 1;
       text-decoration: none;
     }
+  }
+
+  .page-link {
+    line-height: $header-height / 2;
+
+    @extend %page-link-common;
+
+    &.active {
+      border-bottom: 3px solid #555;
+    }
+    &:hover {
+      border-bottom: 3px solid #DDD;
+      &.active {
+        border-bottom-color: #555;
+      }
+    }
+  }
+
+  .page-link-ext {
+    @extend %page-link-common;
+    line-height: $header-height;
   }
 
 }
@@ -95,6 +108,18 @@
 
 .pageContent {
   padding-top: (2 * $content-padding);
+
+  .fa {
+    margin-right: 5px;
+  }
+
+  dt {
+    margin-bottom: 0.5em;
+  }
+
+  dd {
+    margin-left: 1.5em;
+  }
 }
 
 .newsContent {

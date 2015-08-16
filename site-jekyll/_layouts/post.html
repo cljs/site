@@ -11,6 +11,7 @@ sectionid: news
       <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}
       {% if page.author %} by {{ page.author }}{% endif %}
       {% if page.google_group_msg %}<a href="https://groups.google.com/d/msg/{{ page.google_group_msg }}">on Google Groups</a>{% endif %}
+      {% if page.external_source %}<a href="{{ page.external_source }}">on {{ page.external_name }}</a>{% endif %}
       {% if page.meta %} • {{ page.meta }}{% endif %}
       </p>
       <hr>

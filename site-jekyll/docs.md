@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Docs
+sectionid: docs
 ---
 
 The [ClojureScript Wiki] is the most active source of documentation for

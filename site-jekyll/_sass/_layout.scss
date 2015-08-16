@@ -58,28 +58,35 @@
 
   .site-nav {
     display: inline-block;
-    margin-left: 28px;
-
-    .page-link {
-      display: inline-block;
-      line-height: $header-height;
-      color: $text-color;
-      padding-left: 10px;
-      padding-right: 10px;
-    }
+    margin-left: 64px;
   }
 
   .site-nav-ext {
     float: right;
+  }
 
-    .page-link {
-      display: inline-block;
-      line-height: $header-height;
-      color: $text-color;
-      padding-left: 10px;
-      padding-right: 10px;
+  .page-link {
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    line-height: $header-height;
+    color: $text-color;
+
+    letter-spacing: 0.03em;
+    opacity: 0.65;
+
+    &.active {
+      opacity: 1;
+      border-bottom: 3px solid #EEE;
+    }
+
+    &:hover {
+      opacity: 1;
+      text-decoration: none;
     }
   }
+
 }
 
 /**

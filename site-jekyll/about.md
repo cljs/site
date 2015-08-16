@@ -1,6 +1,7 @@
 ---
 layout: page
-title: (Hello!)
+title: About
+id: about
 ---
 
 ClojureScript is pretty great and deserves an equally great website & branding!

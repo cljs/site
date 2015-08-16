@@ -24,16 +24,18 @@
  */
 .site-header {
   background: #F7F7F7;
+  height: $header-height;
 
   .logo {
-    float: left;
-    width: 64px;
-    margin: 12px 0;
+    display: inline-block;
+    height: $header-height - (2 * $header-padding);
+    margin: $header-padding 0;
   }
 
   .title-block {
-    float: left;
-    margin: 22px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 22px;
 
     .title {
       color: #5A5A5A;
@@ -55,17 +57,27 @@
   }
 
   .site-nav {
-    float: right;
-    line-height: 86px;
+    display: inline-block;
+    margin-left: 28px;
 
     .page-link {
+      display: inline-block;
+      line-height: $header-height;
       color: $text-color;
-      line-height: $base-line-height;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
 
-      // Gaps between nav items, but not on the first one
-      &:not(:first-child) {
-        margin-left: 20px;
-      }
+  .site-nav-ext {
+    float: right;
+
+    .page-link {
+      display: inline-block;
+      line-height: $header-height;
+      color: $text-color;
+      padding-left: 10px;
+      padding-right: 10px;
     }
   }
 }
@@ -115,7 +127,7 @@
   margin-bottom: $spacing-unit;
 
   .news-date {
-    width: 100px;
+    width: 120px;
     text-align: right;
     padding-right: 0.5em;
     vertical-align: top;

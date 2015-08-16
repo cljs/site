@@ -17,7 +17,14 @@
 
 - [ ] [REPL page](http://chimeces.com/cljs-browser-repl/)
 
-## Instructions
+## Tech Rationale
+
+We want to simplify content management, collaboration, and deployment for this
+website as much as possible so it can stay around, be adapted, and change hands
+for as long as it needs to.  Thus, we are using a Jekyll site deployed to
+GitHub pages, with some ClojureScript for future dynamic parts of course!
+
+### Instructions
 
 I couldn't find a static site generator as good as Jekyll, so we gotta use Ruby!
 We're using it with [bundler](http://bundler.io) to have deterministic dependencies.
@@ -31,3 +38,4 @@ $ bundle install
 # start the website
 $ bundle exec jekyll serve
 ```
+

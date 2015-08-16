@@ -4,6 +4,7 @@
  */
 html, body {
   height: 100%;
+  background-color: #FAFAFA;
 }
 .container {
   position: relative;
@@ -29,7 +30,7 @@ html, body {
  * Site header
  */
 .site-header {
-  background: #F7F7F7;
+  background: #fff;
   height: $header-height;
 
   .logo {
@@ -47,7 +48,7 @@ html, body {
       color: #5A5A5A;
 
       font-size: 22px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.015em;
 
       line-height: 1em;
@@ -75,6 +76,7 @@ html, body {
     display: inline-block;
     padding-left: 10px;
     padding-right: 10px;
+    font-size: 0.8em;
 
     color: $text-color;
 
@@ -104,6 +106,12 @@ html, body {
   .page-link-ext {
     @extend %page-link-common;
     line-height: $header-height;
+    // color: #AAA;
+    opacity: 0.7;
+    &:hover {
+      // color: $text-color;
+      opacity: 1;
+    }
   }
 
 }
@@ -114,7 +122,7 @@ html, body {
 .site-footer {
   color: #5A5A5A;
   font-size: 0.85em;
-  font-weight: 600;
+  font-weight: 400;
 
   position: absolute;
   bottom: 0;
@@ -210,7 +218,7 @@ html, body {
   }
 
   .news-link {
-    font-weight: 600;
+    font-weight: 700;
   }
 
 }

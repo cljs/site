@@ -20,7 +20,8 @@ dl {
 }
 
 dt {
-  font-weight: 600;
+  color: $heading-color;
+  font-weight: 700;
 }
 
 dd {
@@ -96,6 +97,7 @@ li {
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
+  color: $heading-color;
 }
 
 
@@ -139,7 +141,7 @@ code {
     font-size: 15px;
     border: 1px solid $grey-color-light;
     border-radius: 3px;
-    background-color: #f7f7f7;
+    background-color: #fff;
 }
 
 code {

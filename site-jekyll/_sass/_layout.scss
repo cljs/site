@@ -103,6 +103,31 @@
 }
 
 /**
+ * Site Footer
+ */
+.site-footer {
+  color: #5A5A5A;
+  font-size: 0.85em;
+  font-weight: 600;
+
+  height: $footer-height;
+  padding: $footer-padding;
+
+  .grass {
+    width: 14px;
+    vertical-align: baseline;
+  }
+
+  .community-note {
+    float: left;
+  }
+
+  .cljs-legal {
+    float: right;
+  }
+}
+
+/**
  * Site Inner Content (main body)
  */
 

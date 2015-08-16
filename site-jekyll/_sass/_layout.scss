@@ -2,8 +2,14 @@
 /**
  * Whole Container
  */
+html, body {
+  height: 100%;
+}
 .container {
+  position: relative;
   min-width: $content-width + (2 * $content-padding);
+  padding-bottom: $footer-height;
+  min-height: 100%;
 }
 
 /**
@@ -109,6 +115,11 @@
   color: #5A5A5A;
   font-size: 0.85em;
   font-weight: 600;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
   height: $footer-height;
   padding: $footer-padding;

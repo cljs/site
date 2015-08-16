@@ -124,6 +124,12 @@ html, body {
   height: $footer-height;
   padding: $footer-padding;
 
+  hr {
+    border: 0;
+    border-bottom: 1px solid #dadada;
+    margin-bottom: 20px;
+  }
+
   .grass {
     width: 14px;
     vertical-align: baseline;

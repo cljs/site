@@ -4,6 +4,10 @@ title: About
 id: about
 ---
 
+ <div class="post-meta">
+_Disclaimer: this website is currently under heavy development._
+</div>
+
 ClojureScript is pretty great and deserves an equally great website & branding!
 
 __cljs.info__ is a community effort to meet this goal; we currently have a neat

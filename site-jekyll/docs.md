@@ -3,9 +3,9 @@ layout: page
 title: Docs
 ---
 
- <div class="post-meta">
-_This page will integrate the following community work:_
-</div>
+The [ClojureScript Wiki] is the most active source of documentation for
+ClojureScript.  Integration with this source is TBD, but the following
+sources will soon be integrated in some form here:
 
  <dl>
 <dt>Complete Book</dt>
@@ -18,9 +18,6 @@ _This page will integrate the following community work:_
 <dd>[ClojureScript Cheatsheet] by Chris Oakman</dd>
 
 </dl>
-
-The [ClojureScript Wiki] is the most active source of documentation for
-ClojureScript.  Integration with this source is undecided.
 
 [ClojureScript Unraveled]:https://leanpub.com/clojurescript-unraveled
 [API/Syntax Reference]:https://github.com/cljsinfo/cljs-api-docs/blob/catalog/INDEX.md

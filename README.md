@@ -39,3 +39,8 @@ $ bundle install
 $ bundle exec jekyll serve
 ```
 
+Anyone with push access to the [GitHub Pages deployment repo] can update the live website:
+
+```
+$ ./publish.sh
+```

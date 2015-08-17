@@ -6,6 +6,7 @@ baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://cljsinfo.github.io" # the base hostname & protocol for your site
 
 # Build settings
+keep_files: ["README.md", ".git"] # When clobbering the site destination, keep the selected files
 exclude: ['Gemfile', 'Gemfile.lock'] # don't process these when generating the site
 markdown: RedcarpetCLJS # wraps redcarpet with some cljs things (see _plugins/)
 permalink: pretty

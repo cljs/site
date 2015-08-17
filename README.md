@@ -32,7 +32,7 @@ We're using it with [bundler](http://bundler.io) to have deterministic dependenc
 ```shell
 # setup
 $ cd site-jekyll
-$ gem install bundle
+$ gem install bundler
 $ bundle install
 
 # start the website

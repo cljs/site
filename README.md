@@ -1,11 +1,13 @@
-# A site for cljs
+# A website for ClojureScript
 
-> __NOTE__: this is an experiment to rebuild the work at [cljs.info](http://github.com/cljsinfo/cljs.info) using a simpler content system to encourage more collaboration and content.
+> __NOTE__: rebuilding the work at [cljs.info](http://github.com/cljsinfo/cljs.info) using a simpler content system to encourage more collaboration and content.
+
+![screenshot](http://i.imgur.com/rInPHTP.png)
 
 ## Roadmap
 
 - [ ] import homepage (selling points)
-- [ ] import asciidoc book, [ClojureScript Unraveled](https://leanpub.com/clojurescript-unraveled)
+- [ ] import book, [ClojureScript Unraveled](https://leanpub.com/clojurescript-unraveled)
 - [ ] import [API/Syntax docs](https://github.com/cljsinfo/cljs-api-docs)
 - [ ] import [cheatsheet](http://cljs.info/cheatsheet)
 - [x] create _News_ page (blog posts)

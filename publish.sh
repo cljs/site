@@ -9,6 +9,8 @@ if [ ! -d "$deploy_dir" ]; then
 fi
 
 # Build the site, and dump into deploy directory.
+# (NOTE: this clears the entire contents of the deploy directory first!
+#        but it keeps the `keep_files` entries listed in `site-jekyll/_config.yml`.)
 pushd site-jekyll
 bundle exec jekyll build --destination ../$deploy_dir
 popd

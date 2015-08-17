@@ -44,3 +44,5 @@ Anyone with push access to the [GitHub Pages deployment repo] can update the liv
 ```
 $ ./publish.sh
 ```
+
+[GitHub Pages deployment repo]:https://github.com/cljsinfo/cljsinfo.github.io

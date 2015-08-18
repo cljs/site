@@ -156,6 +156,35 @@ html, body {
   }
 }
 
+.hero {
+  padding: 40px 0;
+
+  // BACKGROUND GRADIENT
+  //   edited here: http://jxnblk.com/shade/?base=%23525C6E&hueShift=0&saturate=0&lighten=-0.2
+  //   base color: #525C6E
+  background-image: linear-gradient(-90deg, #414958, #647087);
+
+  text-align: center;
+
+  .hero-logo {
+    width: 80px;
+    opacity: 0.9;
+  }
+
+  .hero-title {
+    color: #EBEBEB;
+    font-size: 42px;
+    font-weight: 300;
+  }
+
+  .hero-quote {
+    font-style: italic;
+    font-size: 18px;
+    color: #B2E3E7;
+  }
+
+}
+
 /**
  * Site Inner Content (main body)
  */

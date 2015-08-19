@@ -32,19 +32,28 @@ Knee-jerk (?) points
 
 Technical Innovation points
 
-- Favor Functional style: pure data and functions in favor of OOP. But imperative
-  styles, polymorphic functions, and hierarchical relationships allowed when those
-  parts are needed.  Schema is here if you need runtime type checking too.
-- Purity of complex values: In JS, numbers and strings are values that can
-  never change.  Perhaps Clojure's most popular innovation is to extend this idea to
-  any collection type (efficiently!), making an entire class of mutation errors just disappear. This truly
-  enables pure functions to transform complex input data without mutating values.
+- Favor Functional style: pure data and functions in favor of OOP. But when needed,
+  simple semantics are provided for imperative styles, polymorphic functions,
+  and hierarchical relationships. Schema is here if you need runtime type
+  checking too.
+- Purity of all values: In JS, numbers and strings are values that can never
+  change, thus all operations on them produce new values.  Clojure extends this
+  idea to any collection type through a unique innovation, thus all operations
+  on them produce new collections (with structural sharing) without incurring
+  the usual concerns related to mutation or copying costs.  This truly enables
+  a pure functional paradigm that can act consistently for all values.
+- Thinking with Values: Clojure's pure representation of values enables constant-time
+  equality checks between arbitrarily nested values.  Whereas JS objects can only be keyed
+  by numbers or strings, Clojure's maps can be keyed by arbitrary values of any type.
 - State: ... (flip book model: don't erase, use the next page)
-- Be more expressive: the full syntax power of an improved Lisp. Everything is
+- Be more expressive: the simple syntax power of an improved Lisp. Everything is
   an expression of the same shape.  Expressions become like LEGO pieces: simple,
-  consistent, and easily composable.  Macros are the notorious footgun of Lisp-lore,
-  but they are generaly used by library developers to give application developers
-  the full power of the language.  (Golang's goroutines were added as library!)
+  consistent, and easily composable.  (compare to the 2 shapes of the JS if-statements?)
+- Meta-programming: the syntax is not only simple, but is known for its unbridled power.
+  The syntax can be organically grown through macros.
+  The macro is the notorious footgun of Lisp-lore, but they are generally used
+  by library developers to give application developers the full power of the
+  language.  (Golang's goroutines were added as library!)
 
 External Tech points:
 

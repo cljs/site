@@ -41,6 +41,8 @@ $ bundle install
 $ bundle exec jekyll serve
 ```
 
+Website will be running at <http://localhost:4000>.
+
 Anyone with push access to the [GitHub Pages deployment repo] can update the live website:
 
 ```

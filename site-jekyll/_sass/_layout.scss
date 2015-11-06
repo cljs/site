@@ -69,7 +69,8 @@ html, body {
   }
 
   .site-nav-ext {
-    float: right;
+    display: inline-block;
+    margin-left: 80px;
   }
 
   %page-link-common {

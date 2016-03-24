@@ -1,0 +1,17 @@
+---
+layout: page
+sectionid: docs
+---
+{% assign data = site.data.symbols[page.symbol] %}
+
+<h1>{{ data['full-name'] }}</h1>
+
+{% if data.description %}
+  {{ data.description | markdownify }}
+{% endif %}
+
+<h2>Examples</h2>
+
+{% for example in data.examples %}
+  {{ example.content | markdownify }}
+{% endfor %}

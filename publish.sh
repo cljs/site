@@ -12,7 +12,7 @@ fi
 # (NOTE: this clears the entire contents of the deploy directory first!
 #        but it keeps the `keep_files` entries listed in `site-jekyll/_config.yml`.)
 pushd site-jekyll
-bundle exec jekyll build --destination ../$deploy_dir
+## TODO: generate site here
 popd
 
 # Commit and push

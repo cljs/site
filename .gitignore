@@ -14,5 +14,6 @@ pom.xml.asc
 
 /deployed/
 /output/
+.classpath
 
 cljs-api-*.edn

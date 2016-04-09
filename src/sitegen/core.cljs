@@ -1,7 +1,10 @@
 (ns sitegen.core
   (:require
     [planck.shell :refer [sh]]
-    [sitegen.fetch-api :refer [get-latest-api!]]))
+    [planck.core :refer [spit]]
+    [sitegen.fetch-api :refer [get-latest-api!]]
+    [sitegen.pages.index :as index]
+    [hiccups.runtime :refer [render-html]]))
 
 (def root-docs "FIXME")
 
@@ -14,5 +17,9 @@
           dirs (map ns->dir nss)]
       (apply sh "mkdir" "-p" dirs))))
 
+(defn gen! []
+  (spit "index.html" (render-html (index/page))))
+
 (defn -main []
-  (get-latest-api!))
+  (get-latest-api!)
+  (gen!))

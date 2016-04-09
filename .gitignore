@@ -13,4 +13,4 @@ pom.xml.asc
 *.swp
 /deployed/
 
-cljs-api.edn
+cljs-api-*.edn

@@ -1,9 +1,11 @@
-(ns sitegen.fetch-api
+(ns sitegen.api
   (:require
     [cljs.reader :refer [read-string]]
     [planck.core :refer [slurp spit]]
     [planck.io :refer [file-attributes]]
     [planck.shell :refer [sh]]))
+
+(def api nil)
 
 (defn slurp-url [url]
   (:out (sh "curl" url)))
@@ -24,7 +26,13 @@
        (first)
        (:name)))
 
-(defn get-latest-api! []
+(defn set-from-download!
+  [filename]
+  (->> (slurp filename)
+       (read-string)
+       (set! api)))
+
+(defn update! []
   (let [version (get-latest-version)
         filename (api-filename version)
         downloaded? (boolean (file-attributes filename))]
@@ -33,5 +41,4 @@
       (->> (api-url version)
            (slurp-url)
            (spit filename)))
-    (-> (slurp filename)
-        (read-string))))
+    (set-from-download! filename)))

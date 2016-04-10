@@ -3,20 +3,22 @@
     [cljs.reader :refer [read-string]]
     [planck.core :refer [slurp]]))
 
-(def index [])
+(def posts [])
 (def index-filename "news/index.edn")
+(def content-dir "news/")
+
 (defn update-index! []
   (->> (slurp index-filename)
        (read-string)
-       (set! index)))
+       (set! posts)))
 
-(def posts {})
-(def posts-dir "news/")
-(defn update-posts! []
-  (doseq [{:keys [filename]} index]
-    (let [content (slurp (str posts-dir filename))]
-      (set! posts (assoc posts filename content)))))
+(defn update-content! []
+  (set! posts
+    (for [post posts]
+      (let [filename (str content-dir (:filename post))
+            md-content (slurp filename)]
+        (assoc post :md-content md-content)))))
 
 (defn update! []
   (update-index!)
-  (update-posts!))
+  (update-content!))

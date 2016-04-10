@@ -1,9 +1,3 @@
----
-release_version: "0.0-2322"
-title: "0.0-2322 - Safari Hashing Fix"
-author: "David Nolen"
-google_group_msg: 'clojurescript/n0sfFX09Vbw/9Icme54Z-X0J'
----
 
 The primary reason for this release is a critical hashing bug 
 in Safari clients that surfaced due to the Murmur3 work. 

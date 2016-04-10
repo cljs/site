@@ -1,9 +1,3 @@
----
-release_version: "0.0-3058"
-title:  "r0.0-3058 - Enhanced REPLs, faster compile times"
-author: "David Nolen"
-google_group_msg: "clojurescript/fdT3f1HxJzM/rCbi7L1AI24J"
----
 
 This is a significant enhancement release around REPLs and compile times.
 

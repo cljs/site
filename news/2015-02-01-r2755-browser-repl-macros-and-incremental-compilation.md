@@ -1,9 +1,3 @@
----
-release_version: '0.0-2755'
-title:  "r0.0-2755 - Browser REPL, macros, and incremental compilation"
-author: "David Nolen"
-google_group_msg: 'clojurescript/pJ_EYHkYAUs/mLi8XfiQxZsJ'
----
 
 ([original Mailing List post](https://groups.google.com/d/msg/clojurescript/FoiqNV5nunQ/xoZ9mD94hpAJ))
 

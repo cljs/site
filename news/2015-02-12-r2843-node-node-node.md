@@ -1,9 +1,3 @@
----
-release_version: "0.0-2843"
-title:  "r0.0-2843 - Node, Node, Node"
-author: "David Nolen"
-google_group_msg: "clojurescript/9ZrGYIhRzqM/-6GM31HTz7wJ"
----
 
 This release is primarily about outstanding Node.js target
 issues. Further changes have been made to support Node.js v0.12

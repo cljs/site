@@ -1,9 +1,3 @@
----
-release_version: '0.0-2644'
-title:  "r0.0-2644 - enhanced REPLs"
-author: "David Nolen"
-google_group_msg: 'clojurescript/mRAED4TFlCM/VMi-AOQBzFQJ'
----
 
 This release is one of the most significant in a very long while - it includes 
 enhanced REPLs that are far closer to the experience provided by Clojure 

@@ -1,9 +1,3 @@
----
-release_version: '0.0-2719'
-title:  "r0.0-2719 - JavaScript Dependencies"
-author: "David Nolen"
-google_group_msg: 'clojurescript/pJ_EYHkYAUs/mLi8XfiQxZsJ'
----
 
 ClojureScript is not an island, like Clojure on the JVM, ClojureScript
 embraces the many benefits provided by the host. However this goal

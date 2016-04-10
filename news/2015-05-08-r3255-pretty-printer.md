@@ -1,9 +1,3 @@
----
-release_version: "0.0-3255"
-title:  "r0.0-3255 - Pretty Printer and Latest Closure Compiler/Library"
-author: "David Nolen"
-google_group_msg: "clojurescript/A--qv0JxfO8/FoCzLNQ-D4EJ"
----
 
 A big thanks goes out to Jonathan Boston and Shaun Lebron for this
 release. Thanks to their efforts ClojureScript now includes a full

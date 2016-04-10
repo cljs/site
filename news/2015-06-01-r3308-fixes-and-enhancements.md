@@ -1,9 +1,3 @@
----
-release_version: "0.0-3308"
-title:  "r0.0-3308 - Fixes and Enhancements"
-author: "David Nolen"
-google_group_msg: "clojurescript/kNIKpsFgvyk/y1u_AjChLfYJ"
----
 
 This release bumps the Clojure dependecy to 1.7.0-RC1 and includes fixes and minor
 enhancements.

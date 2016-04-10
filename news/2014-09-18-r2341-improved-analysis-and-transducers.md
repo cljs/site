@@ -1,9 +1,3 @@
----
-release_version: "0.0-2341"
-title: "0.0-2341 - Improved Analysis & Transducers"
-author: "David Nolen"
-google_group_msg: 'clojurescript/kBo9pSNScm8/-Ovdkc6ZSwMJ'
----
 
 This releases comes with considerably better analysis. Vars from other 
 namespaces are finally also verified. Protocols previously saw very 

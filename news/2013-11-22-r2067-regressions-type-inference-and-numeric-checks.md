@@ -1,9 +1,3 @@
----
-release_version: "0.0-2067"
-title: "0.0-2067 - regressions, type inference & numeric checks"
-author: "David Nolen"
-google_group_msg: 'clojurescript/CcIFD5q9kqg/TNJMLdLRCkAJ'
----
 
 This release fixes issues introduced by the source map checks, the
 checks have been relaxed.

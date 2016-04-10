@@ -1,9 +1,3 @@
----
-release_version: "0.0-2814"
-title:  "r0.0-2814 - Nashorn REPL, async testing, and much more"
-author: "David Nolen"
-google_group_msg: "clojurescript/KTOhX-QvpRo/j9-st6WUnI8J"
----
 
 There are numerous enhancements in this release including: a Nashorn
 REPL, Node.js 0.12 support, cljs.test async testing support,

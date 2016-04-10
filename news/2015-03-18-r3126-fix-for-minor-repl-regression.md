@@ -1,9 +1,3 @@
----
-release_version: "0.0-3126"
-title:  "r0.0-3126 - fix for minor REPL regression"
-author: "David Nolen"
-google_group_msg: "clojurescript/rt7Fc86v1aU/u5G56vi5M6sJ"
----
 
 This release just fixes a minor REPL related regression.
 

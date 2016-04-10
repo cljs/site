@@ -1,9 +1,3 @@
----
-title: "Introducing ClojureScript"
-external_name: "Clojure.com/blog"
-external_source: "http://clojure.com/blog/2011/07/22/introducing-clojurescript.html"
-author: "Stuart Sierra"
----
 
 The [Clojure/core](http://clojure.com/) team is proud to introduce an important addition to the Clojure language ecosystem. [ClojureScript](https://github.com/clojure/clojurescript) is a new compiler for Clojure that targets JavaScript.
 

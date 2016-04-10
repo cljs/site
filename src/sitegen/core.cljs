@@ -3,8 +3,9 @@
     [planck.shell :refer [sh]]
     [planck.core :refer [spit]]
     [sitegen.api :as api]
-    [sitegen.pages.index :as index]
+    [sitegen.news :as news]
     [hiccups.runtime :refer [render-html]]))
 
 (defn -main []
-  (api/update!))
+  (api/update!)
+  (news/update!))

@@ -1,4 +1,17 @@
-(ns sitegen.layouts.common)
+(ns sitegen.layout)
+
+(declare head)
+(declare body-header)
+(declare body-footer)
+
+(defn common [content]
+  [:html
+    (head)
+    [:body
+      [:div.container
+        (body-header)
+        content
+        (body-footer)]]])
 
 (defn head
   [{:keys [title description]}]
@@ -35,7 +48,7 @@
     [:link {:rel "icon" :type "image/png" :href "/img/icons/favicon-16x16.png" :sizes "16x16"}]
     [:link {:rel "icon" :type "image/png" :href "/img/icons/favicon-32x32.png" :sizes "32x32"}]])
 
-(defn header []
+(defn body-header []
   [:nav.navbar
     [:div.container
       [:ul.navbar-list
@@ -46,7 +59,7 @@
         [:li.navbar-item [:a.navbar-link {:href "/news.html"} "News"]]
         [:li.navbar-item [:a.navbar-link {:href "/community.html"} "Community"]]]]])
 
-(defn footer []
+(defn body-footer []
   [:footer.site-footer
     [:div.wrapper
       [:hr]

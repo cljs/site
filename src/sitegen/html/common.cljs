@@ -1,10 +1,10 @@
-(ns sitegen.layout)
+(ns sitegen.html.common)
 
 (declare head)
 (declare body-header)
 (declare body-footer)
 
-(defn common [content]
+(defn common-layout [content]
   [:html
     (head)
     [:body

@@ -1,11 +1,11 @@
 (ns sitegen.home
   (:require
-    [sitegen.html.common :refer [common-layout]]
+    [sitegen.layout :refer [common-layout]]
     [hiccups.runtime :refer [render-html]]
-    [planck.core :refer [spit]]))
+    [planck.core :refer [spit]]
+    [sitegen.urls :as urls]))
 
-(defn create-page!
-  [out-filename]
+(defn render! []
   (->> (common-layout "")
        (render-html)
-       (spit out-filename)))
+       (spit urls/home)))

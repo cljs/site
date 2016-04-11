@@ -1,4 +1,4 @@
-(ns sitegen.html.common)
+(ns sitegen.layout)
 
 (declare head)
 (declare body-header)

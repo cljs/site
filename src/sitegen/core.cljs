@@ -8,6 +8,5 @@
   (api/update!)
   (news/update!)
 
-  (home/create-page!       "output/index.html")
-  (news/create-index-page! "output/news.html")
-  (news/create-post-pages! "output/news/"))
+  (home/render!)
+  (news/render!))

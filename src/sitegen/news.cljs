@@ -6,6 +6,8 @@
     [hiccups.runtime :refer [render-html]]
     [markdown.core :refer [md->html]]
     [sitegen.layout :refer [common-layout]]
+    [sitegen.urls :as urls]
+    [goog.string])
   (:import
     goog.i18n.DateTimeFormat))
 
@@ -17,10 +19,21 @@
 (def index-filename "news/index.edn")
 (def md-dir "news/")
 
-(defn add-md-body
+(defn transform-jira [md-text]
+  (string/replace
+    md-text
+    #"\bCLJS-\d\d\d\d\b"
+    #(str "[" % "](http://dev.clojure.org/jira/browse/" % ")")))
+
+(defn add-body
   [{:keys [filename] :as post}]
-  (let [md-body (slurp (str md-dir filename))]
-    (assoc post :md-body md-body)))
+  (let [md-body (->> (str md-dir filename)
+                     (slurp)
+                     (transform-jira))
+        html-body (md->html md-body)]
+    (assoc post
+      :md-body md-body
+      :html-body html-body)))
 
 (defn add-date
   [{:keys [filename] :as post}]
@@ -38,7 +51,7 @@
     (assoc post :url url)))
 
 (def transform-post
-  (comp add-md-body
+  (comp add-body
         add-date
         add-url))
 
@@ -86,14 +99,8 @@
          (filter identity)
          (interpose " "))))
 
-(defn transform-jira [md-text]
-  (string/replace
-    md-text
-    #"\bCLJS-\d\d\d\d\b"
-    #(str "[" % "](http://dev.clojure.org/jira/browse/" % ")")))
-
 (defn post-page
-  [{:keys [title release_version md-body] :as post}]
+  [{:keys [title release_version html-body] :as post}]
   [:div
     [:h1 title]
     [:p (post-meta post)]
@@ -101,9 +108,31 @@
       (when release_version
         [:p "Leiningen dependency information:"
           [:pre [:code (str "[org.clojure/clojurescript " release_version)]]])
-      (->> md-body
-           transform-jira
-           md->html)]])
+      html-body]])
+
+(defn rss-date [date]
+  (.toUTCString date))
+
+(defn rss-feed-xml []
+  (let [now (rss-date (js/Date.))]
+    [:rss {:xmlns:atom "http://www.w3.org/2005/Atom" :version "2.0"}
+     [:channel
+      [:title "ClojureScript"]
+      [:description "ClojureScript News and Releases"]
+      [:link "http://cljsinfo.github.io/news"]
+      [:atom:link {:href (str urls/root urls/news-feed)
+                   :rel "self"
+                   :type "application/rss+xml"}]
+      [:pubDate now]
+      [:lastBuildDate now]
+      [:generator "(sitegen.news/rss-feed-xml)"]
+      (for [{:keys [title html-body date url]}
+            (take 10 (reverse posts))]
+        [:item
+          [:title title]
+          [:description (goog.string.htmlEscape html-body true)]
+          [:pubDate (rss-date date)]
+          [:link (urls/pretty (str urls/root url))]])]]))
 
 (defn create-index-page! []
   (->> (index-page)
@@ -118,6 +147,12 @@
          (render-html)
          (urls/write! (:url post)))))
 
+(defn create-rss-feed! []
+  (->> (rss-feed-xml)
+       (render-html)
+       (urls/write! urls/news-feed)))
+
 (defn render! []
   (create-index-page!)
-  (create-post-pages!))
+  (create-post-pages!)
+  (create-rss-feed!))

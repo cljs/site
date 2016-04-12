@@ -17,4 +17,7 @@ pom.xml.asc
 .classpath
 .planck-cache
 
+.DS_Store
+/node_modules/
+
 cljs-api-*.edn

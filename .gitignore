@@ -15,5 +15,6 @@ pom.xml.asc
 /deployed/
 /output/
 .classpath
+.planck-cache
 
 cljs-api-*.edn

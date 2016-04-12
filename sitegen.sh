@@ -12,6 +12,10 @@ else
   classpath=`cat .classpath`
 fi
 
+cache=.planck-cache
+mkdir -p $cache
+
 planck \
+  -k $cache \
   -c src:$classpath \
   -m sitegen.core

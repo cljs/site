@@ -6,7 +6,8 @@
     [hiccups.runtime :refer [render-html]]
     [markdown.core :refer [md->html]]
     [sitegen.layout :refer [common-layout]]
-    [sitegen.urls :as urls]))
+  (:import
+    goog.i18n.DateTimeFormat))
 
 ;;---------------------------------------------------------------
 ;; Post Retrieval
@@ -24,9 +25,10 @@
 (defn add-date
   [{:keys [filename] :as post}]
   (let [[_ y m d] (re-find #"^(\d\d\d\d)-(\d\d)-(\d\d)" filename)
-        date {:year (js/parseInt y)
-              :month (js/parseInt m)
-              :day (js/parseInt d)}]
+        y (js/parseInt y)
+        m (js/parseInt m)
+        d (js/parseInt d)
+        date (js/Date. y (dec m) d)]
     (assoc post :date date)))
 
 (defn add-url
@@ -50,22 +52,12 @@
 ;; Page Rendering
 ;;---------------------------------------------------------------
 
-(def month-str
-  {1  "Jan"
-   2  "Feb"
-   3  "Mar"
-   4  "Apr"
-   5  "May"
-   6  "Jun"
-   7  "Jul"
-   8  "Aug"
-   9  "Sep"
-   10 "Oct"
-   11 "Nov"
-   12 "Dec"})
-
-(defn date-str [{:keys [year month day]}]
-  (str (month-str month) " " day ", " year))
+;; Internationalized Dates
+;; http://www.closurecheatsheet.com/i18n#goog-i18n-datetimeformat
+;; http://google.github.io/closure-library/api/enum_goog_i18n_DateTimeFormat_Format.html
+(def date-format (DateTimeFormat. DateTimeFormat.Format.MEDIUM_DATE))
+(defn date-str [date]
+  (.format date-format date))
 
 (defn index-page []
   [:table

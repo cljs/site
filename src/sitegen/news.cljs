@@ -153,6 +153,7 @@
        (urls/write! urls/news-feed)))
 
 (defn render! []
+  (urls/make-dir! urls/news-dir)
   (create-index-page!)
   (create-post-pages!)
   (create-rss-feed!))

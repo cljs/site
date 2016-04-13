@@ -22,7 +22,7 @@
 (defn transform-jira [md-text]
   (string/replace
     md-text
-    #"\bCLJS-\d\d\d\d\b"
+    #"\bCLJS-\d+\b"
     #(str "[" % "](http://dev.clojure.org/jira/browse/" % ")")))
 
 (defn add-body

@@ -8,4 +8,4 @@
 (defn render! []
   (->> (common-layout "")
        (render-html)
-       (spit urls/home)))
+       (urls/write! urls/home)))

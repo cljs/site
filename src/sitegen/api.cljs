@@ -1,12 +1,14 @@
 (ns sitegen.api
   (:require
     [cljs.reader :refer [read-string]]
+    [clojure.string :as string]
     [planck.core :refer [slurp spit]]
     [planck.io :refer [file-attributes]]
     [planck.shell :refer [sh]]
     [sitegen.urls :as urls]
     [sitegen.layout :refer [common-layout]]
-    [hiccups.runtime :refer [render-html]]))
+    [hiccups.runtime :refer [render-html]]
+    [markdown.core :refer [md->html]]))
 
 ;;---------------------------------------------------------------
 ;; API Retrieval
@@ -54,14 +56,86 @@
 ;; Page Rendering
 ;;---------------------------------------------------------------
 
-(defn create-sym-page! [{:keys [name name-encode ns]}]
-  (->> ""
-       (common-layout)
-       (render-html)
-       (urls/write! (urls/api-symbol ns name-encode))))
+(defn history-string [history]
+  (let [change-str {"-" "Removed in "
+                    "+" "Added in "}]
+    (string/join ", "
+      (for [[change version] history]
+        (str (change-str change) version)))))
+
+(defn signature-string [name args-str]
+  (let [args (second (re-find #"^\[(.*)\]$" args-str))
+        all-args (string/join " " [name args])]
+    (str "(" all-args ")")))
+
+(defn syntax-sym-page [sym])
+
+(defn api-sym-page [sym]
+  [:div
+    [:h1 (:full-name sym)]
+    (when-let [name (:known-as sym)]
+      [:em "known as " name])
+    (when-let [full-name (:moved sym)]
+      [:em [:strong "MOVED"] ", please see " full-name])
+    [:table
+      [:tr
+        [:td (:type sym)]
+        [:td (history-string (:history sym))]
+        (when-let [clj-fullname (:clj-symbol sym)]
+          [:td
+            (when (= "clojure" (-> sym :source :repo))
+              "imported ")
+            clj-fullname])]]
+    (when-let [signature (seq (:signature sym))]
+      [:ul
+        (for [args-str signature]
+          [:li [:code (signature-string (:name sym) args-str)]])])
+    [:hr]
+    (when-let [md-desc (:description sym)]
+      (list
+        [:div (md->html md-desc)]
+        [:hr]))
+    (when-let [examples (seq (:examples sym))]
+       (list
+         [:h3 "Examples:"]
+         (for [example examples]
+           (list
+             [:div (md->html (:content example))]
+             [:hr]))))
+    (when-let [related (seq (:related sym))]
+      (list
+        [:h3 "See Also:"]
+        [:ul
+          (for [full-name related]
+            [:li full-name])]
+        [:hr]))
+    (when-let [docstring (:docstring sym)]
+      (list
+        [:h3 "Source docstring:"]
+        [:pre docstring]))
+    (when-let [source (:source sym)]
+      (list
+        [:h3 (:title source)]
+        [:pre [:code (:code source)]]
+        [:hr]))
+    (when-let [extra-sources (seq (:extra-sources sym))]
+      (for [source extra-sources]
+        [:h3 (:title source)]
+        [:pre [:code (:code source)]]
+        [:hr]))])
+
+(defn create-sym-page! [{:keys [ns name-encode] :as sym}]
+  (let [content (if (= ns "syntax")
+                  (syntax-sym-page sym)
+                  (api-sym-page sym))]
+    (->> content
+         (common-layout)
+         (render-html)
+         (urls/write! (urls/api-symbol ns name-encode)))))
 
 (defn render! []
   (doseq [ns (keys (:namespaces api))]
     (urls/make-dir! (urls/api-ns ns)))
-  (doseq [sym (vals (:symbols api))]
-    (create-sym-page! sym)))
+  (create-sym-page! (get-in api [:symbols "cljs.core/map"])))
+  ;(doseq [sym (vals (:symbols api))]
+  ;  (create-sym-page! sym)))

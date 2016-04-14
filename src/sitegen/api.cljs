@@ -107,7 +107,9 @@
         [:h3 "See Also:"]
         [:ul
           (for [full-name related]
-            [:li full-name])]
+            (let [{:keys [ns name-encode]} (get-in api [:symbols full-name])
+                  url (urls/pretty (urls/api-symbol ns name-encode))]
+              [:li [:a {:href url} full-name]]))]
         [:hr]))
     (when-let [docstring (:docstring sym)]
       (list

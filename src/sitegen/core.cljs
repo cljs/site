@@ -9,4 +9,5 @@
   (news/update!)
 
   (home/render!)
-  (news/render!))
+  (news/render!)
+  (api/render!))

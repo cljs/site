@@ -3,7 +3,10 @@
     [cljs.reader :refer [read-string]]
     [planck.core :refer [slurp spit]]
     [planck.io :refer [file-attributes]]
-    [planck.shell :refer [sh]]))
+    [planck.shell :refer [sh]]
+    [sitegen.urls :as urls]
+    [sitegen.layout :refer [common-layout]]
+    [hiccups.runtime :refer [render-html]]))
 
 ;;---------------------------------------------------------------
 ;; API Retrieval
@@ -50,3 +53,15 @@
 ;;---------------------------------------------------------------
 ;; Page Rendering
 ;;---------------------------------------------------------------
+
+(defn create-sym-page! [{:keys [name name-encode ns]}]
+  (->> ""
+       (common-layout)
+       (render-html)
+       (urls/write! (urls/api-symbol ns name-encode))))
+
+(defn render! []
+  (doseq [ns (keys (:namespaces api))]
+    (urls/make-dir! (urls/api-ns ns)))
+  (doseq [sym (vals (:symbols api))]
+    (create-sym-page! sym)))

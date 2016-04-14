@@ -55,7 +55,7 @@
   white-space: pre;
   word-wrap: break-word }
 .example {
-  position: relative; 
+  position: relative;
   margin-top: 4rem; }
 .example-header {
   font-weight: 600;
@@ -121,6 +121,7 @@
     height: 6.5rem;
     background: #fff;
     z-index: 99;
+    margin-bottom: 48px;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee; }
   .navbar-spacer {
@@ -153,13 +154,14 @@
     color: #222; }
   .navbar-link-logo {
     margin-right: 15px;
-    line-height: 6.5rem; }
+  }
   .navbar-logo {
     height: 38px;
     margin-left: 0;
     padding-left: 0;
     padding-right: 0;
     margin-right: 0;
+    margin-top: 12px;
     vertical-align: middle; }
   .navbar-link.active {
     color: #33C3F0; }
@@ -190,7 +192,7 @@
     -webkit-filter: drop-shadow(0 0 6px rgba(0,0,0,.1));
        -moz-filter: drop-shadow(0 0 6px rgba(0,0,0,.1));
             filter: drop-shadow(0 0 6px rgba(0,0,0,.1)); }
-  .popover-item:first-child .popover-link:after, 
+  .popover-item:first-child .popover-link:after,
   .popover-item:first-child .popover-link:before {
     bottom: 100%;
     left: 50%;

@@ -133,9 +133,15 @@
          (render-html)
          (urls/write! (urls/api-symbol ns name-encode)))))
 
+;; Set this to a symbol name to render a symbol page for it and nothing else.
+;; This speeds up development.
+(def render-one-sym nil)
+
 (defn render! []
   (doseq [ns (keys (:namespaces api))]
     (urls/make-dir! (urls/api-ns ns)))
-  (create-sym-page! (get-in api [:symbols "cljs.core/map"])))
-  ;(doseq [sym (vals (:symbols api))]
-  ;  (create-sym-page! sym)))
+  (let [syms (if render-one-sym
+                [(get-in api [:symbols render-one-sym])]
+                (vals (:symbols api)))]
+    (doseq [sym syms]
+      (create-sym-page! sym))))

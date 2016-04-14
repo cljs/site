@@ -65,7 +65,9 @@
 
 (defn signature-string [name args-str]
   (let [args (second (re-find #"^\[(.*)\]$" args-str))
-        all-args (string/join " " [name args])]
+        all-args (if (string/blank? args)
+                   name
+                   (string/join " " [name args]))]
     (str "(" all-args ")")))
 
 (defn syntax-sym-page [sym])

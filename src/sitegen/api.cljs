@@ -70,6 +70,11 @@
 
 (defn syntax-sym-page [sym])
 
+(defn cljsdoc-url [sym]
+  (str "https://github.com/cljsinfo/cljs-api-docs/blob/master/cljsdoc/"
+       (:full-name-encode sym)
+       ".cljsdoc"))
+
 (defn api-sym-page [sym]
   [:div
     [:h1 (:full-name sym)]
@@ -122,9 +127,12 @@
         [:hr]))
     (when-let [extra-sources (seq (:extra-sources sym))]
       (for [source extra-sources]
-        [:h3 (:title source)]
-        [:pre [:code (:code source)]]
-        [:hr]))])
+        (list
+          [:h3 (:title source)]
+          [:pre [:code (:code source)]]
+          [:hr])))
+    [:div
+      [:a {:href (cljsdoc-url sym)} "Edit Here!"]]])
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (let [content (if (= ns "syntax")

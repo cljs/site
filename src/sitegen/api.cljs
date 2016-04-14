@@ -77,6 +77,22 @@
        (:full-name-encode sym)
        ".cljsdoc"))
 
+(defn github-src-href
+  [{:keys [lines repo tag filename] :as source}]
+  (str "https://github.com/clojure/" repo "/blob/" tag "/" filename
+       "#" (string/join "-" (map #(str "L" %) lines))))
+
+(defn sym-source
+  [{:keys [title code repo filename] :as source}]
+  (list
+    [:div
+      (:title source)
+      " @ "
+      [:a {:href (github-src-href source)}
+        (str repo ":" filename)]]
+    [:pre [:code (:code source)]]
+    [:hr]))
+
 (defn api-sym-page [sym]
   [:div
     [:h1 (:full-name sym)]
@@ -92,6 +108,9 @@
           [:td
             (when (= "clojure" (-> sym :source :repo))
               "imported ")
+            [:img {:src "/img/clojure-icon.gif"
+                   :height "24px"
+                   :valign "middle"}]
             clj-fullname])]]
     (when-let [signature (seq (:signature sym))]
       [:ul
@@ -123,16 +142,11 @@
         [:h3 "Source docstring:"]
         [:pre docstring]))
     (when-let [source (:source sym)]
-      (list
-        [:h3 (:title source)]
-        [:pre [:code (:code source)]]
-        [:hr]))
+      (sym-source source))
     (when-let [extra-sources (seq (:extra-sources sym))]
       (for [source extra-sources]
-        (list
-          [:h3 (:title source)]
-          [:pre [:code (:code source)]]
-          [:hr])))
+        (sym-source source)))
+
     [:div
       [:a {:href (cljsdoc-url sym)} "Edit Here!"]]])
 

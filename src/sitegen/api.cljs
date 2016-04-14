@@ -139,8 +139,8 @@
         [:hr]))
     (when-let [docstring (:docstring sym)]
       (list
-        [:h3 "Source docstring:"]
-        [:pre docstring]))
+        "Source docstring:"
+        [:pre [:code docstring]]))
     (when-let [source (:source sym)]
       (sym-source source))
     (when-let [extra-sources (seq (:extra-sources sym))]

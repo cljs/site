@@ -104,14 +104,15 @@
       [:tr
         [:td (:type sym)]
         [:td (history-string (:history sym))]
-        (when-let [clj-fullname (:clj-symbol sym)]
+        (when-let [{:keys [full-name url]} (:clj-equiv sym)]
           [:td
             (when (= "clojure" (-> sym :source :repo))
               "imported ")
-            [:img {:src "/img/clojure-icon.gif"
-                   :height "24px"
-                   :valign "middle"}]
-            clj-fullname])]]
+            [:a {:href url}
+              [:img {:src "/img/clojure-icon.gif"
+                     :height "24px"
+                     :valign "middle"}]
+              " " full-name]])]]
     (when-let [signature (seq (:signature sym))]
       [:ul
         (for [args-str signature]

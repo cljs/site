@@ -72,23 +72,12 @@
 
 (defn syntax-sym-page [sym])
 
-(defn cljsdoc-url [sym]
-  (str "https://github.com/cljsinfo/cljs-api-docs/blob/master/cljsdoc/"
-       (:full-name-encode sym)
-       ".cljsdoc"))
-
-(defn github-src-href
-  [{:keys [lines repo tag filename] :as source}]
-  (str "https://github.com/clojure/" repo "/blob/" tag "/" filename
-       "#" (string/join "-" (map #(str "L" %) lines))))
-
 (defn sym-source
   [{:keys [title code repo filename] :as source}]
   (list
     [:div
-      (:title source)
-      " @ "
-      [:a {:href (github-src-href source)}
+      (:title source) " @ "
+      [:a {:href (:url source)}
         (str repo ":" filename)]]
     [:pre [:code (:code source)]]
     [:hr]))
@@ -149,7 +138,7 @@
         (sym-source source)))
 
     [:div
-      [:a {:href (cljsdoc-url sym)} "Edit Here!"]]])
+      [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (let [content (if (= ns "syntax")

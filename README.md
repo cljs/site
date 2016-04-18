@@ -17,7 +17,7 @@
 
 ###### On the horizon (owners needed)
 
-- [ ] [REPL page](http://chimeces.com/cljs-browser-repl/)
+- [ ] REPL page (using replumb)[http://clojurescript.io/], used by [different projects](https://github.com/Lambda-X/replumb#community)
 
 Anyone with push access to the [GitHub Pages deployment repo] can update the live website:
 

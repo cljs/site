@@ -75,7 +75,7 @@
 
 (defn api-sym-page [sym]
   [:div
-    [:h1 (:full-name sym)]
+    [:h1 (or (:display sym) (:full-name sym))]
     (when-let [name (:known-as sym)]
       [:em "known as " name])
     (when-let [full-name (:moved sym)]
@@ -92,7 +92,19 @@
               [:img {:src "/img/clojure-icon.gif"
                      :height "24px"
                      :valign "middle"}]
-              " " full-name]])]]
+              " " full-name]])
+        (when-let [{:keys [clj-url edn-url]} (:syntax-equiv sym)]
+          (list
+            (when clj-url
+              [:td
+                [:a {:href clj-url}
+                  [:img {:src "/img/clojure-icon.gif"
+                         :height "24px"
+                         :valign "middle"}]
+                  " in clojure"]])
+            (when edn-url
+              [:td [:a {:href edn-url} " in edn"]])))]]
+
     (when-let [usage (seq (:usage sym))]
       [:ul
         (for [u usage]

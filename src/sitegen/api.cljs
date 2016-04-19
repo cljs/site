@@ -63,15 +63,6 @@
       (for [[change version] history]
         (str (change-str change) version)))))
 
-(defn signature-string [name args-str]
-  (let [args (second (re-find #"^\[(.*)\]$" args-str))
-        all-args (if (string/blank? args)
-                   name
-                   (string/join " " [name args]))]
-    (str "(" all-args ")")))
-
-(defn syntax-sym-page [sym])
-
 (defn sym-source
   [{:keys [title code repo filename] :as source}]
   (list
@@ -102,10 +93,10 @@
                      :height "24px"
                      :valign "middle"}]
               " " full-name]])]]
-    (when-let [signature (seq (:signature sym))]
+    (when-let [usage (seq (:usage sym))]
       [:ul
-        (for [args-str signature]
-          [:li [:code (signature-string (:name sym) args-str)]])])
+        (for [u usage]
+          [:li [:code u]])])
     [:hr]
     (when-let [md-desc (:description sym)]
       (list
@@ -141,13 +132,10 @@
       [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
-  (let [content (if (= ns "syntax")
-                  (syntax-sym-page sym)
-                  (api-sym-page sym))]
-    (->> content
-         (common-layout)
-         (render-html)
-         (urls/write! (urls/api-symbol ns name-encode)))))
+  (->> (api-sym-page sym)
+       (common-layout)
+       (render-html)
+       (urls/write! (urls/api-symbol ns name-encode))))
 
 ;; Set this to a symbol name to render a symbol page for it and nothing else.
 ;; This speeds up development.

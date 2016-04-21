@@ -1,4 +1,10 @@
 {
+  "dependencies": {
+    "commonmark": "0.25.1",
+    "exists-sync": "0.0.3",
+    "fs-extra": "0.28.0",
+    "sync-request": "3.0.0"
+  },
   "devDependencies": {
     "express": "^4.13.4"
   }

@@ -1,8 +1,7 @@
 (ns sitegen.urls
   (:require
     [clojure.string :as string]
-    [planck.core :refer [spit]]
-    [planck.shell :refer [sh]]))
+    [sitegen.io :as io]))
 
 (def root "http://cljsinfo.github.io")
 
@@ -16,8 +15,8 @@
 (defn api-symbol [ns name-encode] (str "/docs/" ns "/" name-encode ".html"))
 
 (def out-dir "output")
-(defn write! [url content] (spit (str out-dir url) content))
-(defn make-dir! [url] (sh "mkdir" "-p" (str out-dir url)))
+(defn write! [url content] (io/spit (str out-dir url) content))
+(defn make-dir! [url] (io/mkdirs (str out-dir url)))
 
 (defn pretty [url]
   (-> url

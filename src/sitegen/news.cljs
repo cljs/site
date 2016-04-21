@@ -1,10 +1,9 @@
 (ns sitegen.news
   (:require
-    [cljs.reader :refer [read-string]]
     [clojure.string :as string]
-    [planck.core :refer [spit slurp]]
+    [sitegen.io :as io]
     [hiccups.runtime :refer [render-html]]
-    [markdown.core :refer [md->html]]
+    [sitegen.markdown :refer [md->html]]
     [sitegen.layout :refer [common-layout]]
     [sitegen.urls :as urls]
     [goog.string])
@@ -28,7 +27,7 @@
 (defn add-body
   [{:keys [filename] :as post}]
   (let [md-body (->> (str md-dir filename)
-                     (slurp)
+                     (io/slurp)
                      (transform-jira))
         html-body (md->html md-body)]
     (assoc post
@@ -56,8 +55,7 @@
         add-url))
 
 (defn update! []
-  (->> (slurp index-filename)
-       (read-string)
+  (->> (io/slurp-edn index-filename)
        (map transform-post)
        (set! posts)))
 

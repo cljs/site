@@ -10,14 +10,18 @@
 (def request (js/require "sync-request"))
 (def existsSync (js/require "exists-sync"))
 
+(def request-opts
+  #js{:headers
+       #js{:user-agent "cljsinfo/site"}})
+
 (defn url? [path]
   (or (starts-with? path "http://")
       (starts-with? path "https://")))
 
 (defn slurp [path]
   (if (url? path)
-    (.getBody (request "GET" path))
-    (.readFileSync fs path)))
+    (.toString (.getBody (request "GET" path request-opts)))
+    (.toString (.readFileSync fs path))))
 
 (defn spit [path text]
   (.writeFileSync fs path text))

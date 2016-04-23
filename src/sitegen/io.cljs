@@ -11,12 +11,12 @@
 (def existsSync (js/require "exists-sync"))
 
 (defn url? [path]
-  (or (starts-with? "http://")
-      (starts-with? "https://")))
+  (or (starts-with? path "http://")
+      (starts-with? path "https://")))
 
 (defn slurp [path]
   (if (url? path)
-    (.getBody (request "GET" url))
+    (.getBody (request "GET" path))
     (.readFileSync fs path)))
 
 (defn spit [path text]

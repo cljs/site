@@ -11,3 +11,6 @@
   (home/render!)
   (news/render!)
   (api/render!))
+
+(set! *main-cli-fn* -main)
+(enable-console-print!)

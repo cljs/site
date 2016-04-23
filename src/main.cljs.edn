@@ -1,0 +1,3 @@
+{:require [sitegen.core]
+ :compiler-options {:target :nodejs
+                    :optimizations :simple}}

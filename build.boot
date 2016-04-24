@@ -8,15 +8,3 @@
 
 (require
   '[adzerk.boot-cljs :refer [cljs]])
-
-;; See `src/main.cljs.edn` for sitegen build information.
-
-(deftask sitegen []
-  (comp
-    (cljs)
-    (target :dir #{"target"})))
-
-(deftask sitegen-watch []
-  (comp
-    (watch)
-    (sitegen)))

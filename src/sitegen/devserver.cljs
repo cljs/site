@@ -4,16 +4,16 @@
 
 (def express (js/require "express"))
 (def fs (js/require "fs"))
+(def path (js/require "path"))
 
-(def root (str js/__dirname "/output"))
+(def root (str (.resolve path ".") "/output"))
 (def port 3795)
 
 (defn on-req
   "Map URL `.../page` to `.../page.html` if it exists."
   [req res next]
-  (let [new-path (str (.-path req) ".html")]
-    (when (path-exists? (str root new-path))
-      (set! (.-path req) new-path)))
+  (when (path-exists? (str root (str (.-path req) ".html")))
+    (set! (.-url req) (str (.-url req) ".html")))
   (next))
 
 (defn on-init []

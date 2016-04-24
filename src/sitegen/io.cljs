@@ -29,7 +29,7 @@
 (defn mkdirs [path]
   (.mkdirsSync fs-extra path))
 
-(defn exists? [path]
+(defn path-exists? [path]
   (existsSync path))
 
 ;; Helpers

@@ -34,7 +34,7 @@
 (defn update! []
   (let [version (get-latest-version)
         filename (api-filename version)
-        downloaded? (io/exists? filename)]
+        downloaded? (io/path-exists? filename)]
     (when-not downloaded?
       (println (str "Downloading latest API " version "..."))
       (->> (api-url version)

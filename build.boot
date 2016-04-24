@@ -9,12 +9,14 @@
 (require
   '[adzerk.boot-cljs :refer [cljs]])
 
-(deftask run-site-gen []
-  (with-pass-thru fs
-    (boot.util/dosh "node" "target/main.js")))
+;; See `src/main.cljs.edn` for sitegen build information.
 
-(deftask site-gen []
+(deftask sitegen []
   (comp
     (cljs)
-    (target :dir #{"target"})
-    (run-site-gen)))
+    (target :dir #{"target"})))
+
+(deftask sitegen-watch []
+  (comp
+    (watch)
+    (sitegen)))

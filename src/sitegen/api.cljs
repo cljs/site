@@ -2,12 +2,12 @@
   (:require
     [cljs.reader :refer [read-string]]
     [clojure.string :as string]
-    [sitegen.io :as io]
+    [util.io :as io]
+    [util.markdown :refer [md->html highlight-code]]
+    [util.console :as console]
     [sitegen.urls :as urls]
     [sitegen.layout :refer [common-layout]]
-    [hiccups.runtime :refer [render-html]]
-    [sitegen.markdown :refer [md->html highlight-code]]
-    [sitegen.console :as console]))
+    [hiccups.runtime :refer [render-html]]))
 
 ;;---------------------------------------------------------------
 ;; API Retrieval

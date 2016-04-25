@@ -1,6 +1,6 @@
 (ns sitegen.devserver
   (:require
-    [sitegen.io :refer [path-exists?]]))
+    [util.io :refer [path-exists?]]))
 
 (def express (js/require "express"))
 (def fs (js/require "fs"))

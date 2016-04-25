@@ -1,4 +1,4 @@
-(ns sitegen.io
+(ns util.io
   (:require
     [cljs.reader :refer [read-string]]
     [clojure.string :refer [starts-with?]]))

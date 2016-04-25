@@ -1,7 +1,7 @@
 (ns sitegen.urls
   (:require
     [clojure.string :as string]
-    [sitegen.io :as io]))
+    [util.io :as io]))
 
 (def root "http://cljsinfo.github.io")
 

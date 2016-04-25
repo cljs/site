@@ -1,9 +1,9 @@
 (ns sitegen.news
   (:require
     [clojure.string :as string]
-    [sitegen.io :as io]
+    [util.io :as io]
+    [util.markdown :refer [md->html]]
     [hiccups.runtime :refer [render-html]]
-    [sitegen.markdown :refer [md->html]]
     [sitegen.layout :refer [common-layout]]
     [sitegen.urls :as urls]
     [goog.string])

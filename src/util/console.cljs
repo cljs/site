@@ -1,4 +1,4 @@
-(ns sitegen.console
+(ns util.console
   (:require
     [clojure.string :as string]))
 

@@ -1,4 +1,4 @@
-(ns sitegen.markdown)
+(ns util.markdown)
 
 (def marked (js/require "marked"))
 (def highlight (js/require "highlight.js"))

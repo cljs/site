@@ -12,9 +12,17 @@
 
 ## Development
 
-Compiled by boot-cljs. Executed on Node.
+This is a static site generator written in CLJS, running on Node.
+
+Prerequisites:
+
+- [Node](https://nodejs.org/)
+- [Boot](http://boot-clj.com/)
+
+Build:
 
 ```
+$ npm install
 $ boot watch cljs           # Compile our Node scripts.
 $ node target/sitegen.js    # Generate static site.
 $ node target/server.js     # Serve static site.

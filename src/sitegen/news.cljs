@@ -105,7 +105,7 @@
     [:article
       (when release_version
         [:p "Leiningen dependency information:"
-          [:pre [:code (str "[org.clojure/clojurescript " release_version)]]])
+          [:pre [:code (str "[org.clojure/clojurescript \"" release_version "\"]")]]])
       html-body]])
 
 (defn rss-date [date]

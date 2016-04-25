@@ -18,7 +18,7 @@ Compiled by boot-cljs. Executed on Node.
 1. Static server
 
 ```
-$ boot cljs
+$ boot watch cljs
 $ node target/sitegen.js
 $ node target/devserver.js
 ```

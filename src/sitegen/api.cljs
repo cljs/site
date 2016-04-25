@@ -6,7 +6,8 @@
     [sitegen.urls :as urls]
     [sitegen.layout :refer [common-layout]]
     [hiccups.runtime :refer [render-html]]
-    [sitegen.markdown :refer [md->html]]))
+    [sitegen.markdown :refer [md->html]]
+    [sitegen.console :as console]))
 
 ;;---------------------------------------------------------------
 ;; API Retrieval
@@ -150,5 +151,7 @@
                 [(get-in api [:symbols render-one-sym])]
                 (vals (:symbols api)))]
     (doseq [sym (sort-by :full-name syms)]
-      (println "creating page for" (:full-name sym))
-      (create-sym-page! sym))))
+      (console/replace-line "Creating page for" (:full-name sym))
+      (create-sym-page! sym))
+    (console/replace-line "Done creating docs pages."))
+  (println))

@@ -20,7 +20,7 @@ Compiled by boot-cljs. Executed on Node.
 ```
 $ boot watch cljs
 $ node target/sitegen.js
-$ node target/devserver.js
+$ node target/server.js
 ```
 
 [GitHub Pages deployment repo]:https://github.com/cljsinfo/cljsinfo.github.io

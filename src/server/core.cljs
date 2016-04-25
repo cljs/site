@@ -1,4 +1,4 @@
-(ns sitegen.devserver
+(ns server.core
   (:require
     [util.io :refer [path-exists?]]))
 

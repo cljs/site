@@ -28,7 +28,7 @@
     [:link {:rel "stylesheet" :href "/css/normalize.css"}]
     [:link {:rel "stylesheet" :href "/css/skeleton.css"}]
     [:link {:rel "stylesheet" :href "/css/custom.css"}]
-    [:link {:rel "stylesheet" :href "/css/github-prettify-theme.css"}]
+    [:link {:rel "stylesheet" :href "/css/github-theme.css"}]
 
     ;[:link {:rel "canonical" :href "{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"}]
     ;[:link {:rel "alternate" :type "application/rss+xml" :title "{{ site.title }}" :href "{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /}]

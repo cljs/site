@@ -54,19 +54,15 @@
       [:ul.navbar-list
         [:li.navbar-item [:a.navbar-link-logo [:img.navbar-logo {:src "/img/cljs-white.svg"}]]]
         [:li.navbar-item [:a.navbar-title "ClojureScript"]]
-        [:li.navbar-item [:a.navbar-link "About"]]
+        #_[:li.navbar-item [:a.navbar-link "About"]]
         [:li.navbar-item [:a.navbar-link {:href "/docs"} "Docs"]]
         [:li.navbar-item [:a.navbar-link {:href "/news"} "News"]]
-        [:li.navbar-item [:a.navbar-link "Community"]]]]])
+        #_[:li.navbar-item [:a.navbar-link "Community"]]]]])
 
 (defn body-footer []
   [:footer.site-footer
     [:div.wrapper
       [:hr]
-      [:div.community-note
-        [:i.fa.fa-tree "website created by the community."]
-        [:br]
-        [:a.acknowledgements-link {:href "/acknowledgements"} "acknowledgements"]]
       [:div.cljs-legal
         "ClojureScript is licensed "
         [:a {:href "http://opensource.org/licenses/eclipse-1.0.php"} "EPL 1.0"]

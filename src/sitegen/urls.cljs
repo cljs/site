@@ -13,6 +13,7 @@
 (def  docs-dir                         "/docs/")
 (defn api-ns     [ns]             (str "/docs/" ns))
 (defn api-symbol [ns name-encode] (str "/docs/" ns "/" name-encode ".html"))
+(def  api-index                   (str "/docs/index.html"))
 
 (def out-dir "output")
 (defn write! [url content] (io/spit (str out-dir url) content))

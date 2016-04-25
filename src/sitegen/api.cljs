@@ -48,6 +48,10 @@
 ;; Page Rendering
 ;;---------------------------------------------------------------
 
+(defn fullname->url [full-name]
+  (let [{:keys [ns name-encode]} (get-in api [:symbols full-name])]
+    (urls/pretty (urls/api-symbol ns name-encode))))
+
 (defn history-string [history]
   (let [change-str {"-" "Removed in "
                     "+" "Added in "}]
@@ -118,9 +122,7 @@
         [:h3 "See Also:"]
         [:ul
           (for [full-name related]
-            (let [{:keys [ns name-encode]} (get-in api [:symbols full-name])
-                  url (urls/pretty (urls/api-symbol ns name-encode))]
-              [:li [:a {:href url} full-name]]))]
+            [:li [:a {:href (fullname->url full-name)} full-name]])]
         [:hr]))
     (when-let [docstring (:docstring sym)]
       (list
@@ -135,23 +137,33 @@
     [:div
       [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
 
+(defn api-index-page [syms]
+  [:div
+    [:h3 "API Documentation"]
+    [:p "This is a temporary index of all API symbols."]
+    [:ul
+      (for [{:keys [full-name]} syms]
+        [:li [:a {:href (fullname->url full-name)} full-name]])]])
+
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (api-sym-page sym)
        (common-layout)
        (hiccup/render)
        (urls/write! (urls/api-symbol ns name-encode))))
 
-;; Set this to a symbol name to render a symbol page for it and nothing else.
-;; This speeds up development.
-(def render-one-sym nil)
+(defn create-index-page! [syms]
+  (->> (api-index-page syms)
+       (common-layout)
+       (hiccup/render)
+       (urls/write! urls/api-index)))
 
 (defn render! []
   (doseq [ns (keys (:namespaces api))]
     (urls/make-dir! (urls/api-ns ns)))
-  (let [syms (if render-one-sym
-                [(get-in api [:symbols render-one-sym])]
-                (vals (:symbols api)))]
-    (doseq [sym (sort-by :full-name syms)]
+  (let [syms (->> (vals (:symbols api))
+                  (sort-by :full-name))]
+    (create-index-page! syms)
+    (doseq [sym syms]
       (console/replace-line "Creating page for" (:full-name sym))
       (create-sym-page! sym))
     (console/replace-line "Done creating docs pages."))

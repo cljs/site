@@ -367,4 +367,9 @@
   :title "1.8.40",
   :author "David Nolen",
   :google_group_msg "clojurescript/pIcyxxYzIFg/Kktcv9uxDwAJ",
-  :filename "2016-03-28-r1.8.40.md"}]
+  :filename "2016-03-28-r1.8.40.md"}
+ {:release_version "1.8.51"
+  :title "1.8.51"
+  :author "David Nolen"
+  :google_group_msg "clojurescript/fR1PVRXtzCI/8ydOrUjzAAAJ"
+  :filename "2016-04-25-r1.8.51.md"}]

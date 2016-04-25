@@ -71,11 +71,18 @@
   (.format date-format date))
 
 (defn index-page []
-  [:table
-    (for [post (reverse posts)]
-      [:tr
-        [:td (date-str (:date post))]
-        [:td [:a {:href (urls/pretty (:url post))} (:title post)]]])])
+  [:div
+    [:h3 "Release News"]
+    [:p "This is an updated index of the release posts on the "
+        [:a {:href "https://groups.google.com/forum/#!forum/clojurescript"}
+          "ClojureScript mailing list"] "."
+        [:br]
+        "You can subscribe to the " [:a {:href "feed.xml"} "RSS feed"] "."]
+    [:table
+      (for [post (reverse posts)]
+        [:tr
+          [:td (date-str (:date post))]
+          [:td [:a {:href (urls/pretty (:url post))} (:title post)]]])]])
 
 (defn post-meta
   [{:keys [title date author google_group_msg

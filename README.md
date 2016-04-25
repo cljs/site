@@ -14,13 +14,10 @@
 
 Compiled by boot-cljs. Executed on Node.
 
-1. Static site generator
-1. Static server
-
 ```
-$ boot watch cljs
-$ node target/sitegen.js
-$ node target/server.js
+$ boot watch cljs           # Compile our Node scripts.
+$ node target/sitegen.js    # Generate static site.
+$ node target/server.js     # Serve static site.
 ```
 
 To publish the site to the [GitHub Pages deployment repo](https://github.com/cljsinfo/cljsinfo.github.io):

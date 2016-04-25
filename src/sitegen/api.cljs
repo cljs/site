@@ -6,7 +6,7 @@
     [sitegen.urls :as urls]
     [sitegen.layout :refer [common-layout]]
     [hiccups.runtime :refer [render-html]]
-    [sitegen.markdown :refer [md->html]]
+    [sitegen.markdown :refer [md->html highlight-code]]
     [sitegen.console :as console]))
 
 ;;---------------------------------------------------------------
@@ -61,7 +61,7 @@
       (:title source) " @ "
       [:a {:href (:url source)}
         (str repo ":" filename)]]
-    [:pre [:code (:code source)]]
+    [:pre [:code (highlight-code (:code source) "clj")]]
     [:hr]))
 
 (defn api-sym-page [sym]

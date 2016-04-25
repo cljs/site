@@ -2,8 +2,8 @@
   (:require
     [clojure.string :as string]
     [util.io :as io]
-    [util.markdown :refer [md->html]]
-    [hiccups.runtime :refer [render-html]]
+    [util.markdown :as markdown]
+    [util.hiccup :as hiccup]
     [sitegen.layout :refer [common-layout]]
     [sitegen.urls :as urls]
     [goog.string])
@@ -29,7 +29,7 @@
   (let [md-body (->> (str md-dir filename)
                      (io/slurp)
                      (transform-jira))
-        html-body (md->html md-body)]
+        html-body (markdown/render md-body)]
     (assoc post
       :md-body md-body
       :html-body html-body)))
@@ -135,19 +135,19 @@
 (defn create-index-page! []
   (->> (index-page)
        (common-layout)
-       (render-html)
+       (hiccup/render)
        (urls/write! urls/news-index)))
 
 (defn create-post-pages! []
   (doseq [post posts]
     (->> (post-page post)
          (common-layout)
-         (render-html)
+         (hiccup/render)
          (urls/write! (:url post)))))
 
 (defn create-rss-feed! []
   (->> (rss-feed-xml)
-       (render-html)
+       (hiccup/render)
        (urls/write! urls/news-feed)))
 
 (defn render! []

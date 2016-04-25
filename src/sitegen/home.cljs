@@ -1,10 +1,10 @@
 (ns sitegen.home
   (:require
+    [util.hiccup :as hiccup]
     [sitegen.layout :refer [common-layout]]
-    [hiccups.runtime :refer [render-html]]
     [sitegen.urls :as urls]))
 
 (defn render! []
   (->> (common-layout "")
-       (render-html)
+       (hiccup/render)
        (urls/write! urls/home)))

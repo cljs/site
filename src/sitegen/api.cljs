@@ -3,11 +3,12 @@
     [cljs.reader :refer [read-string]]
     [clojure.string :as string]
     [util.io :as io]
-    [util.markdown :refer [md->html highlight-code]]
+    [util.markdown :as markdown]
     [util.console :as console]
+    [util.highlight :refer [highlight-code]]
+    [util.hiccup :as hiccup]
     [sitegen.urls :as urls]
-    [sitegen.layout :refer [common-layout]]
-    [hiccups.runtime :refer [render-html]]))
+    [sitegen.layout :refer [common-layout]]))
 
 ;;---------------------------------------------------------------
 ;; API Retrieval
@@ -103,14 +104,14 @@
     [:hr]
     (when-let [md-desc (:description sym)]
       (list
-        [:div (md->html md-desc)]
+        [:div (markdown/render md-desc)]
         [:hr]))
     (when-let [examples (seq (:examples sym))]
        (list
          [:h3 "Examples:"]
          (for [example examples]
            (list
-             [:div (md->html (:content example))]
+             [:div (markdown/render (:content example))]
              [:hr]))))
     (when-let [related (seq (:related sym))]
       (list
@@ -137,7 +138,7 @@
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (api-sym-page sym)
        (common-layout)
-       (render-html)
+       (hiccup/render)
        (urls/write! (urls/api-symbol ns name-encode))))
 
 ;; Set this to a symbol name to render a symbol page for it and nothing else.

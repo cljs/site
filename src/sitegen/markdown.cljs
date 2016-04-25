@@ -1,13 +1,15 @@
 (ns sitegen.markdown)
 
-(def commonmark (js/require "commonmark"))
-(def Parser (.-Parser commonmark))
-(def HtmlRenderer (.-HtmlRenderer commonmark))
+(def marked (js/require "marked"))
+(def highlight (js/require "highlight.js"))
 
-(def reader (Parser.))
-(def writer (HtmlRenderer.))
+(defn highlight-code [code lang]
+  (if lang
+    (.-value (.highlight highlight lang code))
+    code))
+
+(.setOptions marked
+  #js {:highlight highlight-code})
 
 (defn md->html [md]
-  (let [parsed (.parse reader md)
-        result (.render writer parsed)]
-    result))
+  (marked md))

@@ -23,4 +23,8 @@ $ node target/sitegen.js
 $ node target/server.js
 ```
 
-[GitHub Pages deployment repo]:https://github.com/cljsinfo/cljsinfo.github.io
+To publish the site to the [GitHub Pages deployment repo](https://github.com/cljsinfo/cljsinfo.github.io):
+
+```
+$ ./publish.sh
+```

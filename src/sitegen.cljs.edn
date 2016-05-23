@@ -1,4 +1,0 @@
-;; This tells boot-cljs to create `target/sitegen.js`
-{:require [sitegen.core]
- :compiler-options {:target :nodejs
-                    :optimizations :simple}}

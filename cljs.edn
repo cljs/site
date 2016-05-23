@@ -1,0 +1,12 @@
+{:cljs-version "1.8.51"
+ :dependencies [[hiccups "0.3.0"]]
+ :builds {:sitegen {:src "src"
+                    :compiler {:target :nodejs
+                               :main sitegen.core
+                               :output-to "target/sitegen.js"
+                               :optimizations :simple}}
+          :server {:src "src"
+                   :compiler {:target :nodejs
+                              :main server.core
+                              :output-to "target/server.js"
+                              :optimizations :simple}}}}

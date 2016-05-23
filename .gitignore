@@ -21,3 +21,5 @@ pom.xml.asc
 /node_modules/
 
 cljs-api-*.edn
+
+.deps-cache.edn

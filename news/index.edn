@@ -372,4 +372,9 @@
   :title "1.8.51"
   :author "David Nolen"
   :google_group_msg "clojurescript/fR1PVRXtzCI/8ydOrUjzAAAJ"
-  :filename "2016-04-25-r1.8.51.md"}]
+  :filename "2016-04-25-r1.8.51.md"}
+ {:release_version "1.9.14"
+  :title "1.9.14 - clojure.spec port"
+  :author "David Nolen"
+  :google_group_msg "clojurescript/4Fvwx2Jf1nU/ubO51d-kAQAJ"
+  :filename "2016-06-01-r1.9.14-clojure.spec-port.md"}]

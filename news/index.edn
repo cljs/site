@@ -377,4 +377,9 @@
   :title "1.9.14 - clojure.spec port"
   :author "David Nolen"
   :google_group_msg "clojurescript/4Fvwx2Jf1nU/ubO51d-kAQAJ"
-  :filename "2016-06-01-r1.9.14-clojure.spec-port.md"}]
+  :filename "2016-06-01-r1.9.14-clojure.spec-port.md"}
+ {:release_version "1.9.36"
+  :title "1.9.36 - cljs.spec fixes & performance enhancements"
+  :author "David Nolen"
+  :google_group_msg "clojurescript/J3uzRNaSw_8/03BdZlQUAgAJ"
+  :filename "2016-06-03-cljs.spec-fixes-and-performance-enhancements.md"}]

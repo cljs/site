@@ -54,7 +54,7 @@
   (let [ns-data (get-in api [:namespaces ns-])]
     (or
       ;; pseudo-namespaces our handled manually (syntax, special, specialrepl)
-      (pseudo-ns? ns-data) ;; we handle these manually
+      (:pseudo-ns? ns-data) ;; we handle these manually
 
       ;; clojure.browser is basically deprecated, so we don't show it.
       ;; https://groups.google.com/d/msg/clojurescript/OqkjlpqKSQY/9wVGC5wFjcAJ
@@ -74,9 +74,9 @@
 (defn overview-sidebar []
   [:div
     [:div latest-version " | "
-     [:a {:href (urls/pretty (urls/ref-history))} "History"]]
+     [:a {:href (urls/pretty urls/ref-history)} "History"]]
     [:div
-     [:a {:href (urls/pretty (urls/ref-index))} "Overview"]]
+     [:a {:href (urls/pretty urls/ref-index)} "Overview"]]
     [:div
      [:a {:href (urls/pretty (urls/ref-ns "syntax"))} "Syntax"]]
     [:div
@@ -197,12 +197,14 @@
       [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
 
 (defn api-index-page [syms]
-  [:div
-    [:h3 "API Documentation"]
-    [:p "This is a temporary index of all API symbols."]
-    [:ul
-      (for [{:keys [full-name]} syms]
-        [:li [:a {:href (fullname->url full-name)} full-name]])]])
+  (sidebar-layout
+    (overview-sidebar)
+    [:div
+      [:h3 "API Documentation"]
+      [:p "This is a temporary index of all API symbols."]
+      [:ul
+        (for [{:keys [full-name]} syms]
+          [:li [:a {:href (fullname->url full-name)} full-name]])]]))
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (api-sym-page sym)

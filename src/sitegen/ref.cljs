@@ -1,4 +1,4 @@
-(ns sitegen.api
+(ns sitegen.ref
   (:require
     [cljs.reader :refer [read-string]]
     [clojure.string :as string]
@@ -15,6 +15,7 @@
 ;;---------------------------------------------------------------
 
 (def api nil)
+(def latest-version nil)
 
 (def versions-url "https://api.github.com/repos/cljsinfo/cljs-api-docs/tags")
 (defn api-url [version] (str "https://raw.githubusercontent.com/cljsinfo/cljs-api-docs/" version "/cljs-api.edn"))
@@ -37,6 +38,7 @@
   (let [version (get-latest-version)
         filename (api-filename version)
         downloaded? (io/path-exists? filename)]
+    (set! latest-version version)
     (when-not downloaded?
       (println (str "Downloading latest API " version "..."))
       (->> (api-url version)
@@ -45,12 +47,69 @@
     (set-from-download! filename)))
 
 ;;---------------------------------------------------------------
+;; Namespace Utilities
+;;---------------------------------------------------------------
+
+(defn hide-lib-ns? [ns-]
+  (let [ns-data (get-in api [:namespaces ns-])]
+    (or
+      ;; pseudo-namespaces our handled manually (syntax, special, specialrepl)
+      (pseudo-ns? ns-data) ;; we handle these manually
+
+      ;; clojure.browser is basically deprecated, so we don't show it.
+      ;; https://groups.google.com/d/msg/clojurescript/OqkjlpqKSQY/9wVGC5wFjcAJ
+      (string/starts-with? ns- "clojure.browser"))))
+
+(defn lib-namespaces []
+  (let [nss (->> api :api :library :namespace-names)]
+    (filter (comp not hide-lib-ns?) nss)))
+
+(defn compiler-namespaces []
+  (->> api :api :compiler :namespace-names))
+
+;;---------------------------------------------------------------
+;; Sidebar Rendering
+;;---------------------------------------------------------------
+
+(defn overview-sidebar []
+  [:div
+    [:div latest-version " | "
+     [:a {:href (urls/pretty (urls/ref-history))} "History"]]
+    [:div
+     [:a {:href (urls/pretty (urls/ref-index))} "Overview"]]
+    [:div
+     [:a {:href (urls/pretty (urls/ref-ns "syntax"))} "Syntax"]]
+    [:div
+     [:a {:href (urls/pretty (urls/ref-ns "special"))} "Special Forms"]]
+    (for [ns- (lib-namespaces)]
+      [:div
+       [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]])
+    [:div "Compiler"]
+    (for [ns- (compiler-namespaces)]
+      [:div
+       [:a {:href (urls/pretty (urls/ref-compiler-ns ns-))} ns-]])])
+
+(defn sidebar-layout [& columns]
+  (case (count columns)
+    1 (first columns)
+    2 [:div.container
+        [:div.row
+          [:div.three.columns (first columns)]
+          [:div.nine.columns (second columns)]]]
+    3 [:div.container
+        [:div.row
+          [:div.three.columns (first columns)]
+          [:div.three.columns (second columns)]
+          [:div.six.columns (nth columns 2)]]]
+    nil))
+
+;;---------------------------------------------------------------
 ;; Page Rendering
 ;;---------------------------------------------------------------
 
 (defn fullname->url [full-name]
   (let [{:keys [ns name-encode]} (get-in api [:symbols full-name])]
-    (urls/pretty (urls/api-symbol ns name-encode))))
+    (urls/pretty (urls/ref-symbol ns name-encode))))
 
 (defn history-string [history]
   (let [change-str {"-" "Removed in "
@@ -149,17 +208,17 @@
   (->> (api-sym-page sym)
        (common-layout)
        (hiccup/render)
-       (urls/write! (urls/api-symbol ns name-encode))))
+       (urls/write! (urls/ref-symbol ns name-encode))))
 
 (defn create-index-page! [syms]
   (->> (api-index-page syms)
        (common-layout)
        (hiccup/render)
-       (urls/write! urls/api-index)))
+       (urls/write! urls/ref-index)))
 
 (defn render! []
   (doseq [ns (keys (:namespaces api))]
-    (urls/make-dir! (urls/api-ns ns)))
+    (urls/make-dir! (urls/ref-ns ns)))
   (let [syms (->> (vals (:symbols api))
                   (sort-by :full-name))]
     (create-index-page! syms)

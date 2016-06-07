@@ -61,11 +61,13 @@
       (string/starts-with? ns- "clojure.browser"))))
 
 (defn lib-namespaces []
-  (let [nss (->> api :api :library :namespace-names)]
-    (filter (comp not hide-lib-ns?) nss)))
+  (->> api :api :library :namespace-names
+       (filter (comp not hide-lib-ns?))
+       (sort)))
 
 (defn compiler-namespaces []
-  (->> api :api :compiler :namespace-names))
+  (->> api :api :compiler :namespace-names
+       (sort)))
 
 ;;---------------------------------------------------------------
 ;; Sidebar Rendering
@@ -73,18 +75,20 @@
 
 (defn overview-sidebar []
   [:div
-    [:div latest-version " | "
+    [:div
+     latest-version " | "
      [:a {:href (urls/pretty urls/ref-history)} "History"]]
-    [:div
+    [:div.pad-top-md
      [:a {:href (urls/pretty urls/ref-index)} "Overview"]]
-    [:div
+    [:div.pad-top-md
      [:a {:href (urls/pretty (urls/ref-ns "syntax"))} "Syntax"]]
     [:div
      [:a {:href (urls/pretty (urls/ref-ns "special"))} "Special Forms"]]
+    [:div.pad-top-md "Namespaces"]
     (for [ns- (lib-namespaces)]
       [:div
        [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]])
-    [:div "Compiler"]
+    [:div.pad-top-md "Compiler"]
     (for [ns- (compiler-namespaces)]
       [:div
        [:a {:href (urls/pretty (urls/ref-compiler-ns ns-))} ns-]])])

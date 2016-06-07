@@ -20,7 +20,11 @@ pre > code {
 
 
 .container {
-  max-width: 800px;
+  width: 800px;
+}
+
+.pad-top-md {
+  padding-top: 18px;
 }
 
 

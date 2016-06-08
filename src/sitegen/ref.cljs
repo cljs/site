@@ -78,20 +78,15 @@
     [:div
      latest-version " | "
      [:a {:href (urls/pretty urls/ref-history)} "History"]]
-    [:div.pad-top-md
-     [:a {:href (urls/pretty urls/ref-index)} "Overview"]]
-    [:div.pad-top-md
-     [:a {:href (urls/pretty (urls/ref-ns "syntax"))} "Syntax"]]
-    [:div
-     [:a {:href (urls/pretty (urls/ref-ns "special"))} "Special Forms"]]
+    [:div.pad-top-md [:a {:href (urls/pretty urls/ref-index)} "Overview"]]
+    [:div.pad-top-md [:a {:href (urls/pretty (urls/ref-ns "syntax"))} "Syntax"]]
+    [:div [:a {:href (urls/pretty (urls/ref-ns "special"))} "Special Forms"]]
     [:div.pad-top-md "Namespaces"]
     (for [ns- (lib-namespaces)]
-      [:div
-       [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]])
+      [:div [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]])
     [:div.pad-top-md "Compiler"]
     (for [ns- (compiler-namespaces)]
-      [:div
-       [:a {:href (urls/pretty (urls/ref-compiler-ns ns-))} ns-]])])
+      [:div [:a {:href (urls/pretty (urls/ref-compiler-ns ns-))} ns-]])])
 
 (defn sidebar-layout [& columns]
   (case (count columns)
@@ -132,7 +127,7 @@
     [:pre [:code (highlight-code (:code source) "clj")]]
     [:hr]))
 
-(defn api-sym-page [sym]
+(defn sym-page [sym]
   [:div
     [:h1 (or (:display sym) (:full-name sym))]
     (when-let [name (:known-as sym)]
@@ -200,24 +195,38 @@
     [:div
       [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
 
-(defn api-index-page [syms]
+(defn index-page []
   (sidebar-layout
     (overview-sidebar)
     [:div
-      [:h3 "API Documentation"]
-      [:p "This is a temporary index of all API symbols."]
-      [:ul
-        (for [{:keys [full-name]} syms]
-          [:li [:a {:href (fullname->url full-name)} full-name]])]]))
+      [:h2 "ClojureScript Reference"]
+      [:p
+        "Welcome! This is a comprehensive reference for the ClojureScript language, "
+        "including its syntax, standard library, and compiler API."]
+      [:p
+        "Documentation is versioned and supplemented by curated descriptions,"
+        "examples, and cross-refs.  Community contributions welcome."]
+      [:p [:strong "Current Version:"] " " latest-version]
+      [:hr]
+      [:h4 [:a {:href (urls/pretty (urls/ref-ns "syntax"))} "Syntax"]]
+      [:h4 [:a {:href (urls/pretty (urls/ref-ns "special"))} "Special Forms"]]
+      [:hr]
+      [:h2 "Namespaces"]
+      (for [ns- (lib-namespaces)]
+        [:h4 [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]])
+      [:hr]
+      [:h2 "Compiler"]
+      (for [ns- (compiler-namespaces)]
+        [:h4 [:a {:href (urls/pretty (urls/ref-compiler-ns ns-))} ns-]])]))
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
-  (->> (api-sym-page sym)
+  (->> (sym-page sym)
        (common-layout)
        (hiccup/render)
        (urls/write! (urls/ref-symbol ns name-encode))))
 
-(defn create-index-page! [syms]
-  (->> (api-index-page syms)
+(defn create-index-page! []
+  (->> (index-page)
        (common-layout)
        (hiccup/render)
        (urls/write! urls/ref-index)))
@@ -227,7 +236,7 @@
     (urls/make-dir! (urls/ref-ns ns)))
   (let [syms (->> (vals (:symbols api))
                   (sort-by :full-name))]
-    (create-index-page! syms)
+    (create-index-page!)
     (doseq [sym syms]
       (console/replace-line "Creating page for" (:full-name sym))
       (create-sym-page! sym))

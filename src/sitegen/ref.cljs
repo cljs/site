@@ -195,6 +195,16 @@
     [:div
       [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
 
+(defn sym-removed? [sym-data]
+  (= "-" (first (last (:history sym-data)))))
+
+(defn get-ns-symbols [api-type ns-]
+  (->> (get-in api [:api api-type :symbol-names])
+       (filter #(string/starts-with? % (str ns- "/")))
+       (map #(get-in api [:symbols %]))
+       (remove sym-removed?)
+       (sort-by :name)))
+
 (defn index-page []
   (sidebar-layout
     (overview-sidebar)
@@ -213,7 +223,14 @@
       [:hr]
       [:h2 "Namespaces"]
       (for [ns- (lib-namespaces)]
-        [:h4 [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]])
+        (let [ns-data (get-in api [:namespaces ns-])]
+          (list
+            [:h4 [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]]
+            [:p (:caption ns-data)]
+            (for [sym-data (get-ns-symbols :library ns-)]
+              [:span [:a {:href (urls/pretty (urls/ref-symbol ns- (:name-encode sym-data)))} (:name sym-data)] " "])
+            [:hr])))
+
       [:hr]
       [:h2 "Compiler"]
       (for [ns- (compiler-namespaces)]

@@ -205,6 +205,18 @@
        (remove sym-removed?)
        (sort-by :name)))
 
+(defn ns-overview [ns- api-type]
+  (let [ns-data (get-in api [:namespaces ns-])
+        ns-url (if (= api-type :compiler) urls/ref-ns urls/ref-compiler-ns)
+        title (or (:display ns-data) ns-)]
+    (list
+      [:h4 [:a {:href (urls/pretty (ns-url ns-))} title]]
+      [:p (:caption ns-data)]
+      (for [sym-data (get-ns-symbols api-type ns-)]
+        (let [name- (or (:display sym-data) (:name sym-data))]
+          [:span [:a {:href (urls/pretty (urls/ref-symbol ns- (:name-encode sym-data)))} name-] " "]))
+      [:hr])))
+
 (defn index-page []
   (sidebar-layout
     (overview-sidebar)
@@ -218,23 +230,19 @@
         "examples, and cross-refs.  Community contributions welcome."]
       [:p [:strong "Current Version:"] " " latest-version]
       [:hr]
-      [:h4 [:a {:href (urls/pretty (urls/ref-ns "syntax"))} "Syntax"]]
-      [:h4 [:a {:href (urls/pretty (urls/ref-ns "special"))} "Special Forms"]]
+      (ns-overview "syntax" :syntax)
+      (ns-overview "special" :library)
+      ;; TODO: combine with 'special'
+      (ns-overview "specialrepl" :library)
+      [:hr]
       [:hr]
       [:h2 "Namespaces"]
       (for [ns- (lib-namespaces)]
-        (let [ns-data (get-in api [:namespaces ns-])]
-          (list
-            [:h4 [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]]
-            [:p (:caption ns-data)]
-            (for [sym-data (get-ns-symbols :library ns-)]
-              [:span [:a {:href (urls/pretty (urls/ref-symbol ns- (:name-encode sym-data)))} (:name sym-data)] " "])
-            [:hr])))
-
+        (ns-overview ns- :library))
       [:hr]
       [:h2 "Compiler"]
       (for [ns- (compiler-namespaces)]
-        [:h4 [:a {:href (urls/pretty (urls/ref-compiler-ns ns-))} ns-]])]))
+        (ns-overview ns- :compiler))]))
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)

@@ -6,10 +6,15 @@
 (def root "http://cljsinfo.github.io")
 
 (def  home                             "/index.html")
+
 (def  news-dir                         "/news/")
 (def  news-index                       "/news/index.html")
 (def  news-feed                        "/news/feed.xml")
 (defn news-post  [title]          (str "/news/" title ".html"))
+
+(def  docs-dir                         "/docs/")
+(def  docs-index                  (str "/docs/index.html"))
+
 (def  ref-dir                          "/ref/")
 (defn ref-ns     [ns]             (str "/ref/" ns))
 (defn ref-symbol [ns name-encode] (str "/ref/" ns "/" name-encode ".html"))

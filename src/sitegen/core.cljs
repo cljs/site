@@ -1,5 +1,6 @@
 (ns sitegen.core
   (:require
+    [sitegen.docs :as docs]
     [sitegen.ref :as ref]
     [sitegen.news :as news]
     [sitegen.home :as home]))
@@ -10,6 +11,7 @@
 
   (home/render!)
   (news/render!)
+  (docs/render!)
   (ref/render!))
 
 (set! *main-cli-fn* -main)

@@ -62,8 +62,8 @@
      version " | "
      [:a {:href (urls/pretty urls/ref-history)} "History"]]
     [:div.pad-top-md [:a {:href (urls/pretty urls/ref-index)} "Overview"]]
-    [:div.pad-top-md [:a {:href (urls/pretty (urls/ref-ns "syntax"))} "Syntax"]]
-    [:div [:a {:href (urls/pretty (urls/ref-ns "special"))} "Special Forms"]]
+    [:div.pad-top-md [:a {:href (urls/pretty (urls/ref-ns "syntax"))} (get-in api [:namespaces "syntax" :display])]]
+    [:div [:a {:href (urls/pretty (urls/ref-ns "special"))} (get-in api [:namespaces "special" :display])]]
     [:div.pad-top-md "Namespaces"]
     (for [ns- (lib-namespaces)]
       [:div [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]])

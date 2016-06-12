@@ -15,36 +15,19 @@
 ;;---------------------------------------------------------------
 
 (def api nil)
-(def latest-version nil)
+(def version nil)
 
-(def versions-url "https://api.github.com/repos/cljsinfo/cljs-api-docs/tags")
-(defn api-url [version] (str "https://raw.githubusercontent.com/cljsinfo/cljs-api-docs/" version "/cljs-api.edn"))
-(defn api-filename [version] (str "cljs-api-" version ".edn"))
-
-; keys here: https://developer.github.com/v3/repos/#list-tags
-(defn get-latest-version []
-  (println "Checking latest version...")
-  (->> (io/slurp-json versions-url)
-       (first)
-       (:name)))
-
-(defn set-from-download!
-  [filename]
-  (->> (io/slurp filename)
-       (read-string)
-       (set! api)))
+(def api-url "https://raw.githubusercontent.com/cljsinfo/cljs-api-docs/master/cljs-api.edn")
+(def api-filename "cljs-api.edn")
 
 (defn update! []
-  (let [version (get-latest-version)
-        filename (api-filename version)
-        downloaded? (io/path-exists? filename)]
-    (set! latest-version version)
+  (let [downloaded? (io/path-exists? api-filename)]
     (when-not downloaded?
-      (println (str "Downloading latest API " version "..."))
-      (->> (api-url version)
-           (io/slurp)
-           (io/spit filename)))
-    (set-from-download! filename)))
+      (println "Downloading latest API...")
+      (->> (io/slurp api-url)
+           (io/spit api-filename)))
+    (set! api (read-string (io/slurp api-filename)))
+    (set! version (get-in api [:release :cljs-version]))))
 
 ;;---------------------------------------------------------------
 ;; Namespace Utilities
@@ -76,7 +59,7 @@
 (defn overview-sidebar []
   [:div
     [:div
-     latest-version " | "
+     version " | "
      [:a {:href (urls/pretty urls/ref-history)} "History"]]
     [:div.pad-top-md [:a {:href (urls/pretty urls/ref-index)} "Overview"]]
     [:div.pad-top-md [:a {:href (urls/pretty (urls/ref-ns "syntax"))} "Syntax"]]
@@ -228,18 +211,13 @@
       [:p
         "Documentation is versioned and supplemented by curated descriptions,"
         "examples, and cross-refs.  Community contributions welcome."]
-      [:p [:strong "Current Version:"] " " latest-version]
+      [:p [:strong "Current Version:"] " " version]
       [:hr]
       (ns-overview "syntax" :syntax)
       (ns-overview "special" :library)
-      ;; TODO: combine with 'special'
-      (ns-overview "specialrepl" :library)
-      [:hr]
-      [:hr]
       [:h2 "Namespaces"]
       (for [ns- (lib-namespaces)]
         (ns-overview ns- :library))
-      [:hr]
       [:h2 "Compiler"]
       (for [ns- (compiler-namespaces)]
         (ns-overview ns- :compiler))]))

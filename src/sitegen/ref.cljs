@@ -61,13 +61,17 @@
     [:div
      version " | "
      [:a {:href (urls/pretty urls/ref-history)} "History"]]
-    [:div.pad-top-md [:a {:href (urls/pretty urls/ref-index)} "Overview"]]
-    [:div.pad-top-md [:a {:href (urls/pretty (urls/ref-ns "syntax"))} (get-in api [:namespaces "syntax" :display])]]
+    [:div.sep]
+    [:div [:a {:href (urls/pretty urls/ref-index)} "Overview"]]
+    [:div.sep]
+    [:div [:a {:href (urls/pretty (urls/ref-ns "syntax"))} (get-in api [:namespaces "syntax" :display])]]
     [:div [:a {:href (urls/pretty (urls/ref-ns "special"))} (get-in api [:namespaces "special" :display])]]
-    [:div.pad-top-md "Namespaces"]
+    [:div.sep]
+    [:div "Namespaces"]
     (for [ns- (lib-namespaces)]
       [:div [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]])
-    [:div.pad-top-md "Compiler"]
+    [:div.sep]
+    [:div "Compiler"]
     (for [ns- (compiler-namespaces)]
       [:div [:a {:href (urls/pretty (urls/ref-compiler-ns ns-))} ns-]])])
 
@@ -188,16 +192,30 @@
        (remove sym-removed?)
        (sort-by :name)))
 
+(defn type-or-protocol? [sym-data]
+  (or (get #{"type" "protocol"} (:type sym-data))
+      (:parent-type sym-data)))
+
 (defn ns-overview [ns- api-type]
   (let [ns-data (get-in api [:namespaces ns-])
         ns-url (if (= api-type :compiler) urls/ref-ns urls/ref-compiler-ns)
-        title (or (:display ns-data) ns-)]
+        title (or (:display ns-data) ns-)
+        syms (get-ns-symbols api-type ns-)
+        main-syms (remove type-or-protocol? syms)
+        type-syms (filter type-or-protocol? syms)]
     (list
       [:h4 [:a {:href (urls/pretty (ns-url ns-))} title]]
       [:p (:caption ns-data)]
-      (for [sym-data (get-ns-symbols api-type ns-)]
+      (for [sym-data main-syms]
         (let [name- (or (:display sym-data) (:name sym-data))]
           [:span [:a {:href (urls/pretty (urls/ref-symbol ns- (:name-encode sym-data)))} name-] " "]))
+      (when (seq type-syms)
+        (list
+          [:div.sep]
+          [:span "Types and Protocols: "]
+          (for [sym-data type-syms]
+            (let [name- (or (:display sym-data) (:name sym-data))]
+              [:span [:a {:href (urls/pretty (urls/ref-symbol ns- (:name-encode sym-data)))} name-] " "]))))
       [:hr])))
 
 (defn index-page []

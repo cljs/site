@@ -52,6 +52,20 @@
   (->> api :api :compiler :namespace-names
        (sort)))
 
+(defn sym-removed? [sym-data]
+  (= "-" (first (last (:history sym-data)))))
+
+(defn get-ns-symbols [api-type ns-]
+  (->> (get-in api [:api api-type :symbol-names])
+       (filter #(string/starts-with? % (str ns- "/")))
+       (map #(get-in api [:symbols %]))
+       (remove sym-removed?)
+       (sort-by :name)))
+
+(defn type-or-protocol? [sym-data]
+  (or (get #{"type" "protocol"} (:type sym-data))
+      (:parent-type sym-data)))
+
 ;;---------------------------------------------------------------
 ;; Sidebar Rendering
 ;;---------------------------------------------------------------
@@ -74,6 +88,26 @@
     [:div "Compiler"]
     (for [ns- (compiler-namespaces)]
       [:div [:a {:href (urls/pretty (urls/ref-compiler-ns ns-))} ns-]])])
+
+(defn ns-sidebar [api-type ns-]
+  (let [title (or (get-in api [:namespaces ns- :display]) ns-)
+        syms (get-ns-symbols api-type ns-)
+        main-syms (remove type-or-protocol? syms)
+        type-syms (filter type-or-protocol? syms)]
+    [:div
+      [:a {:href (urls/pretty urls/ref-index)} "< Back to Overview"]
+      [:div.sep]
+      [:div title]
+      (for [sym main-syms]
+        (let [name- (or (:display sym) (:name sym))]
+          [:div [:a {:href (str "#" (:name-encode sym))} name-]]))
+      (when (seq type-syms)
+        (list
+          [:div.sep]
+          [:div "Types and Protocols"]
+          (for [sym type-syms]
+            (let [name- (or (:display sym) (:name sym))]
+              [:div [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
 
 (defn sidebar-layout [& columns]
   (case (count columns)
@@ -182,21 +216,14 @@
     [:div
       [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
 
-(defn sym-removed? [sym-data]
-  (= "-" (first (last (:history sym-data)))))
+(defn ns-page [api-type ns-]
+  (sidebar-layout
+    (ns-sidebar api-type ns-)
+    (let [ns-data (get-in api [:namespaces ns-])
+          title (or (:display ns-data) ns-)]
+      [:h2 title])))
 
-(defn get-ns-symbols [api-type ns-]
-  (->> (get-in api [:api api-type :symbol-names])
-       (filter #(string/starts-with? % (str ns- "/")))
-       (map #(get-in api [:symbols %]))
-       (remove sym-removed?)
-       (sort-by :name)))
-
-(defn type-or-protocol? [sym-data]
-  (or (get #{"type" "protocol"} (:type sym-data))
-      (:parent-type sym-data)))
-
-(defn ns-overview [ns- api-type]
+(defn ns-overview [api-type ns-]
   (let [ns-data (get-in api [:namespaces ns-])
         ns-url (if (= api-type :compiler) urls/ref-ns urls/ref-compiler-ns)
         title (or (:display ns-data) ns-)
@@ -231,20 +258,28 @@
         "examples, and cross-refs.  Community contributions welcome."]
       [:p [:strong "Current Version:"] " " version]
       [:hr]
-      (ns-overview "syntax" :syntax)
-      (ns-overview "special" :library)
+      (ns-overview :syntax "syntax")
+      (ns-overview :library "special")
       [:h2 "Namespaces"]
       (for [ns- (lib-namespaces)]
-        (ns-overview ns- :library))
+        (ns-overview :library ns-))
       [:h2 "Compiler"]
       (for [ns- (compiler-namespaces)]
-        (ns-overview ns- :compiler))]))
+        (ns-overview :compiler ns-))]))
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)
        (common-layout)
        (hiccup/render)
        (urls/write! (urls/ref-symbol ns name-encode))))
+
+(defn create-ns-page! [api-type ns-]
+  (let [filename (urls/ref-api-ns api-type ns-)]
+    (urls/make-dir! filename)
+    (->> (ns-page api-type ns-)
+         (common-layout)
+         (hiccup/render)
+         (urls/write! filename))))
 
 (defn create-index-page! []
   (->> (index-page)
@@ -255,6 +290,11 @@
 (defn render! []
   (doseq [ns (keys (:namespaces api))]
     (urls/make-dir! (urls/ref-ns ns)))
+
+  (doseq [api-type [:syntax :library :compiler]]
+    (doseq [ns- (get-in api [:api api-type :namespace-names])]
+      (create-ns-page! api-type ns-)))
+
   (let [syms (->> (vals (:symbols api))
                   (sort-by :full-name))]
     (create-index-page!)

@@ -219,19 +219,23 @@
       [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
 
 (defn sym-overview [sym]
-  [:div
+  [:div {:style "position: relative;"}
     (let [id (:name-encode sym)
           title (or (:display sym) (:name sym))]
       [:div {:id id}
-        title
-        " (" (:type sym) ") "
-        [:a {:href (urls/pretty (urls/ref-symbol (:ns sym) (:name-encode sym)))} "more >"]])
+        [:strong title]
+        (when-let [name (:known-as sym)]
+          [:em "- known as " name])
+        " - " (:type sym)])
+    [:div {:style "position: absolute; right: 0; top: 0;"}
+      [:a {:href (urls/pretty (urls/ref-symbol (:ns sym) (:name-encode sym)))} "more details >"]]
     (when-let [usage (seq (:usage sym))]
-      [:ul
-        (for [u usage]
-          [:li [:code u]])])
-    (when-let [name (:known-as sym)]
-      [:em "known as " name])
+      [:div.sep
+        [:ul
+          (for [u usage]
+            [:li [:code u]])]])
+    (when-let [docstring (:docstring sym)]
+      [:div.sep docstring])
     [:div.sep]
     (interpose " | "
       (for [source (cons (:source sym) (:extra-sources sym))

@@ -297,6 +297,8 @@
     [:div
       [:h2 "ClojureScript Reference"]
       [:p
+        [:strong "Development Preview. Links may break!"]]
+      [:p
         "Welcome! This is a comprehensive reference for the ClojureScript language, "
         "including its syntax, standard library, and compiler API."]
       [:p

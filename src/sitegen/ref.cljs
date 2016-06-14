@@ -218,7 +218,7 @@
     [:div
       [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
 
-(defn ns-page-sym [sym]
+(defn sym-overview [sym]
   [:div
     (let [id (:name-encode sym)
           title (or (:display sym) (:name sym))]
@@ -252,14 +252,14 @@
           [:div (markdown/render md-desc)])
         [:hr]
         (for [sym main-syms]
-          (ns-page-sym sym))
+          (sym-overview sym))
         (when (seq type-syms)
           (list
             [:div.sep]
             [:h4 "Types and Protocols"]
             [:hr]
             (for [sym type-syms]
-              (ns-page-sym sym))))])))
+              (sym-overview sym))))])))
 
 (defn ns-overview [api-type ns-]
   (let [ns-data (get-in api [:namespaces ns-])

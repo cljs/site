@@ -219,10 +219,14 @@
   [:div
     (let [id (:name-encode sym)
           title (or (:display sym) (:name sym))]
-      [:div {:id id} title])
-    [:div {:style {:text-align "right"}}
-      [:a {:href (urls/pretty (urls/ref-symbol (:ns sym) (:name-encode sym)))} "more >"]]
-    [:div (:type sym)]
+      [:div {:id id}
+        title
+        " (" (:type sym) ") "
+        [:a {:href (urls/pretty (urls/ref-symbol (:ns sym) (:name-encode sym)))} "more >"]])
+    (when-let [usage (seq (:usage sym))]
+      [:ul
+        (for [u usage]
+          [:li [:code u]])])
     (when-let [name (:known-as sym)]
       [:em "known as " name])
     [:div [:a {:href (get-in sym [:source :url])} "Source"]]

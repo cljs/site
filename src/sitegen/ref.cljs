@@ -232,7 +232,11 @@
           [:li [:code u]])])
     (when-let [name (:known-as sym)]
       [:em "known as " name])
-    [:div [:a {:href (get-in sym [:source :url])} "Source"]]
+    [:div.sep]
+    (interpose " | "
+      (for [source (cons (:source sym) (:extra-sources sym))
+            :when source]
+        [:a {:href (:url source)} (:title source)]))
     [:hr]])
 
 (defn ns-page [api-type ns-]

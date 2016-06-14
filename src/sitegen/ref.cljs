@@ -97,7 +97,6 @@
     [:div
       [:a {:href (urls/pretty urls/ref-index)} "< Back to Overview"]
       [:div.sep]
-      [:div title]
       (for [sym main-syms]
         (let [name- (or (:display sym) (:name sym))]
           [:div [:a {:href (str "#" (:name-encode sym))} name-]]))
@@ -216,12 +215,44 @@
     [:div
       [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
 
+(defn ns-page-sym [sym]
+  [:div
+    (let [id (:name-encode sym)
+          title (or (:display sym) (:name sym))]
+      [:div {:id id} title])
+    [:div {:style {:text-align "right"}}
+      [:a {:href (urls/pretty (urls/ref-symbol (:ns sym) (:name-encode sym)))} "more >"]]
+    [:div (:type sym)]
+    (when-let [name (:known-as sym)]
+      [:em "known as " name])
+    [:div [:a {:href (get-in sym [:source :url])} "Source"]]
+    [:hr]])
+
 (defn ns-page [api-type ns-]
   (sidebar-layout
     (ns-sidebar api-type ns-)
     (let [ns-data (get-in api [:namespaces ns-])
-          title (or (:display ns-data) ns-)]
-      [:h2 title])))
+          title (or (:display ns-data) ns-)
+          syms (get-ns-symbols api-type ns-)
+          main-syms (remove type-or-protocol? syms)
+          type-syms (filter type-or-protocol? syms)]
+      [:div
+        [:h2 title]
+        (when-not (get #{"syntax" "special" "cljs.core"} ns-)
+          [:div (history-string (:history ns-data))])
+        [:div.sep]
+        (when-let [md-desc (:description ns-data)]
+          [:div (markdown/render md-desc)])
+        [:hr]
+        (for [sym main-syms]
+          (ns-page-sym sym))
+        (when (seq type-syms)
+          (list
+            [:div.sep]
+            [:h4 "Types and Protocols"]
+            [:hr]
+            (for [sym type-syms]
+              (ns-page-sym sym))))])))
 
 (defn ns-overview [api-type ns-]
   (let [ns-data (get-in api [:namespaces ns-])

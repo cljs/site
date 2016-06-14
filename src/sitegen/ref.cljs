@@ -56,11 +56,14 @@
   (= "-" (first (last (:history sym-data)))))
 
 (defn get-ns-symbols [api-type ns-]
-  (->> (get-in api [:api api-type :symbol-names])
-       (filter #(string/starts-with? % (str ns- "/")))
-       (map #(get-in api [:symbols %]))
-       (remove sym-removed?)
-       (sort-by :name)))
+  (let [syms
+        (->> (get-in api [:api api-type :symbol-names])
+             (filter #(string/starts-with? % (str ns- "/")))
+             (map #(get-in api [:symbols %]))
+             (remove sym-removed?))]
+    (if (= "syntax" ns-)
+      (sort-by #(string/replace (string/upper-case (:name %)) #"[^a-zA-Z ]" "") syms)
+      (sort-by :name syms))))
 
 (defn type-or-protocol? [sym-data]
   (or (get #{"type" "protocol"} (:type sym-data))

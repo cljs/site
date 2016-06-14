@@ -263,7 +263,7 @@
 
 (defn ns-overview [api-type ns-]
   (let [ns-data (get-in api [:namespaces ns-])
-        ns-url (if (= api-type :compiler) urls/ref-ns urls/ref-compiler-ns)
+        ns-url (if (= api-type :compiler) urls/ref-compiler-ns urls/ref-ns)
         title (or (:display ns-data) ns-)
         syms (get-ns-symbols api-type ns-)
         main-syms (remove type-or-protocol? syms)

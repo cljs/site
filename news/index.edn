@@ -382,4 +382,9 @@
   :title "1.9.36 - cljs.spec fixes & performance enhancements"
   :author "David Nolen"
   :google_group_msg "clojurescript/J3uzRNaSw_8/03BdZlQUAgAJ"
-  :filename "2016-06-03-cljs.spec-fixes-and-performance-enhancements.md"}]
+  :filename "2016-06-03-cljs.spec-fixes-and-performance-enhancements.md"}
+ {:release_version "1.9.76"
+  :title "1.9.76"
+  :author "David Nolen"
+  :google_group_msg "clojurescript/MKNhxz7DYuE/sB93k4r8AAAJ"
+  :filename "2016-06-17-r1.9.76.md"}]

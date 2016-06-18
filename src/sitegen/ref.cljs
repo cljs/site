@@ -111,6 +111,13 @@
             (let [name- (or (:display sym) (:name sym))]
               [:div [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
 
+(defn history-sidebar []
+  [:div
+    [:a {:href (urls/pretty urls/ref-index)} "< Back to Overview"]
+    [:div.sep]
+    (for [version (get-in api [:history :versions])]
+      [:div version])])
+
 (defn sidebar-layout [& columns]
   (case (count columns)
     1 (first columns)
@@ -315,6 +322,12 @@
       (for [ns- (compiler-namespaces)]
         (ns-overview :compiler ns-))]))
 
+(defn history-page []
+  (sidebar-layout
+    (history-sidebar)
+    [:div
+      [:h2 "History"]]))
+
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)
        (common-layout)
@@ -335,6 +348,13 @@
        (hiccup/render)
        (urls/write! urls/ref-index)))
 
+(defn create-history-page! []
+  (urls/make-dir! urls/ref-history)
+  (->> (history-page)
+       (common-layout)
+       (hiccup/render)
+       (urls/write! urls/ref-history)))
+
 (defn render! []
   (doseq [ns (keys (:namespaces api))]
     (urls/make-dir! (urls/ref-ns ns)))
@@ -346,6 +366,7 @@
   (let [syms (->> (vals (:symbols api))
                   (sort-by :full-name))]
     (create-index-page!)
+    (create-history-page!)
     (doseq [sym syms]
       (console/replace-line "Creating page for" (:full-name sym))
       (create-sym-page! sym))

@@ -27,7 +27,7 @@
       (->> (io/slurp api-url)
            (io/spit api-filename)))
     (set! api (read-string (io/slurp api-filename)))
-    (set! version (get-in api [:release :cljs-version]))))
+    (set! version (:version api))))
 
 ;;---------------------------------------------------------------
 ;; Namespace Utilities

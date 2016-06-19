@@ -25,8 +25,8 @@
     #(str "[" % "](http://dev.clojure.org/jira/browse/" % ")")))
 
 (defn add-body
-  [{:keys [filename] :as post}]
-  (let [md-body (->> (str md-dir filename)
+  [{:keys [version] :as post}]
+  (let [md-body (->> (str md-dir version ".md")
                      (io/slurp)
                      (transform-jira))
         html-body (markdown/render md-body)]
@@ -35,8 +35,8 @@
       :html-body html-body)))
 
 (defn add-date
-  [{:keys [filename] :as post}]
-  (let [[_ y m d] (re-find #"^(\d\d\d\d)-(\d\d)-(\d\d)" filename)
+  [{:keys [date] :as post}]
+  (let [[_ y m d] (re-find #"^(\d\d\d\d)-(\d\d)-(\d\d)" date)
         y (js/parseInt y)
         m (js/parseInt m)
         d (js/parseInt d)
@@ -44,15 +44,22 @@
     (assoc post :date date)))
 
 (defn add-url
-  [{:keys [filename] :as post}]
-  (let [[_ title] (re-find #"^(.*)\.md$" filename)
-        url (urls/news-post title)]
+  [{:keys [version] :as post}]
+  (let [url (urls/news-post version)]
     (assoc post :url url)))
+
+(defn add-title
+  [{:keys [version title] :as post}]
+  (assoc post :title
+    (if title
+      (str version " - " title)
+      version)))
 
 (def transform-post
   (comp add-body
         add-date
-        add-url))
+        add-url
+        add-title))
 
 (defn update! []
   (->> (io/slurp-edn index-filename)
@@ -85,34 +92,30 @@
           [:td [:a {:href (urls/pretty (:url post))} (:title post)]]])]])
 
 (defn post-meta
-  [{:keys [title date author google_group_msg
-           external_source external_name github_pre_release]}]
+  [{:keys [version title date author google-group-msg github-pre-release]}]
   (let [elements
         [(date-str date)
          (when author
            (str "by " author))
-         (when google_group_msg
-           [:a {:href (str "https://groups.google.com/d/msg/" google_group_msg)}
+         (when google-group-msg
+           [:a {:href (str "https://groups.google.com/d/msg/" google-group-msg)}
             "on Google Groups"])
-         (when external_source
-           [:a {:href external_source}
-            external_name])
-         (when github_pre_release
-           [:a {:href (str "https://github.com/clojure/clojurescript/releases/tag/" github_pre_release)}
+         (when github-pre-release
+           [:a {:href (str "https://github.com/clojure/clojurescript/releases/tag/r" version)}
             "on GitHub"])]]
     (->> elements
          (filter identity)
          (interpose " "))))
 
 (defn post-page
-  [{:keys [title release_version html-body] :as post}]
+  [{:keys [title version html-body] :as post}]
   [:div
     [:h1 title]
     [:p (post-meta post)]
     [:article
-      (when release_version
+      (when version
         [:p "Leiningen dependency information:"
-          [:pre [:code (str "[org.clojure/clojurescript \"" release_version "\"]")]]])
+          [:pre [:code (str "[org.clojure/clojurescript \"" version "\"]")]]])
       html-body]])
 
 (defn rss-date [date]

@@ -112,11 +112,7 @@
   [:div
     [:h1 title]
     [:p (post-meta post)]
-    [:article
-      (when version
-        [:p "Leiningen dependency information:"
-          [:pre [:code (str "[org.clojure/clojurescript \"" version "\"]")]]])
-      html-body]])
+    [:article html-body]])
 
 (defn rss-date [date]
   (.toUTCString date))

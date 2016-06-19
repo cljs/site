@@ -113,7 +113,11 @@
   [:div
     [:h1 title]
     [:p (post-meta post)]
-    [:article html-body]])
+    [:article html-body]
+    (when-let [pre-releases (api/pre-releases version)]
+      [:div
+        [:h2 "Pre-releases"]
+        [:div (string/join ", " pre-releases)]])])
 
 (defn post-page [post]
   [:div.container

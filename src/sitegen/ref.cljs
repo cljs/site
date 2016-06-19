@@ -8,7 +8,7 @@
     [util.hiccup :as hiccup]
     [sitegen.urls :as urls]
     [sitegen.layout :refer [common-layout sidebar-layout]]
-    [sitegen.api :refer [api version]]))
+    [sitegen.api :refer [api version version-has-news-post?]]))
 
 ;;---------------------------------------------------------------
 ;; Namespace Utilities
@@ -275,7 +275,9 @@
       (for [version (get-in api [:history :versions])
             :let [details (get-in api [:history :details version])]]
         [:tr
-          [:td version]
+          [:td (if (version-has-news-post? version)
+                  [:a {:href (urls/pretty (urls/news-post version))} version]
+                  version)]
           [:td (:date details)]
           [:td (:clj-version details)]
           [:td (:treader-version details)]

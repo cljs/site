@@ -6,6 +6,7 @@
     [util.hiccup :as hiccup]
     [sitegen.layout :refer [common-layout]]
     [sitegen.urls :as urls]
+    [sitegen.api :as api]
     [goog.string])
   (:import
     goog.i18n.DateTimeFormat))
@@ -61,10 +62,15 @@
         add-url
         add-title))
 
+(defn set-posts! [data]
+  (set! api/version-has-news-post? (set (map :version data)))
+  (set! posts data))
+
 (defn update! []
   (->> (io/slurp-edn index-filename)
        (map transform-post)
-       (set! posts)))
+       (set-posts!)))
+
 
 ;;---------------------------------------------------------------
 ;; Page Rendering

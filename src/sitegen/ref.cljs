@@ -264,6 +264,14 @@
 
 (defn versions-page []
   [:div
+    [:h2 "Version Table"]
+    [:p
+      "This is a detailed table of ClojureScript versions and dependencies. "]
+    [:p
+      "Clojure is the language that the ClojureScript compiler is written in. "
+      "tools.reader is used by ClojureScript for reading syntax. "
+      "Google Closure Compiler is used for build packaging and optimization, "
+      "and Google Closure Library is an extensive standard library."]
     [:table
       [:tr
         [:th "Version"]

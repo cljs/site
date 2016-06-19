@@ -58,7 +58,7 @@
   [:div
     [:div
      version " | "
-     [:a {:href (urls/pretty urls/ref-versions)} "Versions"]]
+     [:a {:href (urls/pretty urls/versions)} "Versions"]]
     [:div.sep]
     [:div [:a {:href (urls/pretty (urls/ref-ns "syntax"))} (get-in api [:namespaces "syntax" :display])]]
     [:div [:a {:href (urls/pretty (urls/ref-ns "special"))} (get-in api [:namespaces "special" :display])]]
@@ -334,7 +334,7 @@
   (->> (versions-page)
        (common-layout)
        (hiccup/render)
-       (urls/write! urls/ref-versions)))
+       (urls/write! urls/versions)))
 
 (defn create-index-page! []
   (->> (index-page)

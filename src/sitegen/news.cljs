@@ -4,7 +4,7 @@
     [util.io :as io]
     [util.markdown :as markdown]
     [util.hiccup :as hiccup]
-    [sitegen.layout :refer [common-layout]]
+    [sitegen.layout :refer [common-layout sidebar-layout]]
     [sitegen.urls :as urls]
     [sitegen.api :as api]
     [goog.string])
@@ -83,19 +83,17 @@
 (defn date-str [date]
   (.format date-format date))
 
-(defn index-page []
+(defn sidebar [version]
   [:div
-    [:h3 "Release News"]
-    [:p "This is an updated index of the release posts on the "
-        [:a {:href "https://groups.google.com/forum/#!forum/clojurescript"}
-          "ClojureScript mailing list"] "."
-        [:br]
-        "You can subscribe to the " [:a {:href "feed.xml"} "RSS feed"] "."]
-    [:table
-      (for [post (reverse posts)]
-        [:tr
-          [:td (date-str (:date post))]
-          [:td [:a {:href (urls/pretty (:url post))} (:title post)]]])]])
+    [:div [:a {:href (urls/pretty urls/versions)} "Version Details"]]
+    [:div.sep]
+    (for [post (reverse posts)]
+      [:div
+        (let [v [:a {:href (urls/pretty (:url post))} (:version post)]]
+          (if (= version (:version post))
+            [:strong v]
+            v))
+        " - " (date-str (:date post))])])
 
 (defn post-meta
   [{:keys [version title date author google-group-msg]}]
@@ -110,12 +108,18 @@
          (filter identity)
          (interpose " "))))
 
-(defn post-page
+(defn post-page-content
   [{:keys [title version html-body] :as post}]
   [:div
     [:h1 title]
     [:p (post-meta post)]
     [:article html-body]])
+
+(defn post-page [post]
+  [:div.container
+    [:div.row
+      [:div.three.columns (sidebar (:version post))]
+      [:div.nine.columns (post-page-content post)]]])
 
 (defn rss-date [date]
   (.toUTCString date))
@@ -142,7 +146,7 @@
           [:link (urls/pretty (str urls/root url))]])]]))
 
 (defn create-index-page! []
-  (->> (index-page)
+  (->> (post-page (last posts))
        (common-layout)
        (hiccup/render)
        (urls/write! urls/news-index)))

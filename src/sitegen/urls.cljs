@@ -20,7 +20,7 @@
 (defn ref-ns     [ns]             (str "/ref/" ns "/index.html"))
 (defn ref-symbol [ns name-encode] (str "/ref/" ns "/" name-encode ".html"))
 (defn ref-compiler-ns [ns]        (str "/ref/compiler/" ns "/index.html"))
-(def  ref-versions                     "/ref/versions.html")
+(def  versions                         "/versions.html")
 
 (defn ref-api-ns [api-type ns]
   (case api-type

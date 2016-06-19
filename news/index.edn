@@ -277,16 +277,6 @@
   :version "1.7.48",
   :author "David Nolen",
   :google-group-msg "clojurescript/zvZtw7UoyQA/cyP0r6HeAwAJ"}
- {:date "2015-08-05",
-  :version "1.7.58",
-  :author "David Nolen",
-  :github-pre-release true,
-  :title "(Windows fix)"}
- {:date "2015-08-29",
-  :version "1.7.122",
-  :author "David Nolen",
-  :github-pre-release true,
-  :title "(minor fixes)"}
  {:date "2015-10-13",
   :version "1.7.145",
   :author "David Nolen",

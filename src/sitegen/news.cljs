@@ -98,17 +98,14 @@
           [:td [:a {:href (urls/pretty (:url post))} (:title post)]]])]])
 
 (defn post-meta
-  [{:keys [version title date author google-group-msg github-pre-release]}]
+  [{:keys [version title date author google-group-msg]}]
   (let [elements
         [(date-str date)
          (when author
            (str "by " author))
          (when google-group-msg
            [:a {:href (str "https://groups.google.com/d/msg/" google-group-msg)}
-            "on Google Groups"])
-         (when github-pre-release
-           [:a {:href (str "https://github.com/clojure/clojurescript/releases/tag/r" version)}
-            "on GitHub"])]]
+            "on Google Groups"])]]
     (->> elements
          (filter identity)
          (interpose " "))))

@@ -1,7 +1,7 @@
 (ns sitegen.core
   (:require
     [sitegen.docs :as docs]
-    [sitegen.ref :as ref]
+    [sitegen.api-pages :as api-pages]
     [sitegen.api :as api]
     [sitegen.news :as news]
     [sitegen.home :as home]))
@@ -13,7 +13,7 @@
   (home/render!)
   (news/render!)
   (docs/render!)
-  (ref/render!))
+  (api-pages/render!))
 
 (set! *main-cli-fn* -main)
 (enable-console-print!)

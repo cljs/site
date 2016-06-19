@@ -1,4 +1,4 @@
-(ns sitegen.ref
+(ns sitegen.api-pages
   (:require
     [clojure.string :as string]
     [util.io :as io]
@@ -60,16 +60,16 @@
      version " | "
      [:a {:href (urls/pretty urls/versions)} "Versions"]]
     [:div.sep]
-    [:div [:a {:href (urls/pretty (urls/ref-ns "syntax"))} (get-in api [:namespaces "syntax" :display])]]
-    [:div [:a {:href (urls/pretty (urls/ref-ns "special"))} (get-in api [:namespaces "special" :display])]]
+    [:div [:a {:href (urls/pretty (urls/api-ns "syntax"))} (get-in api [:namespaces "syntax" :display])]]
+    [:div [:a {:href (urls/pretty (urls/api-ns "special"))} (get-in api [:namespaces "special" :display])]]
     [:div.sep]
     [:div "Namespaces"]
     (for [ns- (lib-namespaces)]
-      [:div [:a {:href (urls/pretty (urls/ref-ns ns-))} ns-]])
+      [:div [:a {:href (urls/pretty (urls/api-ns ns-))} ns-]])
     [:div.sep]
     [:div "Compiler"]
     (for [ns- (compiler-namespaces)]
-      [:div [:a {:href (urls/pretty (urls/ref-compiler-ns ns-))} ns-]])])
+      [:div [:a {:href (urls/pretty (urls/api-compiler-ns ns-))} ns-]])])
 
 (defn ns-sidebar [api-type ns-]
   (let [title (or (get-in api [:namespaces ns- :display]) ns-)
@@ -77,7 +77,7 @@
         main-syms (remove type-or-protocol? syms)
         type-syms (filter type-or-protocol? syms)]
     [:div
-      [:a {:href (urls/pretty urls/ref-index)} "< Back to Overview"]
+      [:a {:href (urls/pretty urls/api-index)} "< Back to Overview"]
       [:div.sep]
       (for [sym main-syms]
         (let [name- (or (:display sym) (:name sym))]
@@ -96,7 +96,7 @@
 
 (defn fullname->url [full-name]
   (let [{:keys [ns name-encode]} (get-in api [:symbols full-name])]
-    (urls/pretty (urls/ref-symbol ns name-encode))))
+    (urls/pretty (urls/api-symbol ns name-encode))))
 
 (defn history-string [history]
   (let [change-str {"-" "Removed in "
@@ -193,7 +193,7 @@
           [:em "- known as " name])
         " - " (:type sym)])
     [:div {:style "position: absolute; right: 0; top: 0;"}
-      [:a {:href (urls/pretty (urls/ref-symbol (:ns sym) (:name-encode sym)))} "more details >"]]
+      [:a {:href (urls/pretty (urls/api-symbol (:ns sym) (:name-encode sym)))} "more details >"]]
     (when-let [usage (seq (:usage sym))]
       [:div.sep
         [:ul
@@ -236,7 +236,7 @@
 
 (defn ns-overview [api-type ns-]
   (let [ns-data (get-in api [:namespaces ns-])
-        ns-url (if (= api-type :compiler) urls/ref-compiler-ns urls/ref-ns)
+        ns-url (if (= api-type :compiler) urls/api-compiler-ns urls/api-ns)
         title (or (:display ns-data) ns-)
         syms (get-ns-symbols api-type ns-)
         main-syms (remove type-or-protocol? syms)
@@ -246,14 +246,14 @@
       [:p (:caption ns-data)]
       (for [sym-data main-syms]
         (let [name- (or (:display sym-data) (:name sym-data))]
-          [:span [:a {:href (urls/pretty (urls/ref-symbol ns- (:name-encode sym-data)))} name-] " "]))
+          [:span [:a {:href (urls/pretty (urls/api-symbol ns- (:name-encode sym-data)))} name-] " "]))
       (when (seq type-syms)
         (list
           [:div.sep]
           [:span "Types and Protocols: "]
           (for [sym-data type-syms]
             (let [name- (or (:display sym-data) (:name sym-data))]
-              [:span [:a {:href (urls/pretty (urls/ref-symbol ns- (:name-encode sym-data)))} name-] " "]))))
+              [:span [:a {:href (urls/pretty (urls/api-symbol ns- (:name-encode sym-data)))} name-] " "]))))
       [:hr])))
 
 (defn abbrev-gclosure-lib
@@ -262,41 +262,11 @@
     prefix
     version))
 
-(defn versions-page []
-  [:div
-    [:h2 "Version Table"]
-    [:p
-      "This is a detailed table of ClojureScript versions and dependencies. "]
-    [:p
-      "Clojure is the language that the ClojureScript compiler is written in. "
-      "tools.reader is used by ClojureScript for reading syntax. "
-      "Google Closure Compiler is used for build packaging and optimization, "
-      "and Google Closure Library is an extensive standard library."]
-    [:table
-      [:tr
-        [:th "Version"]
-        [:th "Date"]
-        [:th "Clojure"]
-        [:th "Reader"]
-        [:th "Closure Compiler"]
-        [:th "Closure Library"]]
-      (for [version (get-in api [:history :versions])
-            :let [details (get-in api [:history :details version])]]
-        [:tr
-          [:td (if (version-has-news-post? version)
-                  [:a {:href (urls/pretty (urls/news-post version))} version]
-                  version)]
-          [:td (:date details)]
-          [:td (:clj-version details)]
-          [:td (:treader-version details)]
-          [:td (:gclosure-com details)]
-          [:td (abbrev-gclosure-lib (:gclosure-lib details))]])]])
-
 (defn index-page []
   (sidebar-layout
     (overview-sidebar)
     [:div
-      [:h2 "ClojureScript Reference"]
+      [:h2 "API Documentation"]
       [:p
         [:strong "Development Preview. Links may break!"]]
       [:p
@@ -320,31 +290,25 @@
   (->> (sym-page sym)
        (common-layout)
        (hiccup/render)
-       (urls/write! (urls/ref-symbol ns name-encode))))
+       (urls/write! (urls/api-symbol ns name-encode))))
 
 (defn create-ns-page! [api-type ns-]
-  (let [filename (urls/ref-api-ns api-type ns-)]
+  (let [filename (urls/api-ns* api-type ns-)]
     (urls/make-dir! filename)
     (->> (ns-page api-type ns-)
          (common-layout)
          (hiccup/render)
          (urls/write! filename))))
 
-(defn create-versions-page! []
-  (->> (versions-page)
-       (common-layout)
-       (hiccup/render)
-       (urls/write! urls/versions)))
-
 (defn create-index-page! []
   (->> (index-page)
        (common-layout)
        (hiccup/render)
-       (urls/write! urls/ref-index)))
+       (urls/write! urls/api-index)))
 
 (defn render! []
   (doseq [ns (keys (:namespaces api))]
-    (urls/make-dir! (urls/ref-ns ns)))
+    (urls/make-dir! (urls/api-ns ns)))
 
   (doseq [api-type [:syntax :library :compiler]]
     (doseq [ns- (get-in api [:api api-type :namespace-names])]
@@ -353,7 +317,6 @@
   (let [syms (->> (vals (:symbols api))
                   (sort-by :full-name))]
     (create-index-page!)
-    (create-versions-page!)
     (doseq [sym syms]
       (console/replace-line "Creating page for" (:full-name sym))
       (create-sym-page! sym))

@@ -8,7 +8,7 @@
   [:div
     [:h2 "Documentation"]
     [:ul
-      [:li [:a {:href (urls/pretty urls/ref-index)} "Versioned API/Syntax Reference"]]
+      [:li [:a {:href (urls/pretty urls/api-index)} "Versioned API/Syntax Reference"]]
       [:li [:a {:href "http://cljs.info/cheatsheet/"} "CheatSheet"]]]])
 
 (defn create-index-page! []

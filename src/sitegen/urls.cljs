@@ -12,21 +12,22 @@
 (def  news-feed                        "/news/feed.xml")
 (defn news-post  [title]          (str "/news/" title ".html"))
 
+(def  versions                         "/versions.html")
+
 (def  docs-dir                         "/docs/")
 (def  docs-index                       "/docs/index.html")
 
-(def  ref-dir                          "/ref/")
-(def  ref-index                        "/ref/index.html")
-(defn ref-ns     [ns]             (str "/ref/" ns "/index.html"))
-(defn ref-symbol [ns name-encode] (str "/ref/" ns "/" name-encode ".html"))
-(defn ref-compiler-ns [ns]        (str "/ref/compiler/" ns "/index.html"))
-(def  versions                         "/versions.html")
+(def  api-dir                          "/api/")
+(def  api-index                        "/api/index.html")
+(defn api-ns     [ns]             (str "/api/" ns "/index.html"))
+(defn api-symbol [ns name-encode] (str "/api/" ns "/" name-encode ".html"))
+(defn api-compiler-ns [ns]        (str "/api/compiler/" ns "/index.html"))
 
-(defn ref-api-ns [api-type ns]
+(defn api-ns* [api-type ns]
   (case api-type
-    :library (ref-ns ns)
-    :syntax (ref-ns ns)
-    :compiler (ref-compiler-ns ns)
+    :library (api-ns ns)
+    :syntax (api-ns ns)
+    :compiler (api-compiler-ns ns)
     nil))
 
 

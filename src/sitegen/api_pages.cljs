@@ -148,9 +148,8 @@
               [:td [:a {:href edn-url} " in edn"]])))]]
 
     (when-let [usage (seq (:usage sym))]
-      [:ul
-        (for [u usage]
-          [:li [:code u]])])
+      (for [u usage]
+        [:div [:code u]]))
     [:hr]
     (when-let [md-desc (:description sym)]
       (list
@@ -196,9 +195,8 @@
       [:a {:href (urls/pretty (urls/api-symbol (:ns sym) (:name-encode sym)))} "more details >"]]
     (when-let [usage (seq (:usage sym))]
       [:div.sep
-        [:ul
-          (for [u usage]
-            [:li [:code u]])]])
+        (for [u usage]
+          [:div [:code u]])])
     (when-let [docstring (:docstring sym)]
       [:div.sep docstring])
     [:div.sep]

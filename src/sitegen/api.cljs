@@ -22,3 +22,11 @@
            (io/spit api-filename)))
     (set! api (read-string (io/slurp api-filename)))
     (set! version (:version api))))
+
+(defn pre-releases
+  "List pre-releases that came before a main release."
+  [version]
+  (let [all-versions (get-in api [:history :versions])
+        priors (loop [[v & rest] all-versions]
+                 (if (= v version) rest (recur rest)))]
+    (take-while #(not (version-has-news-post? %)) priors)))

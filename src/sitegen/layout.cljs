@@ -13,6 +13,20 @@
         content
         (body-footer)]]])
 
+(defn sidebar-layout [& columns]
+  (case (count columns)
+    1 (first columns)
+    2 [:div.container
+        [:div.row
+          [:div.three.columns (first columns)]
+          [:div.nine.columns (second columns)]]]
+    3 [:div.container
+        [:div.row
+          [:div.three.columns (first columns)]
+          [:div.three.columns (second columns)]
+          [:div.six.columns (nth columns 2)]]]
+    nil))
+
 (defn head
   [{:keys [title description]}]
   [:head

@@ -2,11 +2,12 @@
   (:require
     [sitegen.docs :as docs]
     [sitegen.ref :as ref]
+    [sitegen.api :as api]
     [sitegen.news :as news]
     [sitegen.home :as home]))
 
 (defn -main []
-  (ref/update!)
+  (api/update!)
   (news/update!)
 
   (home/render!)

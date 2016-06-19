@@ -1,6 +1,5 @@
 (ns sitegen.ref
   (:require
-    [cljs.reader :refer [read-string]]
     [clojure.string :as string]
     [util.io :as io]
     [util.markdown :as markdown]
@@ -8,26 +7,8 @@
     [util.highlight :refer [highlight-code]]
     [util.hiccup :as hiccup]
     [sitegen.urls :as urls]
-    [sitegen.layout :refer [common-layout]]))
-
-;;---------------------------------------------------------------
-;; API Retrieval
-;;---------------------------------------------------------------
-
-(def api nil)
-(def version nil)
-
-(def api-url "https://raw.githubusercontent.com/cljsinfo/cljs-api-docs/master/cljs-api.edn")
-(def api-filename "cljs-api.edn")
-
-(defn update! []
-  (let [downloaded? (io/path-exists? api-filename)]
-    (when-not downloaded?
-      (println "Downloading latest API...")
-      (->> (io/slurp api-url)
-           (io/spit api-filename)))
-    (set! api (read-string (io/slurp api-filename)))
-    (set! version (:version api))))
+    [sitegen.layout :refer [common-layout sidebar-layout]]
+    [sitegen.api :refer [api version]]))
 
 ;;---------------------------------------------------------------
 ;; Namespace Utilities
@@ -77,9 +58,7 @@
   [:div
     [:div
      version " | "
-     [:a {:href (urls/pretty urls/ref-history)} "History"]]
-    [:div.sep]
-    [:div [:a {:href (urls/pretty urls/ref-index)} "Overview"]]
+     [:a {:href (urls/pretty urls/ref-versions)} "Versions"]]
     [:div.sep]
     [:div [:a {:href (urls/pretty (urls/ref-ns "syntax"))} (get-in api [:namespaces "syntax" :display])]]
     [:div [:a {:href (urls/pretty (urls/ref-ns "special"))} (get-in api [:namespaces "special" :display])]]
@@ -110,27 +89,6 @@
           (for [sym type-syms]
             (let [name- (or (:display sym) (:name sym))]
               [:div [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
-
-(defn history-sidebar []
-  [:div
-    [:a {:href (urls/pretty urls/ref-index)} "< Back to Overview"]
-    [:div.sep]
-    (for [version (get-in api [:history :versions])]
-      [:div version])])
-
-(defn sidebar-layout [& columns]
-  (case (count columns)
-    1 (first columns)
-    2 [:div.container
-        [:div.row
-          [:div.three.columns (first columns)]
-          [:div.nine.columns (second columns)]]]
-    3 [:div.container
-        [:div.row
-          [:div.three.columns (first columns)]
-          [:div.three.columns (second columns)]
-          [:div.six.columns (nth columns 2)]]]
-    nil))
 
 ;;---------------------------------------------------------------
 ;; Page Rendering
@@ -298,6 +256,32 @@
               [:span [:a {:href (urls/pretty (urls/ref-symbol ns- (:name-encode sym-data)))} name-] " "]))))
       [:hr])))
 
+(defn abbrev-gclosure-lib
+  [version]
+  (if-let [[_ prefix] (re-find #"(0\.0-\d+)-.+" version)]
+    prefix
+    version))
+
+(defn versions-page []
+  [:div
+    [:table
+      [:tr
+        [:th "Version"]
+        [:th "Date"]
+        [:th "Clojure"]
+        [:th "Reader"]
+        [:th "Closure Compiler"]
+        [:th "Closure Library"]]
+      (for [version (get-in api [:history :versions])
+            :let [details (get-in api [:history :details version])]]
+        [:tr
+          [:td version]
+          [:td (:date details)]
+          [:td (:clj-version details)]
+          [:td (:treader-version details)]
+          [:td (:gclosure-com details)]
+          [:td (abbrev-gclosure-lib (:gclosure-lib details))]])]])
+
 (defn index-page []
   (sidebar-layout
     (overview-sidebar)
@@ -322,12 +306,6 @@
       (for [ns- (compiler-namespaces)]
         (ns-overview :compiler ns-))]))
 
-(defn history-page []
-  (sidebar-layout
-    (history-sidebar)
-    [:div
-      [:h2 "History"]]))
-
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)
        (common-layout)
@@ -342,18 +320,17 @@
          (hiccup/render)
          (urls/write! filename))))
 
+(defn create-versions-page! []
+  (->> (versions-page)
+       (common-layout)
+       (hiccup/render)
+       (urls/write! urls/ref-versions)))
+
 (defn create-index-page! []
   (->> (index-page)
        (common-layout)
        (hiccup/render)
        (urls/write! urls/ref-index)))
-
-(defn create-history-page! []
-  (urls/make-dir! urls/ref-history)
-  (->> (history-page)
-       (common-layout)
-       (hiccup/render)
-       (urls/write! urls/ref-history)))
 
 (defn render! []
   (doseq [ns (keys (:namespaces api))]
@@ -366,7 +343,7 @@
   (let [syms (->> (vals (:symbols api))
                   (sort-by :full-name))]
     (create-index-page!)
-    (create-history-page!)
+    (create-versions-page!)
     (doseq [sym syms]
       (console/replace-line "Creating page for" (:full-name sym))
       (create-sym-page! sym))

@@ -6,7 +6,7 @@
     [util.hiccup :as hiccup]
     [sitegen.layout :refer [common-layout sidebar-layout]]
     [sitegen.urls :as urls]
-    [sitegen.api :as api]
+    [sitegen.api :as api :refer [api]]
     [goog.string])
   (:import
     goog.i18n.DateTimeFormat))
@@ -106,16 +106,37 @@
          (filter identity)
          (interpose " "))))
 
+(defn get-version-additions [version]
+  (concat
+    (get-in api [:api :syntax :changes version :added])
+    (get-in api [:api :library :changes version :added])
+    (get-in api [:api :compiler :changes version :added])))
+
 (defn post-page-content
   [{:keys [title version html-body] :as post}]
   [:div
     [:h1 title]
     [:p (post-meta post)]
     [:article html-body]
-    (when-let [pre-releases (seq (api/pre-releases version))]
-      [:div
-        [:h2 "Pre-releases"]
-        [:div (string/join ", " pre-releases)]])])
+    (let [pre-releases (api/pre-releases version)
+          versions (cons version pre-releases)
+          additions (sort (mapcat get-version-additions versions))]
+      (when (seq additions)
+        [:div
+          [:h2 "API Additions"]
+          (when (seq pre-releases)
+            [:div
+              [:em
+                (str "including pre-release"
+                     (when (not= 1 (count pre-releases)) "s")
+                     " "
+                     (string/join ", " pre-releases))]])
+          [:div.sep]
+          [:ul
+            (for [fullname additions]
+              [:li [:a {:href (api/fullname->url fullname)} fullname]])]]))])
+
+
 
 (defn post-page [post]
   [:div.container

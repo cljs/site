@@ -68,10 +68,9 @@
       [:ul.navbar-list
         [:li.navbar-item [:a.navbar-link-logo [:img.navbar-logo {:src "/img/cljs-white.svg"}]]]
         [:li.navbar-item [:a.navbar-title "ClojureScript"]]
-        #_[:li.navbar-item [:a.navbar-link "About"]]
-        [:li.navbar-item [:a.navbar-link {:href "/docs"} "Docs"]]
-        [:li.navbar-item [:a.navbar-link {:href "/news"} "News"]]
-        #_[:li.navbar-item [:a.navbar-link "Community"]]]]])
+        [:li.navbar-item [:a.navbar-link {:href "http://cljs.info/cheatsheet/"} "Cheatsheet"]]
+        [:li.navbar-item [:a.navbar-link {:href "/api"} "API"]]
+        [:li.navbar-item [:a.navbar-link {:href "/news"} "News"]]]]])
 
 (defn body-footer []
   [:footer.site-footer

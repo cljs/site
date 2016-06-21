@@ -36,7 +36,6 @@ pre > code {
   background: #fff;
   z-index: 99;
   margin-bottom: 48px;
-  border-top: 1px solid #eee;
   border-bottom: 1px solid #eee; }
 .navbar > .container {
   width: 100%; }
@@ -77,3 +76,6 @@ pre > code {
   vertical-align: middle; }
 .navbar-link.active {
   color: #33C3F0; }
+
+.news-sidebar .active {
+}

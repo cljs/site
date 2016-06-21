@@ -84,16 +84,14 @@
   (.format date-format date))
 
 (defn sidebar [version]
-  [:div
+  [:div.news-sidebar
     [:div [:a {:href (urls/pretty urls/versions)} "Version Details"]]
     [:div.sep]
     (for [post (reverse posts)]
-      [:div
-        (let [v [:a {:href (urls/pretty (:url post))} (:version post)]]
-          (if (= version (:version post))
-            [:strong v]
-            v))
-        " - " (date-str (:date post))])])
+      (let [v [:a {:href (urls/pretty (:url post))} (:version post)]
+            active? (= version (:version post))]
+        [:div {:class (when active? "active")}
+          [:span.version v]]))])
 
 (defn post-meta
   [{:keys [version title date author google-group-msg]}]
@@ -122,8 +120,8 @@
 (defn post-page [post]
   [:div.container
     [:div.row
-      [:div.three.columns (sidebar (:version post))]
-      [:div.nine.columns (post-page-content post)]]])
+      [:div.two.columns (sidebar (:version post))]
+      [:div.ten.columns (post-page-content post)]]])
 
 (defn rss-date [date]
   (.toUTCString date))

@@ -1,6 +1,5 @@
 (ns sitegen.core
   (:require
-    [sitegen.docs :as docs]
     [sitegen.api-pages :as api-pages]
     [sitegen.api :as api]
     [sitegen.news :as news]
@@ -12,7 +11,6 @@
 
   (home/render!)
   (news/render!)
-  (docs/render!)
   (api-pages/render!))
 
 (set! *main-cli-fn* -main)

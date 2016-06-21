@@ -283,5 +283,5 @@
     (doseq [sym syms]
       (console/replace-line "Creating page for" (:full-name sym))
       (create-sym-page! sym))
-    (console/replace-line "Done creating docs pages."))
+    (console/replace-line "Done creating API pages."))
   (println))

@@ -14,9 +14,6 @@
 
 (def  versions                         "/versions.html")
 
-(def  docs-dir                         "/docs/")
-(def  docs-index                       "/docs/index.html")
-
 (def  api-dir                          "/api/")
 (def  api-index                        "/api/index.html")
 (defn api-ns     [ns]             (str "/api/" ns "/index.html"))

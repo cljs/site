@@ -1,7 +1,15 @@
 (ns sitegen.versions
   (:require
+    [util.hiccup :as hiccup]
     [sitegen.urls :as urls]
-    [sitegen.api :refer [api version-has-news-post?]]))
+    [sitegen.api :refer [api version-has-news-post?]]
+    [sitegen.layout :refer [common-layout]]))
+
+(defn abbrev-gclosure-lib
+  [version]
+  (if-let [[_ prefix] (re-find #"(0\.0-\d+)-.+" version)]
+    prefix
+    version))
 
 (defn versions-page []
   [:div

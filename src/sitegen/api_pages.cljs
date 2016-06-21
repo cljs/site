@@ -219,12 +219,6 @@
               [:span [:a {:href (urls/pretty (urls/api-symbol ns- (:name-encode sym-data)))} name-] " "]))))
       [:hr])))
 
-(defn abbrev-gclosure-lib
-  [version]
-  (if-let [[_ prefix] (re-find #"(0\.0-\d+)-.+" version)]
-    prefix
-    version))
-
 (defn index-page []
   (sidebar-layout
     (overview-sidebar)

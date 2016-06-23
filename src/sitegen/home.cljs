@@ -4,7 +4,16 @@
     [sitegen.layout :refer [common-layout]]
     [sitegen.urls :as urls]))
 
+(defn home []
+  [:div
+    [:script
+      (str "location.href = "
+           \"
+           (urls/pretty urls/news-index)
+           \")]])
+
 (defn render! []
-  (->> (common-layout "")
+  (->> (home)
+       (common-layout)
        (hiccup/render)
        (urls/write! urls/home)))

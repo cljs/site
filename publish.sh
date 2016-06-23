@@ -5,7 +5,7 @@ set -ex
 deploy_dir=deployed
 
 if [ ! -d "$deploy_dir" ]; then
-  git clone git@github.com:cljsinfo/cljsinfo.github.io.git $deploy_dir
+  git clone git@github.com:cljs/cljs.github.io.git $deploy_dir
 fi
 
 rm -rf $deploy_dir/*

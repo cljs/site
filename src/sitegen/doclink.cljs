@@ -2,37 +2,6 @@
   (:require
     [sitegen.api :refer [api]]))
 
-;; TODO: replace references:
-;;   fullname->ns-name
-;;   *result*
-;;   *doclink-ext*
-;;   *doclink-prefix*
-;;   encode-fullname => (get-in api [:symbols full-name :name-encode])
-;;   get-short-display-name
-
-
-;;; ================ NAMING CONVENTION ==================
-;;;
-;;; Whenever we want to reference another doc page in markdown, we use the
-;;; following nomenclature:
-;;;
-;;;   cljs.core/foo         <--- var
-;;;
-;;; There are compiler namespaces that are not part of the library, so we
-;;; label them appropriately:
-;;;
-;;;   cljs.core             <--- ns in the library API
-;;;   compiler/cljs.repl    <--- ns in the compiler API
-;;;
-;;; The syntax page is its own thing:
-;;;
-;;;   syntax                <--- syntax forms
-;;;
-;;; The special forms are also in their own thing:
-;;;
-;;;   special               <--- special forms ns
-;;;
-
 ;;; ================ MARKDOWN SYNTAX ==================
 ;;;
 ;;; We use the doclink namenclature as a markdown biblio alias with the `doc:` prefix:
@@ -76,29 +45,46 @@
   ;;    |   |                |
   #"(?<!])\[doc:([^\]]+)\](?![\(\[])")
 
-(defn valid-doclink?
-  [result full-name]
-  (let [[a b] (fullname->ns-name full-name)]
-    (if (nil? b)
-      (= "syntax" a)
-      (if (#{"library" "compiler"} a)
-        (get-in result [:api (keyword a) :namespace-names b])
-        (get-in result [:symbols full-name])))))
+(defn parse-docname
+  "foo/bar      <-- normal symbol
+   foo          <-- namespace `foo`
+   compiler/foo <-- compiler namespace `foo`"
+  [docname]
+  (let [[a b] ((juxt namespace name) (symbol docname))]
+    (cond
+      (= a "compiler") {:compiler? true, :ns a}
+      (nil? a)         {:ns b}
+      :else            {:ns a, :name b})))
 
-(defn doclink-path
-  [full-name]
-  (let [[a b] (fullname->ns-name full-name)
-        ns-link? (or (and (= "syntax" a) (nil? b))
-                     (#{"library" "compiler"} a))
-        encoded (if ns-link?
-                  full-name
-                  (encode/encode-fullname full-name))]
-    (str *doclink-prefix* encoded *doclink-ext*)))
+(defn docname?
+  [docname]
+  (let [{:keys [ns name compiler?]} (parse-docname docname)]
+    (if name
+      (get-in api [:symbols docname])
+      (get-in api [:namespaces ns]))))
+
+(defn docname->url
+  [docname]
+  (let [{:keys [ns name compiler?]} (parse-docname docname)]
+    (urls/pretty
+      (if name
+        (urls/api-symbol ns (get-in api [:symbols docname :name-encode]))
+        (if compiler?
+          (urls/api-compiler-ns ns)
+          (urls/api-ns ns))))))
+
+(defn get-short-display-name
+  [docname]
+  (let [{:keys [ns name compiler?]} (parse-docname docname)
+        display (if name
+                  (get-in api [:symbols docname :display])
+                  (get-in api [:namespaces ns :display]))]
+    (or display name ns)))
 
 (defn insert-doclink-name
-  [[whole-match full-name]]
-  (if (valid-doclink? *result* full-name)
-    (let [name- (get-short-display-name full-name)]
+  [[whole-match docname]]
+  (if (docname? docname)
+    (let [name- (get-short-display-name docname)]
       (str "[`" name- "`]" whole-match))
     whole-match))
 
@@ -107,13 +93,13 @@
   (->> md-body
        (re-seq doclink-pattern)
        (map second)
-       (filter #(valid-doclink? *result* %))))
+       (filter docname?)))
 
 (defn doclinks-md-biblio
   [md-body]
   (join "\n"
-    (for [full-name (valid-doclinks md-body)]
-      (str "[doc:" full-name "]:" (doclink-path full-name)))))
+    (for [docname (valid-doclinks md-body)]
+      (str "[doc:" docname "]:" (docname->url docname)))))
 
 (defn process-doclinks
   "Process doclinks in given markdown body."

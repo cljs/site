@@ -68,7 +68,6 @@
       [:ul.navbar-list
         [:li.navbar-item [:a.navbar-link-logo [:img.navbar-logo {:src "/img/cljs-white.svg"}]]]
         [:li.navbar-item [:a.navbar-title "ClojureScript"]]
-        [:li.navbar-item [:a.navbar-link {:href "http://cljs.info/cheatsheet/" :target "_blank"} "Cheatsheet"]]
         [:li.navbar-item [:a.navbar-link {:href "/api"} "API"]]
         [:li.navbar-item [:a.navbar-link {:href "/news"} "News"]]
         [:li.navbar-item [:a.navbar-link {:href "https://github.com/clojure/clojurescript" :target "_blank"} "GitHub"]]]]])

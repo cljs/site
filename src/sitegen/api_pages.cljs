@@ -225,10 +225,11 @@
     [:div
       [:h2 "API Documentation"]
       [:p
-        [:strong "Development Preview. Links may break!"]]
-      [:p
-        "Welcome! This is a comprehensive reference for the ClojureScript language, "
-        "including its syntax, standard library, and compiler API."]
+        "Welcome! This is a comprehensive reference for ClojureScript's"
+        " syntax, standard library, and compiler API. "
+        [:strong
+         [:a {:href "http://cljs.info/cheatsheet" :target "_blank"}
+          "See the Cheatsheet for quick reference"]]]
       [:p
         "Documentation is versioned and supplemented by curated descriptions,"
         "examples, and cross-refs.  Community contributions welcome."]

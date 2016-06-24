@@ -115,7 +115,7 @@
 (defn post-page-content
   [{:keys [title version html-body] :as post}]
   [:div
-    [:h1 title]
+    [:h2 title]
     [:p (post-meta post)]
     [:article html-body]
     (let [pre-releases (api/pre-releases version)

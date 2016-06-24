@@ -2,7 +2,7 @@
 
 - [ ] import homepage (selling points)
 - [ ] import book, [ClojureScript Unraveled](https://leanpub.com/clojurescript-unraveled)
-- [ ] import [API/Syntax docs](https://github.com/cljsinfo/cljs-api-docs)
+- [x] import [API docs](https://github.com/cljs/api-docs)
 - [ ] import [cheatsheet](http://cljs.info/cheatsheet)
 - [x] create _News_ page (blog posts)
 - [x] copy over [_ANN ClojureScript_] release emails to _News_
@@ -39,7 +39,7 @@ $ cljs watch sitegen
 $ node target/sitegen.js
 ```
 
-To publish the site to the [GitHub Pages deployment repo](https://github.com/cljsinfo/cljsinfo.github.io):
+To publish the site to the [GitHub Pages deployment repo](https://github.com/cljs/cljs.github.io):
 
 ```
 $ ./publish.sh

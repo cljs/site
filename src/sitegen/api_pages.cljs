@@ -173,8 +173,7 @@
     (interpose " | "
       (for [source (cons (:source sym) (:extra-sources sym))
             :when source]
-        [:a {:href (:url source)} (:title source)]))
-    [:hr]])
+        [:a {:href (:url source)} (:title source)]))])
 
 (defn ns-page [api-type ns-]
   (sidebar-layout
@@ -192,15 +191,17 @@
         (when-let [md-desc (:description ns-data)]
           [:div (markdown/render md-desc)])
         [:hr]
-        (for [sym main-syms]
-          (sym-overview sym))
+        (interpose [:hr]
+          (for [sym main-syms]
+            (sym-overview sym)))
         (when (seq type-syms)
           (list
             [:div.sep]
             [:h4 "Types and Protocols"]
             [:hr]
-            (for [sym type-syms]
-              (sym-overview sym))))])))
+            (interpose [:hr]
+              (for [sym type-syms]
+                (sym-overview sym)))))])))
 
 (defn ns-overview [api-type ns-]
   (let [ns-data (get-in api [:namespaces ns-])
@@ -221,8 +222,7 @@
           [:span "Types and Protocols: "]
           (for [sym-data type-syms]
             (let [name- (or (:display sym-data) (:name sym-data))]
-              [:span [:a {:href (urls/pretty (urls/api-symbol ns- (:name-encode sym-data)))} name-] " "]))))
-      [:hr])))
+              [:span [:a {:href (urls/pretty (urls/api-symbol ns- (:name-encode sym-data)))} name-] " "])))))))
 
 (defn index-page []
   (sidebar-layout
@@ -241,13 +241,17 @@
       [:p [:strong "Current Version:"] " " version]
       [:hr]
       (ns-overview :syntax "syntax")
+      [:hr]
       (ns-overview :library "special")
+      [:hr]
       [:h2 "Namespaces"]
-      (for [ns- (lib-namespaces)]
-        (ns-overview :library ns-))
+      (interpose [:hr]
+        (for [ns- (lib-namespaces)]
+          (ns-overview :library ns-)))
       [:h2 "Compiler"]
-      (for [ns- (compiler-namespaces)]
-        (ns-overview :compiler ns-))]))
+      (interpose [:hr]
+        (for [ns- (compiler-namespaces)]
+          (ns-overview :compiler ns-)))]))
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)

@@ -18,7 +18,7 @@
     1 (first columns)
     2 [:div.container
         [:div.row
-          [:div.three.columns (first columns)]
+          [:div.three.columns {:style "overflow-x: hidden"} (first columns)]
           [:div.nine.columns (second columns)]]]
     3 [:div.container
         [:div.row

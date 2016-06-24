@@ -56,8 +56,13 @@
           [:div.sep]
           [:div "Types and Protocols"]
           (for [sym type-syms]
-            (let [name- (or (:display sym) (:name sym))]
-              [:div [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
+            (let [parent-type (:parent-type sym)
+                  name- (if parent-type
+                          (subs (:name sym) (inc (count parent-type)))
+                          (or (:display sym) (:name sym)))]
+              [:div
+                [:span {:style "opacity: 0.3"} (when parent-type "└")]
+                [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
 
 ;;---------------------------------------------------------------
 ;; Page Rendering

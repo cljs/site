@@ -2,7 +2,7 @@
 
 - [ ] import homepage (selling points)
 - [ ] import book, [ClojureScript Unraveled](https://leanpub.com/clojurescript-unraveled)
-- [x] import [API docs](https://github.com/cljs/api-docs)
+- [x] import [API docs](https://github.com/cljs/api)
 - [ ] import [cheatsheet](http://cljs.info/cheatsheet)
 - [x] create _News_ page (blog posts)
 - [x] copy over [_ANN ClojureScript_] release emails to _News_

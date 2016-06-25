@@ -37,6 +37,10 @@
     (io/mkdirs (str out-dir url))))
 
 (defn pretty [url]
-  (-> url
-      (string/replace #"/index\.html$" "")
-      (string/replace #"\.html$" "")))
+  ;; We cannot map to '/api/index.html' => `/api/` until I figure out
+  ;; how to stop GitHub pages from redirecting to our org repo 'api'.
+  (if (= url api-index)
+    api-index
+    (-> url
+        (string/replace #"/index\.html$" "")
+        (string/replace #"\.html$" ""))))

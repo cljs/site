@@ -133,8 +133,9 @@
                      (string/join ", " pre-releases))]])
           [:div.sep]
           [:ul
-            (for [fullname additions]
-              [:li [:a {:href (api/fullname->url fullname)} fullname]])]]))])
+            (for [docname additions]
+              [:li [:a {:href (api/docname-url docname)}
+                     (api/docname-display docname)]])]]))])
 
 
 

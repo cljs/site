@@ -17,7 +17,8 @@
                          sym-removed?
                          get-ns-symbols
                          type-or-protocol?
-                         fullname->url]]))
+                         docname-url
+                         docname-display]]))
 
 ;;---------------------------------------------------------------
 ;; Sidebar Rendering
@@ -85,9 +86,18 @@
     [:pre [:code (highlight-code (:code source) "clj")]]
     [:hr]))
 
+(defn markdown-with-doc-biblio
+  [{:keys [body biblio]}]
+  (markdown/render
+    (string/join "\n"
+      (cons
+        body
+        (for [docname biblio]
+          (str "[doc:" docname "]:" (docname-url docname)))))))
+
 (defn sym-page [sym]
   [:div
-    [:h1 (or (:display sym) (:full-name sym))]
+    [:h1 (docname-display (:full-name sym))]
     (when-let [name (:known-as sym)]
       [:em "known as " name])
     (when-let [full-name (:moved sym)]
@@ -121,23 +131,24 @@
       (for [u usage]
         [:div [:code u]]))
     [:hr]
-    (when-let [md-desc (:description sym)]
+    (when-let [desc (:description sym)]
       (list
-        [:div (markdown/render md-desc)]
+        [:div (markdown-with-doc-biblio desc)]
         [:hr]))
     (when-let [examples (seq (:examples sym))]
        (list
          [:h3 "Examples:"]
          (for [example examples]
            (list
-             [:div (markdown/render (:content example))]
+             [:div (markdown-with-doc-biblio (:content example))]
              [:hr]))))
     (when-let [related (seq (:related sym))]
       (list
         [:h3 "See Also:"]
         [:ul
-          (for [full-name related]
-            [:li [:a {:href (fullname->url full-name)} full-name]])]
+          (for [docname related]
+            [:li [:a {:href (docname-url docname)}
+                   (docname-display docname)]])]
         [:hr]))
     (when-let [docstring (:docstring sym)]
       (list
@@ -188,8 +199,8 @@
         (when-not (get #{"syntax" "special" "cljs.core"} ns-)
           [:div (history-string (:history ns-data))])
         [:div.sep]
-        (when-let [md-desc (:description ns-data)]
-          [:div (markdown/render md-desc)])
+        (when-let [desc (:description ns-data)]
+          [:div (markdown-with-doc-biblio desc)])
         [:hr]
         (interpose [:hr]
           (for [sym main-syms]

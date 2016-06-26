@@ -73,6 +73,41 @@
   (or (get #{"type" "protocol"} (:type sym-data))
       (:parent-type sym-data)))
 
-(defn fullname->url [full-name]
-  (let [{:keys [ns name-encode]} (get-in api [:symbols full-name])]
-    (urls/pretty (urls/api-symbol ns name-encode))))
+;;---------------------------------------------------------------
+;; Docname Utilities
+;;---------------------------------------------------------------
+
+(defn parse-docname
+  "foo/bar      <-- normal symbol
+   foo          <-- namespace `foo`
+   compiler/foo <-- compiler namespace `foo`"
+  [docname]
+  (let [[a b] ((juxt namespace name) (symbol docname))]
+    (cond
+      (= a "compiler") {:compiler? true, :ns a}
+      (nil? a)         {:ns b}
+      :else            {:ns a, :name b})))
+
+(defn docname-url
+  [docname]
+  (let [{:keys [ns name compiler?]} (parse-docname docname)]
+    (urls/pretty
+      (if name
+        (urls/api-symbol ns (get-in api [:symbols docname :name-encode]))
+        (if compiler?
+          (urls/api-compiler-ns ns)
+          (urls/api-ns ns))))))
+
+(defn docname-display
+  [docname]
+  (let [{:keys [ns name compiler?]} (parse-docname docname)]
+    (if name
+      (let [{:keys [repl-only? display]} (get-in api [:symbols docname])]
+        (case ns
+          "cljs.core" name
+          "special" (cond-> name repl-only? (str " (repl)"))
+          "syntax" display
+          docname))
+      (if compiler?
+        (str ns " (compiler)")
+        (or (get-in api [:namespaces ns :display]) ns)))))

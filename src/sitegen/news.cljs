@@ -140,10 +140,9 @@
 
 
 (defn post-page [post]
-  [:div.container
-    [:div.row
-      [:div.two.columns (sidebar (:version post))]
-      [:div.ten.columns (post-page-content post)]]])
+  (sidebar-layout
+    (sidebar (:version post))
+    (post-page-content post)))
 
 (defn rss-date [date]
   (.toUTCString date))

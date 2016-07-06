@@ -2,6 +2,10 @@
  * This is just temporary CSS that I took from getskeleton.com's own custom.css
  * */
 
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
 code {
   font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Consolas, monospace;
   -webkit-font-smoothing: antialiased;
@@ -50,23 +54,20 @@ pre > code {
   float: left;
   margin-bottom: 0; }
 .navbar-title {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: .1rem;
+  font-size: 18px;
+  font-weight: 300;
   margin-right: 75px;
   text-decoration: none;
   line-height: 6.5rem;
   color: #222; }
 .navbar-link {
-  text-transform: uppercase;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .2rem;
+  font-weight: 300;
   margin-right: 35px;
   text-decoration: none;
   line-height: 6.5rem;
   color: #222; }
 .navbar-link-logo {
+  display:none;
   margin-right: 15px;
 }
 .navbar-logo {

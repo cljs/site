@@ -16,12 +16,6 @@ code {
   background: #F5F5F5;
   border: 1px solid #E1E1E1;
   border-radius: 4px; }
-pre > code {
-  font-size: 1.2rem;
-  display: block;
-  padding: 2.5rem 3rem;
-  white-space: pre; }
-
 
 .container {
   width: 800px;

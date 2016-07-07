@@ -259,6 +259,7 @@
       (interpose [:hr]
         (for [ns- (lib-namespaces)]
           (ns-overview :library ns-)))
+      [:hr]
       [:h2 "Compiler"]
       (interpose [:hr]
         (for [ns- (compiler-namespaces)]

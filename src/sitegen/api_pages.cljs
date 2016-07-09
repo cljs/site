@@ -135,13 +135,11 @@
       (list
         [:div (markdown-with-doc-biblio desc)]
         [:hr]))
-    (when-let [examples (seq (:examples sym))]
+    (when-let [examples (:examples sym)]
        (list
          [:h3 "Examples:"]
-         (for [example examples]
-           (list
-             [:div (markdown-with-doc-biblio (:content example))]
-             [:hr]))))
+         [:div (markdown-with-doc-biblio examples)]
+         [:hr]))
     (when-let [related (seq (:related sym))]
       (list
         [:h3 "See Also:"]

@@ -87,7 +87,7 @@
     [:hr]))
 
 (defn markdown-with-doc-biblio
-  [{:keys [body biblio]}]
+  [body biblio]
   (markdown/render
     (string/join "\n"
       (cons
@@ -131,14 +131,14 @@
       (for [u usage]
         [:div [:code u]]))
     [:hr]
-    (when-let [desc (:description sym)]
+    (when-let [details (:details sym)]
       (list
-        [:div (markdown-with-doc-biblio desc)]
+        [:div (markdown-with-doc-biblio details (:md-biblio sym))]
         [:hr]))
     (when-let [examples (:examples sym)]
        (list
          [:h3 "Examples:"]
-         [:div (markdown-with-doc-biblio examples)]
+         [:div (markdown-with-doc-biblio examples (:md-biblio sym))]
          [:hr]))
     (when-let [related (seq (:related sym))]
       (list
@@ -197,8 +197,8 @@
         (when-not (get #{"syntax" "special" "cljs.core"} ns-)
           [:div (history-string (:history ns-data))])
         [:div.sep]
-        (when-let [desc (:description ns-data)]
-          [:div (markdown-with-doc-biblio desc)])
+        (when-let [details (:details ns-data)]
+          [:div (markdown-with-doc-biblio details (:md-biblio ns-data))])
         [:hr]
         (interpose [:hr]
           (for [sym main-syms]
@@ -221,7 +221,7 @@
         type-syms (filter type-or-protocol? syms)]
     (list
       [:h4 [:a {:href (urls/pretty (ns-url ns-))} title]]
-      [:p (:caption ns-data)]
+      [:p (:summary ns-data)]
       (for [sym-data main-syms]
         (let [name- (or (:display sym-data) (:name sym-data))]
           [:span [:a {:href (urls/pretty (urls/api-symbol ns- (:name-encode sym-data)))} name-] " "]))

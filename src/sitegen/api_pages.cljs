@@ -140,11 +140,11 @@
          [:h3 "Examples:"]
          [:div (markdown-with-doc-biblio examples (:md-biblio sym))]
          [:hr]))
-    (when-let [related (seq (:related sym))]
+    (when-let [see-also (seq (:see-also sym))]
       (list
         [:h3 "See Also:"]
         [:ul
-          (for [docname related]
+          (for [docname see-also]
             [:li [:a {:href (docname-url docname)}
                    (docname-display docname)]])]
         [:hr]))

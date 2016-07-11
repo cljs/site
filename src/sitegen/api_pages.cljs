@@ -159,7 +159,7 @@
         (sym-source source)))
 
     [:div
-      [:a {:href (:cljsdoc-url sym)} "Edit Here!"]]])
+      [:a {:href (:edit-url sym)} "Edit Here!"]]])
 
 (defn sym-overview [sym]
   [:div {:style "position: relative;"}

@@ -102,12 +102,12 @@
   [docname]
   (let [{:keys [ns name compiler?]} (parse-docname docname)]
     (if name
-      (let [{:keys [repl-only? display]} (get-in api [:symbols docname])]
+      (let [{:keys [repl-only? display-as]} (get-in api [:symbols docname])]
         (case ns
           "cljs.core" name
           "special" (cond-> name repl-only? (str " (repl)"))
-          "syntax" display
+          "syntax" display-as
           docname))
       (if compiler?
         (str ns " (compiler)")
-        (or (get-in api [:namespaces ns :display]) ns)))))
+        (or (get-in api [:namespaces ns :display-as]) ns)))))

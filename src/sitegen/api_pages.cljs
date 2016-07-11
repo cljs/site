@@ -30,8 +30,8 @@
      version " | "
      [:a {:href (urls/pretty urls/versions)} "Versions"]]
     [:div.sep]
-    [:div [:a {:href (urls/pretty (urls/api-ns "syntax"))} (get-in api [:namespaces "syntax" :display])]]
-    [:div [:a {:href (urls/pretty (urls/api-ns "special"))} (get-in api [:namespaces "special" :display])]]
+    [:div [:a {:href (urls/pretty (urls/api-ns "syntax"))} (get-in api [:namespaces "syntax" :display-as])]]
+    [:div [:a {:href (urls/pretty (urls/api-ns "special"))} (get-in api [:namespaces "special" :display-as])]]
     [:div.sep]
     [:div "Namespaces"]
     (for [ns- (lib-namespaces)]
@@ -42,7 +42,7 @@
       [:div [:a {:href (urls/pretty (urls/api-compiler-ns ns-))} ns-]])])
 
 (defn ns-sidebar [api-type ns-]
-  (let [title (or (get-in api [:namespaces ns- :display]) ns-)
+  (let [title (or (get-in api [:namespaces ns- :display-as]) ns-)
         syms (get-ns-symbols api-type ns-)
         main-syms (remove type-or-protocol? syms)
         type-syms (filter type-or-protocol? syms)]
@@ -50,7 +50,7 @@
       [:a {:href (urls/pretty urls/api-index)} "< Back to Overview"]
       [:div.sep]
       (for [sym main-syms]
-        (let [name- (or (:display sym) (:name sym))]
+        (let [name- (or (:display-as sym) (:name sym))]
           [:div [:a {:href (str "#" (:name-encode sym))} name-]]))
       (when (seq type-syms)
         (list
@@ -60,7 +60,7 @@
             (let [parent-type (:parent-type sym)
                   name- (if parent-type
                           (subs (:name sym) (inc (count parent-type)))
-                          (or (:display sym) (:name sym)))]
+                          (or (:display-as sym) (:name sym)))]
               [:div
                 [:span {:style "opacity: 0.3"} (when parent-type "└")]
                 [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
@@ -164,7 +164,7 @@
 (defn sym-overview [sym]
   [:div {:style "position: relative;"}
     (let [id (:name-encode sym)
-          title (or (:display sym) (:name sym))]
+          title (or (:display-as sym) (:name sym))]
       [:div {:id id}
         [:strong title]
         (when-let [name (:known-as sym)]
@@ -188,7 +188,7 @@
   (sidebar-layout
     (ns-sidebar api-type ns-)
     (let [ns-data (get-in api [:namespaces ns-])
-          title (or (:display ns-data) ns-)
+          title (or (:display-as ns-data) ns-)
           syms (get-ns-symbols api-type ns-)
           main-syms (remove type-or-protocol? syms)
           type-syms (filter type-or-protocol? syms)]
@@ -215,7 +215,7 @@
 (defn ns-overview [api-type ns-]
   (let [ns-data (get-in api [:namespaces ns-])
         ns-url (if (= api-type :compiler) urls/api-compiler-ns urls/api-ns)
-        title (or (:display ns-data) ns-)
+        title (or (:display-as ns-data) ns-)
         syms (get-ns-symbols api-type ns-)
         main-syms (remove type-or-protocol? syms)
         type-syms (filter type-or-protocol? syms)]
@@ -223,14 +223,14 @@
       [:h4 [:a {:href (urls/pretty (ns-url ns-))} title]]
       [:p (:summary ns-data)]
       (for [sym-data main-syms]
-        (let [name- (or (:display sym-data) (:name sym-data))]
+        (let [name- (or (:display-as sym-data) (:name sym-data))]
           [:span [:a {:href (urls/pretty (urls/api-symbol ns- (:name-encode sym-data)))} name-] " "]))
       (when (seq type-syms)
         (list
           [:div.sep]
           [:span "Types and Protocols: "]
           (for [sym-data type-syms]
-            (let [name- (or (:display sym-data) (:name sym-data))]
+            (let [name- (or (:display-as sym-data) (:name sym-data))]
               [:span [:a {:href (urls/pretty (urls/api-symbol ns- (:name-encode sym-data)))} name-] " "])))))))
 
 (defn index-page []

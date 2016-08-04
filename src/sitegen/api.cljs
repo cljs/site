@@ -40,7 +40,7 @@
 (defn hide-lib-ns? [ns-]
   (let [ns-data (get-in api [:namespaces ns-])]
     (or
-      ;; pseudo-namespaces our handled manually (syntax, special, specialrepl)
+      ;; pseudo-namespaces our handled manually (syntax)
       (:pseudo-ns? ns-data) ;; we handle these manually
 
       ;; clojure.browser is basically deprecated, so we don't show it.
@@ -103,11 +103,11 @@
   (let [{:keys [ns name compiler?]} (parse-docname docname)]
     (if name
       (let [{:keys [repl-only? display-as]} (get-in api [:symbols docname])]
-        (case ns
-          "cljs.core" name
-          "special" (cond-> name repl-only? (str " (repl)"))
-          "syntax" display-as
-          docname))
+        (cond
+          repl-only? (str name " (repl)")
+          (= ns "cljs.core") name
+          (= ns "syntax") display-as
+          :else docname))
       (if compiler?
         (str ns " (compiler)")
         (or (get-in api [:namespaces ns :display-as]) ns)))))

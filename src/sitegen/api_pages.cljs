@@ -31,7 +31,6 @@
      [:a {:href (urls/pretty urls/versions)} "Versions"]]
     [:div.sep]
     [:div [:a {:href (urls/pretty (urls/api-ns "syntax"))} (get-in api [:namespaces "syntax" :display-as])]]
-    [:div [:a {:href (urls/pretty (urls/api-ns "special"))} (get-in api [:namespaces "special" :display-as])]]
     [:div.sep]
     [:div "Namespaces"]
     (for [ns- (lib-namespaces)]
@@ -194,7 +193,7 @@
           type-syms (filter type-or-protocol? syms)]
       [:div
         [:h2 title]
-        (when-not (get #{"syntax" "special" "cljs.core"} ns-)
+        (when-not (get #{"syntax" "cljs.core"} ns-)
           [:div (history-string (:history ns-data))])
         [:div.sep]
         (when-let [details (:details ns-data)]
@@ -250,8 +249,6 @@
       [:p [:strong "Current Version:"] " " version]
       [:hr]
       (ns-overview :syntax "syntax")
-      [:hr]
-      (ns-overview :library "special")
       [:hr]
       [:h2 "Namespaces"]
       (interpose [:hr]

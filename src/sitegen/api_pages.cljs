@@ -65,7 +65,7 @@
                 [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
 
 ;;---------------------------------------------------------------
-;; Page Rendering
+;; Page Utils
 ;;---------------------------------------------------------------
 
 (defn history-string [history]
@@ -94,7 +94,13 @@
         (for [docname biblio]
           (str "[doc:" docname "]:" (docname-url docname)))))))
 
-(defn sym-page [sym]
+;;---------------------------------------------------------------
+;; Pages
+;;---------------------------------------------------------------
+
+(defn sym-page
+  "Full view of a symbol."
+  [sym]
   [:div
     [:h1 (docname-display (:full-name sym))]
     (when-let [name (:known-as sym)]
@@ -130,8 +136,13 @@
       (for [u usage]
         [:div [:code u]]))
     [:hr]
+    (when-let [summary (:summary sym)]
+      (list
+        [:div (markdown-with-doc-biblio summary (:md-biblio sym))]
+        [:hr]))
     (when-let [details (:details sym)]
       (list
+         [:h3 "Details:"]
         [:div (markdown-with-doc-biblio details (:md-biblio sym))]
         [:hr]))
     (when-let [examples (:examples sym)]
@@ -150,7 +161,7 @@
     (when-let [docstring (:docstring sym)]
       (list
         "Source docstring:"
-        [:pre [:code docstring]]))
+        [:pre docstring]))
     (when-let [source (:source sym)]
       (sym-source source))
     (when-let [extra-sources (seq (:extra-sources sym))]
@@ -160,7 +171,20 @@
     [:div
       [:a {:href (:edit-url sym)} "Edit Here!"]]])
 
-(defn sym-overview [sym]
+(defn sym-fallback-summary
+  "If a symbol has no summary, we create one using Usage and Docstring."
+  [sym]
+  (list
+    (when-let [usage (seq (:usage sym))]
+      [:div.sep
+        (for [u usage]
+          [:div [:code u]])])
+    (when-let [docstring (:docstring sym)]
+      [:div.sep [:pre docstring]])))
+
+(defn sym-preview
+  "Preview of a symbol."
+  [sym]
   [:div {:style "position: relative;"}
     (let [id (:name-encode sym)
           title (or (:display-as sym) (:name sym))]
@@ -170,20 +194,16 @@
           [:em "- known as " name])
         " - " (:type sym)])
     [:div {:style "position: absolute; right: 0; top: 0;"}
-      [:a {:href (urls/pretty (urls/api-symbol (:ns sym) (:name-encode sym)))} "more details >"]]
-    (when-let [usage (seq (:usage sym))]
-      [:div.sep
-        (for [u usage]
-          [:div [:code u]])])
-    (when-let [docstring (:docstring sym)]
-      [:div.sep docstring])
+      [:a {:href (urls/pretty (urls/api-symbol (:ns sym) (:name-encode sym)))} "full details >"]]
     [:div.sep]
-    (interpose " | "
-      (for [source (cons (:source sym) (:extra-sources sym))
-            :when source]
-        [:a {:href (:url source)} (:title source)]))])
+    (or
+      (when-let [summary (:summary sym)]
+        [:div (markdown-with-doc-biblio summary (:md-biblio sym))])
+      (sym-fallback-summary sym))])
 
-(defn ns-page [api-type ns-]
+(defn ns-page
+  "Full view of the namespace."
+  [api-type ns-]
   (sidebar-layout
     (ns-sidebar api-type ns-)
     (let [ns-data (get-in api [:namespaces ns-])
@@ -201,7 +221,7 @@
         [:hr]
         (interpose [:hr]
           (for [sym main-syms]
-            (sym-overview sym)))
+            (sym-preview sym)))
         (when (seq type-syms)
           (list
             [:div.sep]
@@ -209,9 +229,11 @@
             [:hr]
             (interpose [:hr]
               (for [sym type-syms]
-                (sym-overview sym)))))])))
+                (sym-preview sym)))))])))
 
-(defn ns-overview [api-type ns-]
+(defn ns-preview
+  "Preview of a namespace."
+  [api-type ns-]
   (let [ns-data (get-in api [:namespaces ns-])
         ns-url (if (= api-type :compiler) urls/api-compiler-ns urls/api-ns)
         title (or (:display-as ns-data) ns-)
@@ -248,17 +270,17 @@
         "examples, and cross-refs.  Community contributions welcome."]
       [:p [:strong "Current Version:"] " " version]
       [:hr]
-      (ns-overview :syntax "syntax")
+      (ns-preview :syntax "syntax")
       [:hr]
       [:h2 "Namespaces"]
       (interpose [:hr]
         (for [ns- (lib-namespaces)]
-          (ns-overview :library ns-)))
+          (ns-preview :library ns-)))
       [:hr]
       [:h2 "Compiler"]
       (interpose [:hr]
         (for [ns- (compiler-namespaces)]
-          (ns-overview :compiler ns-)))]))
+          (ns-preview :compiler ns-)))]))
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)

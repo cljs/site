@@ -133,9 +133,10 @@
               [:td [:a {:href edn-url} " in edn"]])))]]
 
     (when-let [usage (seq (:usage sym))]
-      (for [u usage]
-        [:div [:code u]]))
-    [:hr]
+      (list
+        (for [u usage]
+          [:div [:code u]])
+        [:hr]))
     (when-let [summary (:summary sym)]
       (list
         [:div (markdown-with-doc-biblio summary (:md-biblio sym))]

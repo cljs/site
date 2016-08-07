@@ -93,7 +93,7 @@
   (let [{:keys [ns name compiler?]} (parse-docname docname)]
     (urls/pretty
       (if name
-        (urls/api-symbol ns (get-in api [:symbols docname :name-encode]))
+        (urls/api-sym-prev ns (get-in api [:symbols docname :name-encode]))
         (if compiler?
           (urls/api-compiler-ns ns)
           (urls/api-ns ns))))))

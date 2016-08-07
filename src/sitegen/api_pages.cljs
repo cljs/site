@@ -194,7 +194,7 @@
           [:em "- known as " name])
         " - " (:type sym)])
     [:div {:style "position: absolute; right: 0; top: 0;"}
-      [:a {:href (urls/pretty (urls/api-symbol (:ns sym) (:name-encode sym)))} "full details >"]]
+      [:a {:href (urls/pretty (urls/api-sym (:ns sym) (:name-encode sym)))} "full details >"]]
     [:div.sep]
     (or
       (when-let [summary (:summary sym)]
@@ -245,14 +245,14 @@
       [:p (:summary ns-data)]
       (for [sym-data main-syms]
         (let [name- (or (:display-as sym-data) (:name sym-data))]
-          [:span [:a {:href (urls/pretty (urls/api-symbol ns- (:name-encode sym-data)))} name-] " "]))
+          [:span [:a {:href (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data)))} name-] " "]))
       (when (seq type-syms)
         (list
           [:div.sep]
           [:span "Types and Protocols: "]
           (for [sym-data type-syms]
             (let [name- (or (:display-as sym-data) (:name sym-data))]
-              [:span [:a {:href (urls/pretty (urls/api-symbol ns- (:name-encode sym-data)))} name-] " "])))))))
+              [:span [:a {:href (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data)))} name-] " "])))))))
 
 (defn index-page []
   (sidebar-layout
@@ -286,7 +286,7 @@
   (->> (sym-page sym)
        (common-layout)
        (hiccup/render)
-       (urls/write! (urls/api-symbol ns name-encode))))
+       (urls/write! (urls/api-sym ns name-encode))))
 
 (defn create-ns-page! [api-type ns-]
   (let [filename (urls/api-ns* api-type ns-)]

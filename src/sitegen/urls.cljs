@@ -5,20 +5,21 @@
 
 (def root "http://cljsinfo.github.io")
 
-(def  home                             "/index.html")
+(def  home                                  "/index.html")
 
-(def  news-dir                         "/news/")
-(def  news-index                       "/news/index.html")
-(def  news-feed                        "/news/feed.xml")
-(defn news-post  [title]          (str "/news/" title ".html"))
+(def  news-dir                              "/news/")
+(def  news-index                            "/news/index.html")
+(def  news-feed                             "/news/feed.xml")
+(defn news-post  [title]               (str "/news/" title ".html"))
 
-(def  versions                         "/versions.html")
+(def  versions                              "/versions.html")
 
-(def  api-dir                          "/api/")
-(def  api-index                        "/api/index.html")
-(defn api-ns     [ns]             (str "/api/" ns "/index.html"))
-(defn api-symbol [ns name-encode] (str "/api/" ns "/" name-encode ".html"))
-(defn api-compiler-ns [ns]        (str "/api/compiler/" ns "/index.html"))
+(def  api-dir                               "/api/")
+(def  api-index                             "/api/index.html")
+(defn api-ns          [ns]             (str "/api/" ns "/index.html"))
+(defn api-sym         [ns name-encode] (str "/api/" ns "/" name-encode ".html"))
+(defn api-sym-prev    [ns name-encode] (str "/api/" ns "#" name-encode))
+(defn api-compiler-ns [ns]             (str "/api/compiler/" ns "/index.html"))
 
 (defn api-ns* [api-type ns]
   (case api-type

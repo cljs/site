@@ -20,6 +20,6 @@ pom.xml.asc
 .DS_Store
 /node_modules/
 
-cljs-api-*.edn
+cljs-api.edn
 
 .deps-cache.edn

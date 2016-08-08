@@ -17,6 +17,10 @@ code {
   border: 1px solid #E1E1E1;
   border-radius: 4px; }
 
+a.code-link {
+  border-bottom: 0;
+}
+
 .container {
   width: 800px;
 }

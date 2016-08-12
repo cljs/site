@@ -96,13 +96,13 @@
               "syntax/auto-gensym"]}
    {:title "Vars"
     :entries ["syntax/meta"
-              "syntax/var"]}
+              "syntax/var"
+              "syntax/deref"]}
    {:title "Reader Conditionals"
     :entries ["syntax/cond"
               "syntax/cond-splicing"]}
    {:title "Misc"
     :entries ["syntax/dispatch"
-              "syntax/deref"
               "syntax/unreadable"
               "syntax/eval"]}])
 

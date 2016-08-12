@@ -2,6 +2,7 @@
   (:require
     [cljs.reader :refer [read-string]]
     [clojure.string :as string]
+    [clojure.set :as set]
     [util.io :as io]
     [sitegen.urls :as urls]))
 
@@ -32,6 +33,102 @@
         priors (loop [[v & rest] all-versions]
                  (if (= v version) rest (recur rest)))]
     (take-while #(not (version-has-news-post? %)) priors)))
+
+;;---------------------------------------------------------------
+;; Syntax Categories
+;;---------------------------------------------------------------
+
+(def syntax-categories
+  [{:title "Literals"
+    :entries ["syntax/number"
+              "syntax/string"
+              "syntax/regex"
+              "syntax/character"
+              "syntax/keyword"
+              "syntax/keyword-qualify"
+              "syntax/symbol"]}
+   {:title "Special Symbols"
+    :entries ["syntax/boolean"
+              "syntax/nil"
+              "syntax/NaN"
+              "syntax/Infinity"]}
+   {:title "Collections"
+    :entries ["syntax/vector"
+              "syntax/list"
+              "syntax/map"
+              "syntax/set"
+              "syntax/ns-map"
+              "syntax/ns-map-alias"]}
+   {:title "Commenting"
+    :entries ["syntax/comment"
+              "syntax/shebang"
+              "syntax/ignore"]}
+   {:title "Function"
+    :entries ["syntax/function"
+              "syntax/arg"
+              "syntax/rest"]}
+   {:title "Destructuring"
+    :entries ["syntax/destructure-vector"
+              "syntax/destructure-map"]}
+   {:title "Conventions"
+    :entries ["syntax/predicate"
+              "syntax/impure"
+              "syntax/earmuffs"
+              "syntax/unused"
+              "syntax/whitespace"
+              "syntax/comma"]}
+   {:title "Symbol Resolution"
+    :entries ["syntax/dot"
+              "syntax/namespace"
+              "syntax/js-namespace"
+              "syntax/Math-namespace"]}
+   {:title "Tagged Literals"
+    :entries ["syntax/tagged-literal"
+              "syntax/js-literal"
+              "syntax/inst-literal"
+              "syntax/uuid-literal"
+              "syntax/queue-literal"]}
+   {:title "Quoting"
+    :entries ["syntax/quote"
+              "syntax/syntax-quote"
+              "syntax/unquote"
+              "syntax/unquote-splicing"
+              "syntax/auto-gensym"]}
+   {:title "Vars"
+    :entries ["syntax/meta"
+              "syntax/var"]}
+   {:title "Reader Conditionals"
+    :entries ["syntax/cond"
+              "syntax/cond-splicing"]}
+   {:title "Misc"
+    :entries ["syntax/dispatch"
+              "syntax/deref"
+              "syntax/unreadable"
+              "syntax/eval"]}])
+
+(defn ensure-all-syntax-categorized []
+  (let [all (->> (:symbols api)
+                 (vals)
+                 (filter #(= (:ns %) "syntax"))
+                 (map :full-name)
+                 (set))
+        categorized (->> syntax-categories
+                         (map :entries)
+                         (apply concat)
+                         (set))
+        unrecognized (set/difference categorized all)
+        uncategorized (set/difference all categorized)]
+    (when (or (seq uncategorized)
+              (seq unrecognized))
+      (when (seq uncategorized)
+        (println "The following syntax entries are not categorized:")
+        (doseq [s uncategorized]
+          (println "  -" s)))
+      (when (seq unrecognized)
+        (println "The following syntax entries are not recognized:")
+        (doseq [s unrecognized]
+          (println "  -" s)))
+      (js/process.exit 1))))
 
 ;;---------------------------------------------------------------
 ;; Namespace Utilities
@@ -111,3 +208,7 @@
       (if compiler?
         (str ns " (compiler)")
         (or (get-in api [:namespaces ns :display-as]) ns)))))
+
+
+(defn check! []
+  (ensure-all-syntax-categorized))

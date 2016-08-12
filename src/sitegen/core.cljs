@@ -8,6 +8,8 @@
 
 (defn -main []
   (api/update!)
+  (api/check!)
+
   (news/update!)
 
   (home/render!)

@@ -18,7 +18,8 @@
                          get-ns-symbols
                          type-or-protocol?
                          docname-url
-                         docname-display]]))
+                         docname-display
+                         syntax-categories]]))
 
 ;;---------------------------------------------------------------
 ;; Sidebar Rendering
@@ -244,16 +245,37 @@
     (list
       [:h4 [:a {:href (urls/pretty (ns-url ns-))} title]]
       [:p (:summary ns-data)]
-      (for [sym-data main-syms]
-        (let [name- (or (:display-as sym-data) (:name sym-data))]
-          [:span [:a {:href (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data)))} name-] " "]))
+      (interpose " | "
+        (for [sym-data main-syms]
+          (let [name- (or (:display-as sym-data) (:name sym-data))]
+            [:span [:a {:href (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data)))} name-] " "])))
       (when (seq type-syms)
         (list
           [:div.sep]
           [:span "Types and Protocols: "]
-          (for [sym-data type-syms]
-            (let [name- (or (:display-as sym-data) (:name sym-data))]
-              [:span [:a {:href (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data)))} name-] " "])))))))
+          (interpose " | "
+            (for [sym-data type-syms]
+              (let [name- (or (:display-as sym-data) (:name sym-data))]
+                [:span [:a {:href (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data)))} name-] " "]))))))))
+
+(defn syntax-ns-preview
+  "Preview of the syntax namespace."
+  []
+  (let [ns- "syntax"
+        ns-data (get-in api [:namespaces ns-])
+        title (or (:display-as ns-data) ns-)]
+    (list
+      [:h4 [:a {:href (urls/pretty (urls/api-ns ns-))} title]]
+      [:table
+        (for [category syntax-categories]
+          [:tr
+            [:td (:title category) ": "]
+            [:td
+              (interpose " | "
+                (for [sym (:entries category)]
+                  (let [sym-data (get-in api [:symbols sym])
+                        name- (or (:display-as sym-data) (:name sym-data))]
+                    [:span [:a {:href (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data)))} name-] " "])))]])])))
 
 (defn index-page []
   (sidebar-layout
@@ -271,7 +293,7 @@
         "examples, and cross-refs.  Community contributions welcome."]
       [:p [:strong "Current Version:"] " " version]
       [:hr]
-      (ns-preview :syntax "syntax")
+      (syntax-ns-preview)
       [:hr]
       [:h2 "Namespaces"]
       (interpose [:hr]

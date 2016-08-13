@@ -65,6 +65,19 @@
                 [:span {:style "opacity: 0.3"} (when parent-type "└")]
                 [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
 
+(defn syntax-ns-sidebar []
+  (let [ns- "syntax"
+        title (get-in api [:namespaces ns- :display-as])]
+    [:div
+      [:a {:href (urls/pretty urls/api-index)} "< Back to Overview"]
+      (for [category syntax-categories]
+        (list
+          [:div.sep (:title category)]
+          (for [full-name (:entries category)]
+            (let [sym (get-in api [:symbols full-name])
+                  name- (or (:display-as sym) (:name sym))]
+              [:div [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
+
 ;;---------------------------------------------------------------
 ;; Page Utils
 ;;---------------------------------------------------------------
@@ -233,6 +246,29 @@
               (for [sym type-syms]
                 (sym-preview sym)))))])))
 
+(defn syntax-ns-page
+  "Full view of the syntax namespace."
+  []
+  (sidebar-layout
+    (syntax-ns-sidebar)
+    (let [ns- "syntax"
+          ns-data (get-in api [:namespaces ns-])
+          title (or (:display-as ns-data) ns-)]
+      [:div
+        [:h2 title]
+        [:div.sep]
+        (when-let [details (:details ns-data)]
+          [:div (markdown-with-doc-biblio details (:md-biblio ns-data))])
+        [:hr]
+        (interpose [:hr]
+          (for [category syntax-categories]
+            (list
+              [:h4 (:title category)]
+              (interpose [:hr]
+                (for [full-name (:entries category)]
+                  (let [sym (get-in api [:symbols full-name])]
+                    (sym-preview sym)))))))])))
+
 (defn ns-preview
   "Preview of a namespace."
   [api-type ns-]
@@ -314,10 +350,13 @@
 (defn create-ns-page! [api-type ns-]
   (let [filename (urls/api-ns* api-type ns-)]
     (urls/make-dir! filename)
-    (->> (ns-page api-type ns-)
-         (common-layout)
-         (hiccup/render)
-         (urls/write! filename))))
+    (let [page (if (= ns- "syntax")
+                 (syntax-ns-page)
+                 (ns-page api-type ns-))]
+      (->> page
+           (common-layout)
+           (hiccup/render)
+           (urls/write! filename)))))
 
 (defn create-index-page! []
   (->> (index-page)

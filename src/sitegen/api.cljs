@@ -48,7 +48,8 @@
               "syntax/keyword-qualify"
               "syntax/symbol"]}
    {:title "Special Symbols"
-    :entries ["syntax/boolean"
+    :entries ["syntax/true"
+              "syntax/false"
               "syntax/nil"
               "syntax/NaN"
               "syntax/Infinity"]}

@@ -321,4 +321,9 @@
   :version "1.9.89",
   :author "David Nolen",
   :google-group-msg "clojurescript/gV51RVRvIYw/qiztnyVuAgAJ"
-  :title "cljs.spec & :preloads"}]
+  :title "cljs.spec & :preloads"}
+ {:date "2016-08-12",
+  :version "1.9.198",
+  :author "David Nolen",
+  :google-group-msg "clojurescript/a7KnSSwJsbk/MWMs9yZlCwAJ"
+  :title "cljs.spec, core ns aliasing, macro inference, :rename, and more!"}]

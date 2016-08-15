@@ -6,20 +6,20 @@
     [sitegen.layout :refer [common-layout]]))
 
 (defn abbrev-gclosure-lib
-  [version]
-  (if-let [[_ prefix] (re-find #"(0\.0-\d+)-.+" version)]
+  [v]
+  (if-let [[_ prefix] (re-find #"(0\.0-\d+)-.+" v)]
     prefix
-    version))
+    v))
 
-(defn version-display [version]
+(defn version-display [v]
   (cond
-    (version-has-news-post? version)
-    [:a {:href (urls/pretty (urls/news-post version))} version]
+    (version-has-news-post? v)
+    [:a {:href (urls/pretty (urls/news-post v))} v]
 
-    (master-version? version)
-    [:span {:style "opacity: 0.5"} version]
+    (master-version? v)
+    [:span {:style "opacity: 0.5"} v]
 
-    :else version))
+    :else v))
 
 (defn master-comment []
   (when (master-version? version)
@@ -51,7 +51,7 @@
         [:th "Closure Compiler"]
         [:th "Closure Library"]]
       (for [v (get-in api [:history :versions])]
-        (let [details (get-in api [:history :details version])
+        (let [details (get-in api [:history :details v])
               row [:tr
                     [:td (version-display v)]
                     [:td (:date details)]

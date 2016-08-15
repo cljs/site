@@ -2,7 +2,7 @@
   (:require
     [util.hiccup :as hiccup]
     [sitegen.urls :as urls]
-    [sitegen.api :refer [api version-has-news-post?]]
+    [sitegen.api :refer [api version master-version? version-has-news-post?]]
     [sitegen.layout :refer [common-layout]]))
 
 (defn abbrev-gclosure-lib
@@ -10,6 +10,27 @@
   (if-let [[_ prefix] (re-find #"(0\.0-\d+)-.+" version)]
     prefix
     version))
+
+(defn version-display [version]
+  (cond
+    (version-has-news-post? version)
+    [:a {:href (urls/pretty (urls/news-post version))} version]
+
+    (master-version? version)
+    [:span {:style "opacity: 0.5"} version]
+
+    :else version))
+
+(defn master-comment []
+  (when (master-version? version)
+    (let [tag (get-in api [:history :details version :tag])
+          prev-version (second (re-find #"(.*)\+$" version))
+          commits-ahead (second (re-find #"-(\d+)-g" tag))]
+     [:div {:style "text-align: center"}
+       " ^ "
+       [:a {:href (str "https://github.com/clojure/clojurescript/tree/" tag)}
+        commits-ahead " unpublished commits"]
+       " on master."])))
 
 (defn versions-page []
   [:div
@@ -29,17 +50,18 @@
         [:th "Reader"]
         [:th "Closure Compiler"]
         [:th "Closure Library"]]
-      (for [version (get-in api [:history :versions])
-            :let [details (get-in api [:history :details version])]]
-        [:tr
-          [:td (if (version-has-news-post? version)
-                  [:a {:href (urls/pretty (urls/news-post version))} version]
-                  version)]
-          [:td (:date details)]
-          [:td (:clj-version details)]
-          [:td (:treader-version details)]
-          [:td (:gclosure-com details)]
-          [:td (abbrev-gclosure-lib (:gclosure-lib details))]])]])
+      (for [v (get-in api [:history :versions])]
+        (let [details (get-in api [:history :details version])
+              row [:tr
+                    [:td (version-display v)]
+                    [:td (:date details)]
+                    [:td (:clj-version details)]
+                    [:td (:treader-version details)]
+                    [:td (:gclosure-com details)]
+                    [:td (abbrev-gclosure-lib (:gclosure-lib details))]]]
+          (if (master-version? v)
+            (list row [:tr [:td {:colspan 6} (master-comment)]])
+            row)))]])
 
 (defn create-versions-page! []
   (->> (versions-page)

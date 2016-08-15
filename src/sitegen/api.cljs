@@ -14,6 +14,9 @@
 (def version nil)
 (def version-has-news-post? nil)
 
+(defn master-version? [v]
+  (string/ends-with? v "+"))
+
 (def api-url "https://raw.githubusercontent.com/cljs/api/master/cljs-api.edn")
 (def api-filename "cljs-api.edn")
 

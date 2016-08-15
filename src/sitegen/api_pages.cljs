@@ -9,6 +9,7 @@
     [sitegen.urls :as urls]
     [sitegen.layout :refer [common-layout sidebar-layout]]
     [sitegen.api :refer [api
+                         master-version?
                          version
                          version-has-news-post?
                          hide-lib-ns?
@@ -327,7 +328,9 @@
       [:p
         "Documentation is versioned and supplemented by curated descriptions,"
         "examples, and cross-refs.  Community contributions welcome."]
-      [:p [:strong "Current Version:"] " " version]
+      [:p [:strong "Current Version:"] " " version
+        (when (master-version? version)
+          (str " (master)"))]
       [:hr]
       (syntax-ns-preview)
       [:hr]

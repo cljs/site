@@ -6,6 +6,7 @@
 (def root "http://cljsinfo.github.io")
 
 (def  home                                  "/index.html")
+(def  _404                                  "/404.html")
 
 (def  news-dir                              "/news/")
 (def  news-index                            "/news/index.html")

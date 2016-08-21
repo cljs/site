@@ -49,7 +49,8 @@
     (mapv process-category categories)))
 
 (def categories
-  {:syntax (get-ns-categories "syntax")})
+  {:syntax (get-ns-categories "syntax")
+   :cljs.core (get-ns-categories "cljs.core")})
 
 (defn ensure-all-syntax-categorized []
   (let [all (->> (:symbols api)

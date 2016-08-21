@@ -1,0 +1,11 @@
+[{:title "Arithmetic" :entries ["*"
+                                "+"
+                                "-"
+                                "/"
+                                "quot"
+                                "rem"
+                                "mod"
+                                "inc"
+                                "dec"
+                                "max"
+                                "min"]}]

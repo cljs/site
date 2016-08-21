@@ -1,0 +1,54 @@
+[{:title "Literals" :entries ["number"
+                              "string"
+                              "regex"
+                              "character"
+                              "keyword"
+                              "keyword-qualify"
+                              "symbol"]}
+ {:title "Special Symbols" :entries ["true"
+                                     "false"
+                                     "nil"
+                                     "NaN"
+                                     "Infinity"]}
+ {:title "Collections" :entries ["vector"
+                                 "list"
+                                 "map"
+                                 "set"
+                                 "ns-map"
+                                 "ns-map-alias"]}
+ {:title "Commenting" :entries ["comment"
+                                "shebang"
+                                "ignore"]}
+ {:title "Function" :entries ["function"
+                              "arg"
+                              "rest"]}
+ {:title "Destructuring" :entries ["destructure-vector"
+                                   "destructure-map"]}
+ {:title "Conventions" :entries ["predicate"
+                                 "impure"
+                                 "earmuffs"
+                                 "unused"
+                                 "whitespace"
+                                 "comma"]}
+ {:title "Symbol Resolution" :entries ["dot"
+                                       "namespace"
+                                       "js-namespace"
+                                       "Math-namespace"]}
+ {:title "Tagged Literals" :entries ["tagged-literal"
+                                     "js-literal"
+                                     "inst-literal"
+                                     "uuid-literal"
+                                     "queue-literal"]}
+ {:title "Quoting" :entries ["quote"
+                             "syntax-quote"
+                             "unquote"
+                             "unquote-splicing"
+                             "auto-gensym"]}
+ {:title "Vars" :entries ["meta"
+                          "var"
+                          "deref"]}
+ {:title "Reader Conditionals" :entries ["cond"
+                                         "cond-splicing"]}
+ {:title "Misc" :entries ["dispatch"
+                          "unreadable"
+                          "eval"]}]

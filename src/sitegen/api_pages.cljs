@@ -20,7 +20,7 @@
                          type-or-protocol?
                          docname-url
                          docname-display
-                         syntax-categories]]))
+                         categories]]))
 
 ;;---------------------------------------------------------------
 ;; Sidebar Rendering
@@ -71,7 +71,7 @@
         title (get-in api [:namespaces ns- :display-as])]
     [:div
       [:a {:href (urls/pretty urls/api-index)} "< Back to Overview"]
-      (for [category syntax-categories]
+      (for [category (:syntax categories)]
         (list
           [:div.sep (:title category)]
           (for [full-name (:entries category)]
@@ -262,7 +262,7 @@
           [:div (markdown-with-doc-biblio details (:md-biblio ns-data))])
         [:hr]
         (interpose [:hr]
-          (for [category syntax-categories]
+          (for [category (:syntax categories)]
             (list
               [:h4 (:title category)]
               (interpose [:hr]
@@ -304,7 +304,7 @@
     (list
       [:h4 [:a {:href (urls/pretty (urls/api-ns ns-))} title]]
       [:table
-        (for [category syntax-categories]
+        (for [category (:syntax categories)]
           [:tr
             [:td (:title category) ": "]
             [:td

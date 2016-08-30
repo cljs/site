@@ -46,6 +46,25 @@
    "special character"   "Builtin"
    "multimethod"         "Method"})
 
+(defn docset-entries []
+  (concat
+    ;; Sections
+    [{:name "Overview" :type "Section" :path "index.html"}]
+
+    ;; Namespaces
+    (for [api-type [:syntax :library :compiler]
+          ns- (get-in api [:api api-type :namespace-names])]
+      {:name (or (get-in api [:namespaces ns- :display]) ns-)
+       :type "Namespace"
+       :path (urls/api-ns* api-type ns-)})
+
+    ;; Symbols
+    (for [sym (vals (:symbols api))]
+      {:name (or (:display sym) (:name sym))
+       :type (type->dash (:type sym))
+       ;; TODO: need to hash the filename since win/mac are not case sensitive
+       :path (urls/api-sym (:ns sym) (:name-encode sym))})))
+
 (defn sqlite-error [sql params]
   (println "SQL error occured:")
   (println "  query:" sql)
@@ -64,39 +83,16 @@
 
 (defn build-db! []
   (go
-    (let [db (new sqlite3.Database db-path)
-          INSERT "INSERT INTO table searchIndex (:name, :type, :path)"]
-
+    (let [db (new sqlite3.Database db-path)]
       (<! (run-db "DROP TABLE IF EXISTS searchIndex"))
       (<! (run-db "CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)"))
       (<! (run-db "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)"))
 
-      (println "Adding sections to index database...")
-      (<! (run-db INSERT
-            {:name "Overview" :type "Section" :path "index.html"}))
-
-      (println "Adding namespaces to index database...")
-      (let [queries
-            (doall (for [api-type [:syntax :library :compiler]
-                         ns- (get-in api [:api api-type :namespace-names])]
-                     (run-db INSERT
-                       {:name (or (get-in api [:namespaces ns- :display]) ns-)
-                        :type "Namespace"
-                        :path (urls/api-ns* api-type ns-)})))]
-        (doseq [q queries]
-          (<! q)))
-
-      (println "Adding symbols to index database...")
-      (let [queries
-            (doall (for [sym (vals (:symbols api))]
-                     (run-db INSERT
-                       {:name (or (:display sym) (:name sym))
-                        :type (type->dash (:type sym))
-                        ;; TODO: need to hash the filename since win/mac are not case sensitive
-                        :path (urls/api-sym (:ns sym) (:name-encode sym))})))]
-        (doseq [q queries]
-          (<! q)))
-
+      ;; Run insertions in parallel
+      (doseq [q (mapv
+                  #(run-db "INSERT INTO table searchIndex (:name, :type, :path)" %)
+                  (docset-entries))]
+        (<! q))
       (.close db))))
 
 (defn create! []

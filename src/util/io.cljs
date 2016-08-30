@@ -32,6 +32,12 @@
 (defn path-exists? [path]
   (existsSync path))
 
+(defn delete [path]
+  (.removeSync fs-extra path))
+
+(defn copy [src dest]
+  (.copySync fs-extra src dest))
+
 ;; Helpers
 
 (defn slurp-json [path]

@@ -1,0 +1,129 @@
+(ns sitegen.docset
+  (:require-macros
+    [cljs.core.async.macros :refer [go]])
+  (:require
+    [cljs.core.async :refer [<! chan close!]]
+    [sitegen.api :as api :refer [api]]
+    [sitegen.util :refer [delete mkdirs copy]]
+    [sitegen.urls :as urls]))
+
+(def sqlite3 (js/require "sqlite3"))
+(def child-process (js/require "child_process"))
+(def spawn-sync (.-spawnSync child-process))
+
+
+;; code derived from Lokeshwaran's (@dlokesh) project:
+;; https://github.com/dlokesh/clojuredocs-docset
+
+(def docset-name "ClojureScript.docset")
+(def tar-name "ClojureScript.tgz")
+
+(def work-dir "docset")
+
+(def html-path (str work-dir "/html"))
+(def docset-path (str work-dir "/" docset-name))
+(def tar-path (str work-dir "/" tar-name))
+
+(def docset-docs-path (str docset-path "/Contents/Resources/Documents"))
+(def db-path (str docset-path "/Contents/Resources/docSet.dsidx"))
+
+(def type->dash
+  {"var"                 "Variable"
+   "dynamic var"         "Variable"
+   "protocol"            "Protocol"
+   "type"                "Type"
+   "macro"               "Macro"
+   "function"            "Function"
+   "function/macro"      "Function"
+   "special form"        "Statement" ;; <-- Pending "Special Form"
+   "special form (repl)" "Statement" ;;     (avaiable in next Dash version)
+   "tagged literal"      "Tag"
+   "syntax"              "Operator"  ;; <-- Pending "Syntax"
+   "special symbol"      "Constant"
+   "special namespace"   "Namespace"
+   "binding"             "Builtin"
+   "convention"          "Builtin"
+   "special character"   "Builtin"
+   "multimethod"         "Method"})
+
+(defn sqlite-error [sql params]
+  (println "SQL error occured:")
+  (println "  query:" sql)
+  (println "  params:" params)
+  (println "  error:" err)
+  (js/process.exit 1))
+
+(defn run-db [sql params]
+  (let [done-chan (chan)
+        params (when params (clj->js params))
+        callback (fn [error]
+                   (when error (sqlite-error sql params error))
+                   (close! done-chan))]
+    (.run db sql params callback)
+    done-chan))
+
+(defn build-db! []
+  (go
+    (let [db (new sqlite3.Database db-path)
+          INSERT "INSERT INTO table searchIndex (:name, :type, :path)"]
+
+      (<! (run-db "DROP TABLE IF EXISTS searchIndex"))
+      (<! (run-db "CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)"))
+      (<! (run-db "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)"))
+
+      (println "Adding sections to index database...")
+      (<! (run-db INSERT
+            {:name "Overview" :type "Section" :path "index.html"}))
+
+      (println "Adding namespaces to index database...")
+      (let [queries
+            (doall (for [api-type [:syntax :library :compiler]
+                         ns- (get-in api [:api api-type :namespace-names])]
+                     (run-db INSERT
+                       {:name (or (get-in api [:namespaces ns- :display]) ns-)
+                        :type "Namespace"
+                        :path (urls/api-ns* api-type ns-)})))]
+        (doseq [q queries]
+          (<! q)))
+
+      (println "Adding symbols to index database...")
+      (let [queries
+            (doall (for [sym (vals (:symbols api))]
+                     (run-db INSERT
+                       {:name (or (:display sym) (:name sym))
+                        :type (type->dash (:type sym))
+                        ;; TODO: need to hash the filename since win/mac are not case sensitive
+                        :path (urls/api-sym (:ns sym) (:name-encode sym))})))]
+        (doseq [q queries]
+          (<! q)))
+
+      (.close db))))
+
+(defn create! []
+  (go
+    (println "Creating ClojureScript docset...")
+
+    (println "Clearing previous docset folder...")
+    (delete docset-path)
+    (mkdirs docset-docs-path)
+
+    ;; TODO: generate pages here in docset-docs-path/
+    (println "Generating docset pages...")
+
+    ;; copy over resources
+    (copy "docset/icon.png" (str docset-path "/icon.png"))
+    (copy "docset/Info.plist" (str docset-path "/Contents/Info.plist"))
+
+    ;; reset/create tables
+    (println "Creating index database...")
+    (<! (build-db!))
+
+    ;; create the tar file
+    (println "Creating final docset tar file...")
+    (spawn-sync "tar"
+      #js["--exclude='.DS_Store'" "-cvzf" tar-name docset-name]
+      #js{:cwd work-dir :stdio "inherit"})
+
+    (println)
+    (println "Created:" docset-path)
+    (println "Created:" tar-path)))

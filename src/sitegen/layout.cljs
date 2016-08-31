@@ -13,6 +13,14 @@
         content
         (body-footer)]]])
 
+(defn docset-layout [content]
+  [:html
+    (head)
+    [:body
+      [:div.container
+        content
+        (body-footer)]]])
+
 (defn sidebar-layout [& columns]
   (case (count columns)
     1 (first columns)

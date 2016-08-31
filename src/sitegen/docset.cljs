@@ -3,9 +3,12 @@
     [cljs.core.async.macros :refer [go]])
   (:require
     [cljs.core.async :refer [<! chan close!]]
+    [util.hiccup :as hiccup]
+    [util.io :refer [delete mkdirs copy]]
     [sitegen.api :as api :refer [api]]
-    [sitegen.util :refer [delete mkdirs copy]]
-    [sitegen.urls :as urls]))
+    [sitegen.urls :as urls]
+    [sitegen.api-pages :as api-pages]
+    [sitegen.layout :refer [docset-layout]]))
 
 (def sqlite3 (js/require "sqlite3"))
 (def child-process (js/require "child_process"))
@@ -65,6 +68,10 @@
        ;; TODO: need to hash the filename since win/mac are not case sensitive
        :path (urls/api-sym (:ns sym) (:name-encode sym))})))
 
+;;-----------------------------------------------------------------------------
+;; Database (Dash index)
+;;-----------------------------------------------------------------------------
+
 (defn sqlite-error [sql params]
   (println "SQL error occured:")
   (println "  query:" sql)
@@ -95,6 +102,48 @@
         (<! q))
       (.close db))))
 
+;;-----------------------------------------------------------------------------
+;; Docset pages
+;;-----------------------------------------------------------------------------
+
+(defn create-sym-page! [{:keys [ns name-encode] :as sym}]
+  (->> (api-pages/sym-page sym)
+       (docset-layout)
+       (hiccup/render)
+       (urls/write! (urls/api-sym ns name-encode))))
+
+(defn create-ns-page! [api-type ns-]
+  (let [filename (urls/api-ns* api-type ns-)]
+    (urls/make-dir! filename)
+    (let [page (if (= ns- "syntax")
+                 (api-pages/syntax-ns-page)
+                 (api-pages/ns-page api-type ns-))]
+      (->> page
+           (docset-layout)
+           (hiccup/render)
+           (urls/write! filename)))))
+
+(defn create-index-page! []
+  (->> (index-page)
+       (docset-layout)
+       (hiccup/render)
+       (urls/write! urls/api-index)))
+
+(defn create-pages! []
+  (binding [urls/*out-dir* docset-docs-path]
+    (create-index-page!)
+    (doseq [ns (keys (:namespaces api))]
+      (urls/make-dir! (urls/api-ns ns)))
+    (doseq [api-type [:syntax :library :compiler]]
+      (doseq [ns- (get-in api [:api api-type :namespace-names])]
+        (create-ns-page! api-type ns-)))
+    (doseq [sym (vals (:symbols api))]
+      (create-sym-page! sym))))
+
+;;-----------------------------------------------------------------------------
+;; Main
+;;-----------------------------------------------------------------------------
+
 (defn create! []
   (go
     (println "Creating ClojureScript docset...")
@@ -103,8 +152,8 @@
     (delete docset-path)
     (mkdirs docset-docs-path)
 
-    ;; TODO: generate pages here in docset-docs-path/
     (println "Generating docset pages...")
+    (create-pages!)
 
     ;; copy over resources
     (copy "docset/icon.png" (str docset-path "/icon.png"))

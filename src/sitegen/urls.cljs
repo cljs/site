@@ -29,14 +29,13 @@
     :compiler (api-compiler-ns ns)
     nil))
 
-
-(def out-dir "output")
-(defn write! [url content] (io/spit (str out-dir url) content))
+(def ^:dynamic *out-dir* "output")
+(defn write! [url content] (io/spit (str *out-dir* url) content))
 (defn make-dir! [url]
   (let [url (if (string/ends-with? url "/index.html")
               (string/replace url "/index.html" "")
               url)]
-    (io/mkdirs (str out-dir url))))
+    (io/mkdirs (str *out-dir* url))))
 
 (defn pretty [url]
   (-> url

@@ -34,8 +34,9 @@
 (defn make-dir! [url]
   (let [url (if (string/ends-with? url "/index.html")
               (string/replace url "/index.html" "")
-              url)]
-    (io/mkdirs (str *out-dir* url))))
+              url)
+        path (str *out-dir* url)]
+    (io/mkdirs path)))
 
 (defn pretty [url]
   (-> url

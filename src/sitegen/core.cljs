@@ -4,7 +4,8 @@
     [sitegen.api :as api]
     [sitegen.news :as news]
     [sitegen.home :as home]
-    [sitegen.versions :as versions]))
+    [sitegen.versions :as versions]
+    [sitegen.docset :as docset]))
 
 (defn -main []
   (api/update!)
@@ -15,7 +16,9 @@
   (home/render!)
   (news/render!)
   (versions/render!)
-  (api-pages/render!))
+
+  (api-pages/render!)
+  (docset/create!))
 
 (set! *main-cli-fn* -main)
 (enable-console-print!)

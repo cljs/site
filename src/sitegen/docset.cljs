@@ -72,32 +72,35 @@
 ;; Database (Dash index)
 ;;-----------------------------------------------------------------------------
 
-(defn sqlite-error [sql params]
+(defn sqlite-error [sql params error]
   (println "SQL error occured:")
   (println "  query:" sql)
   (println "  params:" params)
-  (println "  error:" err)
+  (println "  error:" error)
   (js/process.exit 1))
 
-(defn run-db [sql params]
-  (let [done-chan (chan)
-        params (when params (clj->js params))
-        callback (fn [error]
-                   (when error (sqlite-error sql params error))
-                   (close! done-chan))]
-    (.run db sql params callback)
-    done-chan))
+(defn run-db
+  ([db sql]
+   (run-db db sql nil))
+  ([db sql params]
+   (let [done-chan (chan)
+         params (when params (clj->js params))
+         callback (fn [error]
+                    (when error (sqlite-error sql params error))
+                    (close! done-chan))]
+     (.run db sql params callback)
+     done-chan)))
 
 (defn build-db! []
   (go
     (let [db (new sqlite3.Database db-path)]
-      (<! (run-db "DROP TABLE IF EXISTS searchIndex"))
-      (<! (run-db "CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)"))
-      (<! (run-db "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)"))
+      (<! (run-db db "DROP TABLE IF EXISTS searchIndex"))
+      (<! (run-db db "CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)"))
+      (<! (run-db db "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)"))
 
       ;; Run insertions in parallel
       (doseq [q (mapv
-                  #(run-db "INSERT INTO table searchIndex (:name, :type, :path)" %)
+                  #(run-db db "INSERT INTO table searchIndex (:name, :type, :path)" %)
                   (docset-entries))]
         (<! q))
       (.close db))))
@@ -124,16 +127,16 @@
            (urls/write! filename)))))
 
 (defn create-index-page! []
-  (->> (index-page)
+  (->> (api-pages/index-page)
        (docset-layout)
        (hiccup/render)
        (urls/write! urls/api-index)))
 
 (defn create-pages! []
   (binding [urls/*out-dir* docset-docs-path]
-    (create-index-page!)
     (doseq [ns (keys (:namespaces api))]
       (urls/make-dir! (urls/api-ns ns)))
+    (create-index-page!)
     (doseq [api-type [:syntax :library :compiler]]
       (doseq [ns- (get-in api [:api api-type :namespace-names])]
         (create-ns-page! api-type ns-)))

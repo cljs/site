@@ -25,3 +25,4 @@ cljs-api.edn
 .deps-cache.edn
 
 /docset/ClojureScript.docset
+/docset/ClojureScript.tgz

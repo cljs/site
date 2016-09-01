@@ -52,21 +52,21 @@
 (defn docset-entries []
   (concat
     ;; Sections
-    [{:name "Overview" :type "Section" :path "index.html"}]
+    [{:$name "Overview" :$type "Section" :$path "index.html"}]
 
     ;; Namespaces
     (for [api-type [:syntax :library :compiler]
           ns- (get-in api [:api api-type :namespace-names])]
-      {:name (or (get-in api [:namespaces ns- :display]) ns-)
-       :type "Namespace"
-       :path (urls/api-ns* api-type ns-)})
+      {:$name (or (get-in api [:namespaces ns- :display]) ns-)
+       :$type "Namespace"
+       :$path (urls/api-ns* api-type ns-)})
 
     ;; Symbols
     (for [sym (vals (:symbols api))]
-      {:name (or (:display sym) (:name sym))
-       :type (type->dash (:type sym))
+      {:$name (or (:display sym) (:name sym))
+       :$type (type->dash (:type sym))
        ;; TODO: need to hash the filename since win/mac are not case sensitive
-       :path (urls/api-sym (:ns sym) (:name-encode sym))})))
+       :$path (urls/api-sym (:ns sym) (:name-encode sym))})))
 
 ;;-----------------------------------------------------------------------------
 ;; Database (Dash index)
@@ -88,7 +88,9 @@
          callback (fn [error]
                     (when error (sqlite-error sql params error))
                     (close! done-chan))]
-     (.run db sql params callback)
+     (if params
+       (.run db sql params callback)
+       (.run db sql callback))
      done-chan)))
 
 (defn build-db! []
@@ -100,7 +102,7 @@
 
       ;; Run insertions in parallel
       (doseq [q (mapv
-                  #(run-db db "INSERT INTO table searchIndex (:name, :type, :path)" %)
+                  #(run-db db "INSERT INTO searchIndex(name, type, path) VALUES ($name, $type, $path)" %)
                   (docset-entries))]
         (<! q))
       (.close db))))

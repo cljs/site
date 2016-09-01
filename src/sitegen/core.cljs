@@ -17,7 +17,7 @@
   (news/render!)
   (versions/render!)
 
-  ;(api-pages/render!)
+  (api-pages/render!)
   (docset/create!))
 
 (set! *main-cli-fn* -main)

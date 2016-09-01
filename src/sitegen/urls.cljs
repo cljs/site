@@ -5,7 +5,15 @@
 
 (def md5 (js/require "md5"))
 
-(def root "http://cljsinfo.github.io")
+(def domain "http://cljsinfo.github.io")
+
+;; All URLs are absolute paths, but the docset requires relative paths, so
+;; we use this to generate a relative path to the root which we can prepend to
+;; all generated links.
+(def ^:dynamic *root* "")
+(defn get-root [url]
+  (let [n (dec (get (frequencies url) "/"))]
+    (string/join "/" (repeat n ".."))))
 
 (def ^:dynamic *case-sensitive* true)
 (defn protect-case [filename]

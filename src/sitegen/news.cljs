@@ -154,7 +154,7 @@
       [:title "ClojureScript"]
       [:description "ClojureScript News and Releases"]
       [:link "http://cljsinfo.github.io/news"]
-      [:atom:link {:href (str urls/root urls/news-feed)
+      [:atom:link {:href (str urls/domain urls/news-feed)
                    :rel "self"
                    :type "application/rss+xml"}]
       [:pubDate now]
@@ -166,7 +166,7 @@
           [:title title]
           [:description (goog.string.htmlEscape html-body true)]
           [:pubDate (rss-date date)]
-          [:link (urls/pretty (str urls/root url))]])]]))
+          [:link (urls/pretty (str urls/domain url))]])]]))
 
 (defn create-index-page! []
   (->> (post-page (last posts))

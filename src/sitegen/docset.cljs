@@ -6,7 +6,7 @@
     [util.hiccup :as hiccup]
     [util.io :refer [delete mkdirs copy]]
     [sitegen.api :as api :refer [api]]
-    [sitegen.urls :as urls]
+    [sitegen.urls :as urls :refer [*root*]]
     [sitegen.api-pages :as api-pages]
     [sitegen.layout :as layout]))
 
@@ -50,22 +50,24 @@
    "multimethod"         "Method"})
 
 (defn docset-entries []
-  (concat
-    ;; Sections
-    [{:$name "Overview" :$type "Section" :$path "index.html"}]
+  (binding [urls/*case-sensitive* false]
+    (doall
+      (concat
+        ;; Sections
+        [{:$name "Overview" :$type "Section" :$path "index.html"}]
 
-    ;; Namespaces
-    (for [api-type [:syntax :library :compiler]
-          ns- (get-in api [:api api-type :namespace-names])]
-      {:$name (or (get-in api [:namespaces ns- :display]) ns-)
-       :$type "Namespace"
-       :$path (urls/api-ns* api-type ns-)})
+        ;; Namespaces
+        (for [api-type [:syntax :library :compiler]
+              ns- (get-in api [:api api-type :namespace-names])]
+          {:$name (or (get-in api [:namespaces ns- :display]) ns-)
+           :$type "Namespace"
+           :$path (urls/api-ns* api-type ns-)})
 
-    ;; Symbols
-    (for [sym (vals (:symbols api))]
-      {:$name (or (:display sym) (:name sym))
-       :$type (type->dash (:type sym))
-       :$path (urls/api-sym (:ns sym) (:name-encode sym))})))
+        ;; Symbols
+        (for [sym (vals (:symbols api))]
+          {:$name (or (:display sym) (:name sym))
+           :$type (type->dash (:type sym))
+           :$path (urls/api-sym (:ns sym) (:name-encode sym))})))))
 
 ;;-----------------------------------------------------------------------------
 ;; Database (Dash index)
@@ -119,27 +121,32 @@
         (layout/body-footer)]]])
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
-  (->> (api-pages/sym-page sym)
-       (docset-layout)
-       (hiccup/render)
-       (urls/write! (urls/api-sym ns name-encode))))
-
-(defn create-ns-page! [api-type ns-]
-  (let [filename (urls/api-ns* api-type ns-)]
-    (urls/make-dir! filename)
-    (let [page (if (= ns- "syntax")
-                 (api-pages/syntax-ns-page)
-                 (api-pages/ns-page api-type ns-))]
-      (->> page
+  (let [url (urls/api-sym ns name-encode)]
+    (binding [*root* (urls/get-root url)]
+      (->> (api-pages/sym-page sym)
            (docset-layout)
            (hiccup/render)
-           (urls/write! filename)))))
+           (urls/write! url)))))
+
+(defn create-ns-page! [api-type ns-]
+  (let [url (urls/api-ns* api-type ns-)]
+    (urls/make-dir! url)
+    (binding [*root* (urls/get-root url)]
+      (let [page (if (= ns- "syntax")
+                   (api-pages/syntax-ns-page)
+                   (api-pages/ns-page api-type ns-))]
+        (->> page
+             (docset-layout)
+             (hiccup/render)
+             (urls/write! url))))))
 
 (defn create-index-page! []
-  (->> (api-pages/index-page)
-       (docset-layout)
-       (hiccup/render)
-       (urls/write! urls/api-index)))
+  (let [url urls/api-index]
+    (binding [*root* (urls/get-root url)]
+      (->> (api-pages/index-page)
+           (docset-layout)
+           (hiccup/render)
+           (urls/write! url)))))
 
 (defn create-pages! []
   (binding [urls/*out-dir* docset-docs-path
@@ -172,6 +179,8 @@
     ;; copy over resources
     (copy "docset/icon.png" (str docset-path "/icon.png"))
     (copy "docset/Info.plist" (str docset-path "/Contents/Info.plist"))
+    (copy "output/css" (str docset-docs-path "/css"))
+    (copy "output/img" (str docset-docs-path "/img"))
 
     ;; reset/create tables
     (println "Creating index database...")

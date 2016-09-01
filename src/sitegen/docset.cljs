@@ -8,7 +8,7 @@
     [sitegen.api :as api :refer [api]]
     [sitegen.urls :as urls]
     [sitegen.api-pages :as api-pages]
-    [sitegen.layout :refer [docset-layout]]))
+    [sitegen.layout :as layout]))
 
 (def sqlite3 (js/require "sqlite3"))
 (def child-process (js/require "child_process"))
@@ -65,7 +65,6 @@
     (for [sym (vals (:symbols api))]
       {:$name (or (:display sym) (:name sym))
        :$type (type->dash (:type sym))
-       ;; TODO: need to hash the filename since win/mac are not case sensitive
        :$path (urls/api-sym (:ns sym) (:name-encode sym))})))
 
 ;;-----------------------------------------------------------------------------
@@ -111,6 +110,14 @@
 ;; Docset pages
 ;;-----------------------------------------------------------------------------
 
+(defn docset-layout [content]
+  [:html
+    (layout/head)
+    [:body
+      [:div.container
+        content
+        (layout/body-footer)]]])
+
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (api-pages/sym-page sym)
        (docset-layout)
@@ -135,7 +142,9 @@
        (urls/write! urls/api-index)))
 
 (defn create-pages! []
-  (binding [urls/*out-dir* docset-docs-path]
+  (binding [urls/*out-dir* docset-docs-path
+            urls/*case-sensitive* false
+            urls/*pretty-links* false]
     (doseq [ns (keys (:namespaces api))]
       (urls/make-dir! (urls/api-ns ns)))
     (create-index-page!)
@@ -171,7 +180,7 @@
     ;; create the tar file
     (println "Creating final docset tar file...")
     (spawn-sync "tar"
-      #js["--exclude='.DS_Store'" "-cvzf" tar-name docset-name]
+      #js["--exclude='.DS_Store'" "-czf" tar-name docset-name]
       #js{:cwd work-dir :stdio "inherit"})
 
     (println)

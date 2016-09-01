@@ -27,28 +27,30 @@
 ;;---------------------------------------------------------------
 
 (defn overview-sidebar []
-  [:div
+  (let [root ".."]
     [:div
-     version " | "
-     [:a {:href (urls/pretty urls/versions)} "Versions"]]
-    [:div.sep]
-    [:div [:a {:href (urls/pretty (urls/api-ns "syntax"))} (get-in api [:namespaces "syntax" :display-as])]]
-    [:div.sep]
-    [:div "Namespaces"]
-    (for [ns- (lib-namespaces)]
-      [:div [:a {:href (urls/pretty (urls/api-ns ns-))} ns-]])
-    [:div.sep]
-    [:div "Compiler"]
-    (for [ns- (compiler-namespaces)]
-      [:div [:a {:href (urls/pretty (urls/api-compiler-ns ns-))} ns-]])])
+      [:div
+       version " | "
+       [:a {:href (str root (urls/pretty urls/versions))} "Versions"]]
+      [:div.sep]
+      [:div [:a {:href (str root (urls/pretty (urls/api-ns "syntax")))} (get-in api [:namespaces "syntax" :display-as])]]
+      [:div.sep]
+      [:div "Namespaces"]
+      (for [ns- (lib-namespaces)]
+        [:div [:a {:href (str root (urls/pretty (urls/api-ns ns-)))} ns-]])
+      [:div.sep]
+      [:div "Compiler"]
+      (for [ns- (compiler-namespaces)]
+        [:div [:a {:href (str root (urls/pretty (urls/api-compiler-ns ns-)))} ns-]])]))
 
 (defn ns-sidebar [api-type ns-]
   (let [title (or (get-in api [:namespaces ns- :display-as]) ns-)
         syms (get-ns-symbols api-type ns-)
         main-syms (remove type-or-protocol? syms)
-        type-syms (filter type-or-protocol? syms)]
+        type-syms (filter type-or-protocol? syms)
+        root "../.."]
     [:div
-      [:a {:href (urls/pretty urls/api-index)} "< Back to Overview"]
+      [:a {:href (str root (urls/pretty urls/api-index))} "< Back to Overview"]
       [:div.sep]
       (for [sym main-syms]
         (let [name- (or (:display-as sym) (:name sym))]
@@ -68,9 +70,10 @@
 
 (defn syntax-ns-sidebar []
   (let [ns- "syntax"
-        title (get-in api [:namespaces ns- :display-as])]
+        title (get-in api [:namespaces ns- :display-as])
+        root "../.."]
     [:div
-      [:a {:href (urls/pretty urls/api-index)} "< Back to Overview"]
+      [:a {:href (str root (urls/pretty urls/api-index))} "< Back to Overview"]
       (for [category (:syntax categories)]
         (list
           [:div.sep (:title category)]
@@ -201,21 +204,22 @@
 (defn sym-preview
   "Preview of a symbol."
   [sym]
-  [:div {:style "position: relative;"}
-    (let [id (:name-encode sym)
-          title (or (:display-as sym) (:name sym))]
-      [:div {:id id}
-        [:strong title]
-        (when-let [name (:known-as sym)]
-          [:em "- known as " name])
-        " - " (:type sym)])
-    [:div {:style "position: absolute; right: 0; top: 0;"}
-      [:a {:href (urls/pretty (urls/api-sym (:ns sym) (:name-encode sym)))} "full details >"]]
-    [:div.sep]
-    (or
-      (when-let [summary (:summary sym)]
-        [:div (markdown-with-doc-biblio summary (:md-biblio sym))])
-      (sym-fallback-summary sym))])
+  (let [root "../.."]
+    [:div {:style "position: relative;"}
+      (let [id (:name-encode sym)
+            title (or (:display-as sym) (:name sym))]
+        [:div {:id id}
+          [:strong title]
+          (when-let [name (:known-as sym)]
+            [:em "- known as " name])
+          " - " (:type sym)])
+      [:div {:style "position: absolute; right: 0; top: 0;"}
+        [:a {:href (str root (urls/pretty (urls/api-sym (:ns sym) (:name-encode sym))))} "full details >"]]
+      [:div.sep]
+      (or
+        (when-let [summary (:summary sym)]
+          [:div (markdown-with-doc-biblio summary (:md-biblio sym))])
+        (sym-fallback-summary sym))]))
 
 (defn ns-page
   "Full view of the namespace."
@@ -278,14 +282,15 @@
         title (or (:display-as ns-data) ns-)
         syms (get-ns-symbols api-type ns-)
         main-syms (remove type-or-protocol? syms)
-        type-syms (filter type-or-protocol? syms)]
+        type-syms (filter type-or-protocol? syms)
+        root ".."]
     (list
-      [:h4 [:a {:href (urls/pretty (ns-url ns-))} title]]
+      [:h4 [:a {:href (str root (urls/pretty (ns-url ns-)))} title]]
       [:p (:summary ns-data)]
       (interpose " | "
         (for [sym-data main-syms]
           (let [name- (or (:display-as sym-data) (:name sym-data))]
-            [:span [:a {:href (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data)))} name-] " "])))
+            [:span [:a {:href (str root (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data))))} name- " "]])))
       (when (seq type-syms)
         (list
           [:div.sep]
@@ -293,16 +298,17 @@
           (interpose " | "
             (for [sym-data type-syms]
               (let [name- (or (:display-as sym-data) (:name sym-data))]
-                [:span [:a {:href (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data)))} name-] " "]))))))))
+                [:span [:a {:href (str root (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data))))} name- " "]]))))))))
 
 (defn syntax-ns-preview
   "Preview of the syntax namespace."
   []
   (let [ns- "syntax"
         ns-data (get-in api [:namespaces ns-])
-        title (or (:display-as ns-data) ns-)]
+        title (or (:display-as ns-data) ns-)
+        root ".."]
     (list
-      [:h4 [:a {:href (urls/pretty (urls/api-ns ns-))} title]]
+      [:h4 [:a {:href (str root (urls/pretty (urls/api-ns ns-)))} title]]
       [:table
         (for [category (:syntax categories)]
           [:tr
@@ -312,13 +318,14 @@
                 (for [sym (:entries category)]
                   (let [sym-data (get-in api [:symbols sym])
                         name- (or (:display-as sym-data) (:name sym-data))]
-                    [:span [:a {:href (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data)))} name-] " "])))]])])))
+                    [:span [:a {:href (str root (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data))))} name- " "]])))]])])))
 
 (defn index-page []
   (sidebar-layout
     (overview-sidebar)
     [:div
       [:h2 "API Documentation"]
+      [:a {:href "api/cljs.core/index.html"} "Test link to cljs.core"]
       [:p
         "Welcome! This is a comprehensive reference for ClojureScript's"
         " syntax, standard library, and compiler API. "

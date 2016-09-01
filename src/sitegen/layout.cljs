@@ -13,14 +13,6 @@
         content
         (body-footer)]]])
 
-(defn docset-layout [content]
-  [:html
-    (head)
-    [:body
-      [:div.container
-        content
-        (body-footer)]]])
-
 (defn sidebar-layout [& columns]
   (case (count columns)
     1 (first columns)
@@ -36,14 +28,18 @@
     nil))
 
 (defn head
-  [{:keys [title description]}]
+  [{:keys [title description base]}]
   [:head
     [:meta {:charset "utf-8"}]
     [:meta {:http-equiv "X-UA-Compatible" :content "IE=edge"}]
     [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
 
-    [:title title]
-    [:meta {:name "description" :content description}]
+    (when title
+      [:title title])
+    (when description
+      [:meta {:name "description" :content description}])
+    (when base
+      [:base {:href base}])
 
     [:link {:rel "stylesheet" :href "https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700"}]
     [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"}]

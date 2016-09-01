@@ -3,7 +3,23 @@
     [clojure.string :as string]
     [util.io :as io]))
 
+(def md5 (js/require "md5"))
+
 (def root "http://cljsinfo.github.io")
+
+(def ^:dynamic *case-sensitive* true)
+(defn protect-case [filename]
+  (if-not *case-sensitive*
+    (str filename "-" (md5 filename))
+    filename))
+
+(def ^:dynamic *pretty-links* true)
+(defn pretty [url]
+  (if *pretty-links*
+    (-> url
+        (string/replace #"/index\.html$" "")
+        (string/replace #"\.html$" ""))
+    url))
 
 (def  home                                  "/index.html")
 (def  _404                                  "/404.html")
@@ -18,8 +34,8 @@
 (def  api-dir                               "/api/")
 (def  api-index                             "/api/index.html")
 (defn api-ns          [ns]             (str "/api/" ns "/index.html"))
-(defn api-sym         [ns name-encode] (str "/api/" ns "/" name-encode ".html"))
-(defn api-sym-prev    [ns name-encode] (str "/api/" ns "#" name-encode))
+(defn api-sym         [ns name-encode] (str "/api/" ns "/" (protect-case name-encode) ".html"))
+(defn api-sym-prev    [ns name-encode] (str (pretty (api-ns ns)) "#" name-encode))
 (defn api-compiler-ns [ns]             (str "/api/compiler/" ns "/index.html"))
 
 (defn api-ns* [api-type ns]
@@ -37,8 +53,3 @@
               url)
         path (str *out-dir* url)]
     (io/mkdirs path)))
-
-(defn pretty [url]
-  (-> url
-      (string/replace #"/index\.html$" "")
-      (string/replace #"\.html$" "")))

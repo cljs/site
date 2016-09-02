@@ -13,7 +13,9 @@
 (def ^:dynamic *root* "")
 (defn get-root [url]
   (let [n (dec (get (frequencies url) "/"))]
-    (string/join "/" (repeat n ".."))))
+    (if (pos? n)
+      (string/join "/" (repeat n ".."))
+      ".")))
 
 (def ^:dynamic *case-sensitive* true)
 (defn protect-case [filename]

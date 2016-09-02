@@ -9,7 +9,8 @@
     [sitegen.urls :as urls :refer [*root*]]
     [sitegen.api-pages :as api-pages]
     [sitegen.layout :as layout]
-    [sitegen.api :refer [docname-display]]))
+    [sitegen.api :refer [docname-display]]
+    [sitegen.versions :refer [versions-page]]))
 
 (def sqlite3 (js/require "sqlite3"))
 (def child-process (js/require "child_process"))
@@ -55,7 +56,8 @@
     (doall
       (concat
         ;; Sections
-        [{:$name "Overview" :$type "Section" :$path "api/index.html"}]
+        [{:$name "Overview" :$type "Section" :$path urls/api-index}
+         {:$name "Versions" :$type "Section" :$path urls/versions}]
 
         ;; Namespaces
         (for [api-type [:syntax :library :compiler]
@@ -121,6 +123,14 @@
         content
         (layout/body-footer)]]])
 
+(defn create-versions-page! []
+  (let [url urls/versions]
+    (binding [*root* (urls/get-root url)]
+      (->> (versions-page)
+           (docset-layout {:head {:title "CLJS Versions"}})
+           (hiccup/render)
+           (urls/write! url)))))
+
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (let [url (urls/api-sym ns name-encode)]
     (binding [*root* (urls/get-root url)]
@@ -156,6 +166,7 @@
     (doseq [ns (keys (:namespaces api))]
       (urls/make-dir! (urls/api-ns ns)))
     (create-index-page!)
+    (create-versions-page!)
     (doseq [api-type [:syntax :library :compiler]]
       (doseq [ns- (get-in api [:api api-type :namespace-names])]
         (create-ns-page! api-type ns-)))

@@ -28,9 +28,7 @@
 
 (defn index-sidebar []
   [:div
-    [:div
-     version " | "
-     [:a {:href (str *root* (urls/pretty urls/versions))} "Versions"]]
+    [:div version]
     [:div.sep]
     [:div [:a {:href (str *root* (urls/pretty (urls/api-ns "syntax")))} (get-in api [:namespaces "syntax" :display-as])]]
     [:div.sep]
@@ -335,7 +333,8 @@
       "examples, and cross-refs.  Community contributions welcome."]
     [:p [:strong "Current Version:"] " " version
       (when (master-version? version)
-        (str " (master)"))]
+        (str " (master)"))
+      " | " [:a {:href (str *root* (urls/pretty urls/versions))} "Version Table"]]
     [:hr]
     (syntax-ns-preview)
     [:hr]

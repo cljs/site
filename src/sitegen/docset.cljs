@@ -59,13 +59,13 @@
         ;; Namespaces
         (for [api-type [:syntax :library :compiler]
               ns- (get-in api [:api api-type :namespace-names])]
-          {:$name (or (get-in api [:namespaces ns- :display]) ns-)
+          {:$name (or (get-in api [:namespaces ns- :display-as]) ns-)
            :$type "Namespace"
            :$path (urls/api-ns* api-type ns-)})
 
         ;; Symbols
         (for [sym (vals (:symbols api))]
-          {:$name (or (:display sym) (:name sym))
+          {:$name (or (:display-as sym) (:name sym))
            :$type (type->dash (:type sym))
            :$path (urls/api-sym (:ns sym) (:name-encode sym))})))))
 

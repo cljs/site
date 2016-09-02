@@ -65,7 +65,7 @@
 
 (defn create-versions-page! []
   (->> (versions-page)
-       (common-layout)
+       (common-layout nil)
        (hiccup/render)
        (urls/write! urls/versions)))
 

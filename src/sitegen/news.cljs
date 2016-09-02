@@ -170,14 +170,14 @@
 
 (defn create-index-page! []
   (->> (post-page (last posts))
-       (common-layout)
+       (common-layout nil)
        (hiccup/render)
        (urls/write! urls/news-index)))
 
 (defn create-post-pages! []
   (doseq [post posts]
     (->> (post-page post)
-         (common-layout)
+         (common-layout nil)
          (hiccup/render)
          (urls/write! (:url post)))))
 

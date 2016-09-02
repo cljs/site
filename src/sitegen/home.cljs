@@ -20,13 +20,13 @@
 
 (defn render-home! []
   (->> (home)
-       (common-layout)
+       (common-layout nil)
        (hiccup/render)
        (urls/write! urls/home)))
 
 (defn render-404! []
   (->> (_404)
-       (common-layout)
+       (common-layout nil)
        (hiccup/render)
        (urls/write! urls/_404)))
 

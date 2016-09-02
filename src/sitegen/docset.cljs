@@ -11,7 +11,8 @@
     [sitegen.layout :as layout]
     [sitegen.api :refer [docname-display]]
     [sitegen.versions :refer [versions-page]]
-    [sitegen.news :as news]))
+    [sitegen.news :as news]
+    [sitegen.state :refer [*docset?*]]))
 
 (def sqlite3 (js/require "sqlite3"))
 (def child-process (js/require "child_process"))
@@ -177,7 +178,8 @@
 (defn create-pages! []
   (binding [urls/*out-dir* docset-docs-path
             urls/*case-sensitive* false
-            urls/*pretty-links* false]
+            urls/*pretty-links* false
+            *docset?* true]
     (doseq [ns (keys (:namespaces api))]
       (urls/make-dir! (urls/api-ns ns)))
     (urls/make-dir! urls/news-dir)

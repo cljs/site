@@ -85,3 +85,15 @@ a.code-link {
 .cljs-legal {
   margin-bottom: 3.5rem;
 }
+
+.dash-logo {
+  width: 48px;
+  border-radius: 5px;
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+.dash-section {
+  padding: 20px;
+  background-color: #F1F7F7;
+}

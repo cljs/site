@@ -8,6 +8,7 @@
     [util.hiccup :as hiccup]
     [sitegen.urls :as urls :refer [*root*]]
     [sitegen.layout :refer [common-layout sidebar-layout]]
+    [sitegen.state :refer [*docset?*]]
     [sitegen.api :refer [api
                          master-version?
                          version
@@ -335,6 +336,12 @@
       (when (master-version? version)
         (str " (master)"))
       " | " [:a {:href (str *root* (urls/pretty urls/versions))} "Version Table"]]
+    (when-not *docset?*
+      [:p.dash-section
+        [:img.dash-logo {:src (str *root* "/img/dash.png")}]
+        "Get these docs for "
+        [:a {:href "https://kapeli.com/dash"} "Dash"]
+        " under User Contributed downloads."])
     [:hr]
     (syntax-ns-preview)
     [:hr]

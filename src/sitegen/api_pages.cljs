@@ -107,7 +107,7 @@
       (cons
         body
         (for [docname biblio]
-          (str "[doc:" docname "]:" (docname-url docname)))))))
+          (str "[doc:" docname "]:" (str *root* (docname-url docname))))))))
 
 ;;---------------------------------------------------------------
 ;; Pages
@@ -171,7 +171,7 @@
         [:h3 "See Also:"]
         [:ul
           (for [docname see-also]
-            [:li [:a {:href (docname-url docname)}
+            [:li [:a {:href (str *root* (docname-url docname))}
                    (docname-display docname)]])]
         [:hr]))
     (when-let [docstring (:docstring sym)]

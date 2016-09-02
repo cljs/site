@@ -55,7 +55,7 @@
     (doall
       (concat
         ;; Sections
-        [{:$name "Overview" :$type "Section" :$path "index.html"}]
+        [{:$name "Overview" :$type "Section" :$path "api/index.html"}]
 
         ;; Namespaces
         (for [api-type [:syntax :library :compiler]

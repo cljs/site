@@ -114,7 +114,7 @@
 
 (defn docset-layout [content]
   [:html
-    (layout/head)
+    (layout/head {:css "/css/docset.css"})
     [:body
       [:div.container
         content
@@ -133,8 +133,8 @@
     (urls/make-dir! url)
     (binding [*root* (urls/get-root url)]
       (let [page (if (= ns- "syntax")
-                   (api-pages/syntax-ns-page)
-                   (api-pages/ns-page api-type ns-))]
+                   (api-pages/syntax-ns-page-body)
+                   (api-pages/ns-page-body api-type ns-))]
         (->> page
              (docset-layout)
              (hiccup/render)
@@ -143,7 +143,7 @@
 (defn create-index-page! []
   (let [url urls/api-index]
     (binding [*root* (urls/get-root url)]
-      (->> (api-pages/index-page)
+      (->> (api-pages/index-page-body)
            (docset-layout)
            (hiccup/render)
            (urls/write! url)))))

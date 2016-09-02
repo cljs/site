@@ -30,7 +30,7 @@
     nil))
 
 (defn head
-  [{:keys [title description base]}]
+  [{:keys [title description base css]}]
   [:head
     [:meta {:charset "utf-8"}]
     [:meta {:http-equiv "X-UA-Compatible" :content "IE=edge"}]
@@ -49,6 +49,8 @@
     [:link {:rel "stylesheet" :href (str *root* "/css/skeleton.css")}]
     [:link {:rel "stylesheet" :href (str *root* "/css/custom.css")}]
     [:link {:rel "stylesheet" :href (str *root* "/css/github-theme.css")}]
+    (when css
+      [:link {:rel "stylesheet" :href (str *root* css)}])
 
     ;[:link {:rel "canonical" :href "{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}"}]
     ;[:link {:rel "alternate" :type "application/rss+xml" :title "{{ site.title }}" :href "{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" /}]

@@ -26,7 +26,7 @@
 ;; Sidebar Rendering
 ;;---------------------------------------------------------------
 
-(defn overview-sidebar []
+(defn index-sidebar []
   [:div
     [:div
      version " | "
@@ -217,58 +217,65 @@
         [:div (markdown-with-doc-biblio summary (:md-biblio sym))])
       (sym-fallback-summary sym))])
 
+(defn ns-page-body
+  [api-type ns-]
+  (let [ns-data (get-in api [:namespaces ns-])
+        title (or (:display-as ns-data) ns-)
+        syms (get-ns-symbols api-type ns-)
+        main-syms (remove type-or-protocol? syms)
+        type-syms (filter type-or-protocol? syms)]
+    [:div
+      [:h2 title]
+      (when-not (get #{"syntax" "cljs.core"} ns-)
+        [:div (history-string (:history ns-data))])
+      [:div.sep]
+      (when-let [details (:details ns-data)]
+        [:div (markdown-with-doc-biblio details (:md-biblio ns-data))])
+      [:hr]
+      (interpose [:hr]
+        (for [sym main-syms]
+          (sym-preview sym)))
+      (when (seq type-syms)
+        (list
+          [:div.sep]
+          [:h4 "Types and Protocols"]
+          [:hr]
+          (interpose [:hr]
+            (for [sym type-syms]
+              (sym-preview sym)))))]))
+
 (defn ns-page
   "Full view of the namespace."
   [api-type ns-]
   (sidebar-layout
     (ns-sidebar api-type ns-)
-    (let [ns-data (get-in api [:namespaces ns-])
-          title (or (:display-as ns-data) ns-)
-          syms (get-ns-symbols api-type ns-)
-          main-syms (remove type-or-protocol? syms)
-          type-syms (filter type-or-protocol? syms)]
-      [:div
-        [:h2 title]
-        (when-not (get #{"syntax" "cljs.core"} ns-)
-          [:div (history-string (:history ns-data))])
-        [:div.sep]
-        (when-let [details (:details ns-data)]
-          [:div (markdown-with-doc-biblio details (:md-biblio ns-data))])
-        [:hr]
-        (interpose [:hr]
-          (for [sym main-syms]
-            (sym-preview sym)))
-        (when (seq type-syms)
+    (ns-page-body api-type ns-)))
+
+(defn syntax-ns-page-body []
+  (let [ns- "syntax"
+        ns-data (get-in api [:namespaces ns-])
+        title (or (:display-as ns-data) ns-)]
+    [:div
+      [:h2 title]
+      [:div.sep]
+      (when-let [details (:details ns-data)]
+        [:div (markdown-with-doc-biblio details (:md-biblio ns-data))])
+      [:hr]
+      (interpose [:hr]
+        (for [category (:syntax categories)]
           (list
-            [:div.sep]
-            [:h4 "Types and Protocols"]
-            [:hr]
+            [:h4 (:title category)]
             (interpose [:hr]
-              (for [sym type-syms]
-                (sym-preview sym)))))])))
+              (for [full-name (:entries category)]
+                (let [sym (get-in api [:symbols full-name])]
+                  (sym-preview sym)))))))]))
 
 (defn syntax-ns-page
   "Full view of the syntax namespace."
   []
   (sidebar-layout
     (syntax-ns-sidebar)
-    (let [ns- "syntax"
-          ns-data (get-in api [:namespaces ns-])
-          title (or (:display-as ns-data) ns-)]
-      [:div
-        [:h2 title]
-        [:div.sep]
-        (when-let [details (:details ns-data)]
-          [:div (markdown-with-doc-biblio details (:md-biblio ns-data))])
-        [:hr]
-        (interpose [:hr]
-          (for [category (:syntax categories)]
-            (list
-              [:h4 (:title category)]
-              (interpose [:hr]
-                (for [full-name (:entries category)]
-                  (let [sym (get-in api [:symbols full-name])]
-                    (sym-preview sym)))))))])))
+    (syntax-ns-page-body)))
 
 (defn ns-preview
   "Preview of a namespace."
@@ -314,35 +321,38 @@
                         name- (or (:display-as sym-data) (:name sym-data))]
                     [:span [:a {:href (str *root* (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data))))} name- " "]])))]])])))
 
+(defn index-page-body []
+  [:div
+    [:h2 "ClojureScript API Documentation"]
+    [:p
+      "Welcome! This is a comprehensive reference for ClojureScript's"
+      " syntax, standard library, and compiler API. "
+      [:strong
+       [:a {:href "http://cljs.info/cheatsheet" :target "_blank"}
+        "See the Cheatsheet for quick reference"]]]
+    [:p
+      "Documentation is versioned and supplemented by curated descriptions,"
+      "examples, and cross-refs.  Community contributions welcome."]
+    [:p [:strong "Current Version:"] " " version
+      (when (master-version? version)
+        (str " (master)"))]
+    [:hr]
+    (syntax-ns-preview)
+    [:hr]
+    [:h2 "Namespaces"]
+    (interpose [:hr]
+      (for [ns- (lib-namespaces)]
+        (ns-preview :library ns-)))
+    [:hr]
+    [:h2 "Compiler"]
+    (interpose [:hr]
+      (for [ns- (compiler-namespaces)]
+        (ns-preview :compiler ns-)))])
+
 (defn index-page []
   (sidebar-layout
-    (overview-sidebar)
-    [:div
-      [:h2 "API Documentation"]
-      [:p
-        "Welcome! This is a comprehensive reference for ClojureScript's"
-        " syntax, standard library, and compiler API. "
-        [:strong
-         [:a {:href "http://cljs.info/cheatsheet" :target "_blank"}
-          "See the Cheatsheet for quick reference"]]]
-      [:p
-        "Documentation is versioned and supplemented by curated descriptions,"
-        "examples, and cross-refs.  Community contributions welcome."]
-      [:p [:strong "Current Version:"] " " version
-        (when (master-version? version)
-          (str " (master)"))]
-      [:hr]
-      (syntax-ns-preview)
-      [:hr]
-      [:h2 "Namespaces"]
-      (interpose [:hr]
-        (for [ns- (lib-namespaces)]
-          (ns-preview :library ns-)))
-      [:hr]
-      [:h2 "Compiler"]
-      (interpose [:hr]
-        (for [ns- (compiler-namespaces)]
-          (ns-preview :compiler ns-)))]))
+    (index-sidebar)
+    (index-page-body)))
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)

@@ -2,10 +2,6 @@
 
 set -e
 
-docset_dir=docset
-
-cd $docset_dir
-
 repo=Dash-User-Contributions
 rm -rf $repo
 
@@ -39,6 +35,12 @@ echo "PR branch 'cljs' created."
 cp ../ClojureScript.tgz docsets/ClojureScript/
 echo "latest docset copied."
 
+git add docsets/ClojureScript/
+
 echo
-echo "Now, update the version in $docset_dir/$repo/docsets/ClojureScript/docset.json"
-echo "and commit, push, and submit PR."
+echo "Now, update the version in $repo/docsets/ClojureScript/docset.json"
+echo "then commit and run:"
+echo
+echo "   git push origin HEAD -f"
+echo
+echo "then submit PR."

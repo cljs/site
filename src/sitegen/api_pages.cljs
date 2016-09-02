@@ -356,7 +356,7 @@
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)
-       (common-layout)
+       (common-layout {:head {:title (str "CLJS - " (docname-display (:full-name sym)))}})
        (hiccup/render)
        (urls/write! (urls/api-sym ns name-encode))))
 
@@ -367,13 +367,13 @@
                  (syntax-ns-page)
                  (ns-page api-type ns-))]
       (->> page
-           (common-layout)
+           (common-layout {:head {:title (str "CLJS - " ns-)}})
            (hiccup/render)
            (urls/write! filename)))))
 
 (defn create-index-page! []
   (->> (index-page)
-       (common-layout)
+       (common-layout {:head {:title "CLJS API"}})
        (hiccup/render)
        (urls/write! urls/api-index)))
 

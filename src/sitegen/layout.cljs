@@ -6,9 +6,9 @@
 (declare body-header)
 (declare body-footer)
 
-(defn common-layout [content]
+(defn common-layout [opts content]
   [:html
-    (head)
+    (head (:head opts))
     [:body
       [:div.container
         (body-header)

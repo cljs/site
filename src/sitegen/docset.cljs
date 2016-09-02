@@ -8,7 +8,8 @@
     [sitegen.api :as api :refer [api]]
     [sitegen.urls :as urls :refer [*root*]]
     [sitegen.api-pages :as api-pages]
-    [sitegen.layout :as layout]))
+    [sitegen.layout :as layout]
+    [sitegen.api :refer [docname-display]]))
 
 (def sqlite3 (js/require "sqlite3"))
 (def child-process (js/require "child_process"))
@@ -112,9 +113,9 @@
 ;; Docset pages
 ;;-----------------------------------------------------------------------------
 
-(defn docset-layout [content]
+(defn docset-layout [opts content]
   [:html
-    (layout/head {:css "/css/docset.css"})
+    (layout/head (merge {:css "/css/docset.css"} (:head opts)))
     [:body
       [:div.container
         content
@@ -124,7 +125,7 @@
   (let [url (urls/api-sym ns name-encode)]
     (binding [*root* (urls/get-root url)]
       (->> (api-pages/sym-page sym)
-           (docset-layout)
+           (docset-layout {:head {:title (str "CLJS - " (docname-display (:full-name sym)))}})
            (hiccup/render)
            (urls/write! url)))))
 
@@ -136,7 +137,7 @@
                    (api-pages/syntax-ns-page-body)
                    (api-pages/ns-page-body api-type ns-))]
         (->> page
-             (docset-layout)
+             (docset-layout {:head {:title (str "CLJS - " ns-)}})
              (hiccup/render)
              (urls/write! url))))))
 
@@ -144,7 +145,7 @@
   (let [url urls/api-index]
     (binding [*root* (urls/get-root url)]
       (->> (api-pages/index-page-body)
-           (docset-layout)
+           (docset-layout {:head {:title "CLJS API"}})
            (hiccup/render)
            (urls/write! url)))))
 

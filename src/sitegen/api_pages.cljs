@@ -101,13 +101,13 @@
     [:hr]))
 
 (defn markdown-with-doc-biblio
-  [body biblio]
+  [body biblio & {:keys [preview?]}]
   (markdown/render
     (string/join "\n"
       (cons
         body
         (for [docname biblio]
-          (str "[doc:" docname "]:" (str *root* (docname-url docname))))))))
+          (str "[doc:" docname "]:" (str *root* (docname-url docname :preview? preview?))))))))
 
 ;;---------------------------------------------------------------
 ;; Pages
@@ -214,7 +214,7 @@
     [:div.sep]
     (or
       (when-let [summary (:summary sym)]
-        [:div (markdown-with-doc-biblio summary (:md-biblio sym))])
+        [:div (markdown-with-doc-biblio summary (:md-biblio sym) :preview? true)])
       (sym-fallback-summary sym))])
 
 (defn ns-page-body
@@ -230,7 +230,7 @@
         [:div (history-string (:history ns-data))])
       [:div.sep]
       (when-let [details (:details ns-data)]
-        [:div (markdown-with-doc-biblio details (:md-biblio ns-data))])
+        [:div (markdown-with-doc-biblio details (:md-biblio ns-data) :preview? true)])
       [:hr]
       (interpose [:hr]
         (for [sym main-syms]
@@ -259,7 +259,7 @@
       [:h2 title]
       [:div.sep]
       (when-let [details (:details ns-data)]
-        [:div (markdown-with-doc-biblio details (:md-biblio ns-data))])
+        [:div (markdown-with-doc-biblio details (:md-biblio ns-data) :preview? true)])
       [:hr]
       (interpose [:hr]
         (for [category (:syntax categories)]

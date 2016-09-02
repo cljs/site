@@ -132,11 +132,13 @@
       :else            {:ns a, :name b})))
 
 (defn docname-url
-  [docname]
+  [docname & {:keys [preview?]}]
   (let [{:keys [ns name compiler?]} (parse-docname docname)]
     (urls/pretty
       (if name
-        (urls/api-sym-prev ns (get-in api [:symbols docname :name-encode]))
+        (if preview?
+          (urls/api-sym-prev ns (get-in api [:symbols docname :name-encode]))
+          (urls/api-sym ns (get-in api [:symbols docname :name-encode])))
         (if compiler?
           (urls/api-compiler-ns ns)
           (urls/api-ns ns))))))

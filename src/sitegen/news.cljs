@@ -5,7 +5,7 @@
     [util.markdown :as markdown]
     [util.hiccup :as hiccup]
     [sitegen.layout :refer [common-layout sidebar-layout]]
-    [sitegen.urls :as urls]
+    [sitegen.urls :as urls :refer [*root*]]
     [sitegen.api :as api :refer [api]]
     [goog.string])
   (:import
@@ -85,10 +85,10 @@
 
 (defn sidebar [version]
   [:div.news-sidebar
-    [:div [:a {:href (urls/pretty urls/versions)} "Version Details"]]
+    [:div [:a {:href (str *root* (urls/pretty urls/versions))} "Version Details"]]
     [:div.sep]
     (for [post (reverse posts)]
-      (let [v [:a {:href (urls/pretty (:url post))} (:version post)]
+      (let [v [:a {:href (str *root* (urls/pretty (:url post)))} (:version post)]
             active? (= version (:version post))]
         [:div {:class (when active? "active")}
           [:span.version v]]))])
@@ -112,7 +112,7 @@
     (get-in api [:api :library :changes version :added])
     (get-in api [:api :compiler :changes version :added])))
 
-(defn post-page-content
+(defn post-page-body
   [{:keys [title version html-body] :as post}]
   [:div
     [:h2 title]
@@ -134,7 +134,7 @@
           [:div.sep]
           [:ul
             (for [docname additions]
-              [:li [:a {:href (api/docname-url docname)}
+              [:li [:a {:href (str *root* (api/docname-url docname))}
                      (api/docname-display docname)]])]]))])
 
 
@@ -142,7 +142,7 @@
 (defn post-page [post]
   (sidebar-layout
     (sidebar (:version post))
-    (post-page-content post)))
+    (post-page-body post)))
 
 (defn rss-date [date]
   (.toUTCString date))

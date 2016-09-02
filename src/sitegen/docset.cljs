@@ -10,7 +10,8 @@
     [sitegen.api-pages :as api-pages]
     [sitegen.layout :as layout]
     [sitegen.api :refer [docname-display]]
-    [sitegen.versions :refer [versions-page]]))
+    [sitegen.versions :refer [versions-page]]
+    [sitegen.news :as news]))
 
 (def sqlite3 (js/require "sqlite3"))
 (def child-process (js/require "child_process"))
@@ -47,8 +48,8 @@
    "special symbol"      "Constant"
    "special namespace"   "Namespace"
    "binding"             "Builtin"
-   "convention"          "Builtin"
    "special character"   "Builtin"
+   "convention"          "Style"
    "multimethod"         "Method"})
 
 (defn docset-entries []
@@ -58,6 +59,12 @@
         ;; Sections
         [{:$name "Overview" :$type "Section" :$path urls/api-index}
          {:$name "Versions" :$type "Section" :$path urls/versions}]
+
+        ;; News Posts
+        (for [post news/posts]
+          {:$name (str "Release " (:version post))
+           :$type "Event"
+           :$path (:url post)})
 
         ;; Namespaces
         (for [api-type [:syntax :library :compiler]
@@ -123,6 +130,14 @@
         content
         (layout/body-footer)]]])
 
+(defn create-news-page! [post]
+  (let [url (:url post)]
+    (binding [*root* (urls/get-root url)]
+      (->> (news/post-page-body post)
+           (docset-layout nil)
+           (hiccup/render)
+           (urls/write! url)))))
+
 (defn create-versions-page! []
   (let [url urls/versions]
     (binding [*root* (urls/get-root url)]
@@ -165,8 +180,13 @@
             urls/*pretty-links* false]
     (doseq [ns (keys (:namespaces api))]
       (urls/make-dir! (urls/api-ns ns)))
+    (urls/make-dir! urls/news-dir)
+
     (create-index-page!)
     (create-versions-page!)
+    (doseq [post news/posts]
+      (create-news-page! post))
+
     (doseq [api-type [:syntax :library :compiler]]
       (doseq [ns- (get-in api [:api api-type :namespace-names])]
         (create-ns-page! api-type ns-)))

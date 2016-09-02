@@ -1,7 +1,7 @@
 (ns sitegen.versions
   (:require
     [util.hiccup :as hiccup]
-    [sitegen.urls :as urls]
+    [sitegen.urls :as urls :refer [*root*]]
     [sitegen.api :refer [api version master-version? version-has-news-post?]]
     [sitegen.layout :refer [common-layout]]))
 
@@ -14,7 +14,7 @@
 (defn version-display [v]
   (cond
     (version-has-news-post? v)
-    [:a {:href (urls/pretty (urls/news-post v))} v]
+    [:a {:href (str *root* (urls/pretty (urls/news-post v)))} v]
 
     (master-version? v)
     [:span {:style "opacity: 0.5"} v]

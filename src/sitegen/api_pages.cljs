@@ -323,7 +323,7 @@
 
 (defn index-page-body []
   [:div
-    [:h2 "ClojureScript API Documentation"]
+    [:h2 "ClojureScript API"]
     [:p
       "Welcome! This is a comprehensive reference for ClojureScript's"
       " syntax, standard library, and compiler API. "

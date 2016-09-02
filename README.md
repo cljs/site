@@ -32,7 +32,7 @@ $ cljs build server
 $ node target/server.js
 ```
 
-Site generator:
+Site and Docset generator:
 
 ```
 $ cljs watch sitegen
@@ -44,3 +44,12 @@ To publish the site to the [GitHub Pages deployment repo](https://github.com/clj
 ```
 $ ./publish.sh
 ```
+
+To publish the docset to [Dash], run the following:
+
+```
+$ cd docset
+$ ./docset-pr.sh
+```
+
+[Dash]:https://kapeli.com/dash

@@ -336,4 +336,8 @@
   :version "1.9.229"
   :author "David Nolen"
   :google-group-msg "clojurescript/MF8QfYkIDOs/HsIu7iKEDQAJ"
-  :title "cljs.spec fixes"}]
+  :title "cljs.spec fixes"}
+ {:date "2016-10-19"
+  :version "1.9.293"
+  :author "David Nolen"
+  :google-group-msg "clojurescript/96RnUYnhq8E/b2TmFNeOCwAJ"}]

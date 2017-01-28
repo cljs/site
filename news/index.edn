@@ -340,4 +340,9 @@
  {:date "2016-10-19"
   :version "1.9.293"
   :author "David Nolen"
-  :google-group-msg "clojurescript/96RnUYnhq8E/b2TmFNeOCwAJ"}]
+  :google-group-msg "clojurescript/96RnUYnhq8E/b2TmFNeOCwAJ"}
+ {:date "2017-01-27"
+  :version "1.9.456"
+  :author "David Nolen"
+  :title "Externs Inference & Comprehensive JS Modules Support"
+  :google-group-msg "clojurescript/wGJeG36GPTk/e9XCo3a2BgAJ"}]

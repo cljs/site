@@ -1,4 +1,4 @@
-{:cljs-version "1.8.51"
+{:cljs-version "1.9.473"
  :dependencies [[hiccups "0.3.0"]
                 [org.clojure/core.async "0.2.385"]]
  :builds {:sitegen {:src "src"

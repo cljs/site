@@ -3,11 +3,11 @@
                 [org.clojure/core.async "0.2.385"]]
  :builds {:sitegen {:src "src"
                     :compiler {:target :nodejs
-                               :main sitegen.core
+                               :main "sitegen.core"
                                :output-to "target/sitegen.js"
                                :optimizations :simple}}
           :server {:src "src"
                    :compiler {:target :nodejs
-                              :main server.core
+                              :main "server.core"
                               :output-to "target/server.js"
                               :optimizations :simple}}}}

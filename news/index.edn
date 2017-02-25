@@ -350,4 +350,9 @@
   :version "1.9.473"
   :author "David Nolen"
   :title "bugfix release"
-  :google-group-msg "clojurescript/rK2pnUwvTkI/th7Wh0L6CgAJ"}]
+  :google-group-msg "clojurescript/rK2pnUwvTkI/th7Wh0L6CgAJ"}
+ {:date "2017-02-24"
+  :version "1.9.494"
+  :author "David Nolen"
+  :title "another bugfix release"
+  :google-group-msg "clojurescript/cw3bQL-FsUA/CWICRwKyAAAJ"}]

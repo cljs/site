@@ -131,13 +131,19 @@
       (nil? a)         {:ns b}
       :else            {:ns a, :name b})))
 
+(defn guess-api-type
+  "cljs.core/foo can either be from the library and/or compiler API.  In some contexts,
+   we cannot determine which, so we favor the library API."
+  [full-name]
+  (first (filter #(get-in api [:api % :symbol-names full-name]) [:library :compiler :syntax])))
+
 (defn docname-url
   [docname & {:keys [preview?]}]
   (let [{:keys [ns name compiler?]} (parse-docname docname)]
     (urls/pretty
       (if name
         (if preview?
-          (urls/api-sym-prev ns (get-in api [:symbols docname :name-encode]))
+          (urls/api-sym-prev (guess-api-type docname) ns (get-in api [:symbols docname :name-encode]))
           (urls/api-sym ns (get-in api [:symbols docname :name-encode])))
         (if compiler?
           (urls/api-compiler-ns ns)

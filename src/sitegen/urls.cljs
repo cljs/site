@@ -45,7 +45,6 @@
 (def  api-index                             "/api/index.html")
 (defn api-ns          [ns]             (str "/api/" ns "/index.html"))
 (defn api-sym         [ns name-encode] (str "/api/" ns "/" (protect-case name-encode) ".html"))
-(defn api-sym-prev    [ns name-encode] (str (pretty (api-ns ns)) "#" name-encode))
 (defn api-compiler-ns [ns]             (str "/api/compiler/" ns "/index.html"))
 
 (defn api-ns* [api-type ns]
@@ -54,6 +53,9 @@
     :syntax (api-ns ns)
     :compiler (api-compiler-ns ns)
     nil))
+
+(defn api-sym-prev [api-type ns name-encode]
+  (str (pretty (api-ns* api-type ns)) "#" name-encode))
 
 (def ^:dynamic *out-dir* "output")
 (defn write! [url content] (io/spit (str *out-dir* url) content))

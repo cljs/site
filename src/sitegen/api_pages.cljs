@@ -291,7 +291,7 @@
       (interpose " | "
         (for [sym-data main-syms]
           (let [name- (or (:display-as sym-data) (:name sym-data))]
-            [:span [:a {:href (str *root* (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data))))} name- " "]])))
+            [:span [:a {:href (str *root* (urls/pretty (urls/api-sym-prev api-type ns- (:name-encode sym-data))))} name- " "]])))
       (when (seq type-syms)
         (list
           [:div.sep]
@@ -299,7 +299,7 @@
           (interpose " | "
             (for [sym-data type-syms]
               (let [name- (or (:display-as sym-data) (:name sym-data))]
-                [:span [:a {:href (str *root* (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data))))} name- " "]]))))))))
+                [:span [:a {:href (str *root* (urls/pretty (urls/api-sym-prev api-type ns- (:name-encode sym-data))))} name- " "]]))))))))
 
 (defn syntax-ns-preview
   "Preview of the syntax namespace."
@@ -318,7 +318,7 @@
                 (for [sym (:entries category)]
                   (let [sym-data (get-in api [:symbols sym])
                         name- (or (:display-as sym-data) (:name sym-data))]
-                    [:span [:a {:href (str *root* (urls/pretty (urls/api-sym-prev ns- (:name-encode sym-data))))} name- " "]])))]])])))
+                    [:span [:a {:href (str *root* (urls/pretty (urls/api-sym-prev :syntax ns- (:name-encode sym-data))))} name- " "]])))]])])))
 
 (defn index-page-body []
   [:div

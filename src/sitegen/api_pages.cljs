@@ -276,6 +276,15 @@
     (syntax-ns-sidebar)
     (syntax-ns-page-body)))
 
+(defn sym-doc-progress-color
+  "Track documentation progress of a symbol by assigning it a color"
+  [{:keys [summary details examples]}]
+  (if (or summary details)
+    (if examples
+      "progress-green"
+      "progress-yellow")
+    "progress-red"))
+
 (defn ns-preview
   "Preview of a namespace."
   [api-type ns-]
@@ -291,7 +300,8 @@
       (interpose " | "
         (for [sym-data main-syms]
           (let [name- (or (:display-as sym-data) (:name sym-data))]
-            [:span [:a {:href (str *root* (urls/pretty (urls/api-sym-prev api-type ns- (:name-encode sym-data))))} name- " "]])))
+            [:span {:class (sym-doc-progress-color sym-data)}
+              [:a {:href (str *root* (urls/pretty (urls/api-sym-prev api-type ns- (:name-encode sym-data))))} name-]])))
       (when (seq type-syms)
         (list
           [:div.sep]
@@ -299,7 +309,8 @@
           (interpose " | "
             (for [sym-data type-syms]
               (let [name- (or (:display-as sym-data) (:name sym-data))]
-                [:span [:a {:href (str *root* (urls/pretty (urls/api-sym-prev api-type ns- (:name-encode sym-data))))} name- " "]]))))))))
+                [:span {:class (sym-doc-progress-color sym-data)}
+                  [:a {:href (str *root* (urls/pretty (urls/api-sym-prev api-type ns- (:name-encode sym-data))))} name-]]))))))))
 
 (defn syntax-ns-preview
   "Preview of the syntax namespace."
@@ -318,7 +329,8 @@
                 (for [sym (:entries category)]
                   (let [sym-data (get-in api [:symbols sym])
                         name- (or (:display-as sym-data) (:name sym-data))]
-                    [:span [:a {:href (str *root* (urls/pretty (urls/api-sym-prev :syntax ns- (:name-encode sym-data))))} name- " "]])))]])])))
+                    [:span {:class (sym-doc-progress-color sym-data)}
+                      [:a {:href (str *root* (urls/pretty (urls/api-sym-prev :syntax ns- (:name-encode sym-data))))} name-]])))]])])))
 
 (defn index-page-body []
   [:div

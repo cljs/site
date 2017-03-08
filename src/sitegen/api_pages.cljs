@@ -279,11 +279,7 @@
 (defn sym-doc-progress-color
   "Track documentation progress of a symbol by assigning it a color"
   [{:keys [summary details examples]}]
-  (if (or summary details)
-    (if examples
-      "progress-green"
-      "progress-yellow")
-    "progress-red"))
+  (if (or summary details) (if examples "g" "y") "r"))
 
 (defn ns-preview
   "Preview of a namespace."
@@ -334,6 +330,7 @@
 
 (defn index-page-body []
   [:div
+    [:script "if (window.location.hash === '#progress') document.body.className = 'progress';"]
     [:h2 "ClojureScript API"]
     [:p
       "Welcome! This is a comprehensive reference for ClojureScript's"

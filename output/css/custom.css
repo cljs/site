@@ -97,3 +97,13 @@ a.code-link {
   padding: 20px;
   background-color: #F1F7F7;
 }
+
+body.progress .g {
+  background: rgba(0,255,0,0.2);
+}
+body.progress .y {
+  background: rgba(255,255,0,0.2);
+}
+body.progress .r {
+  background: rgba(255,0,0,0.2);
+}

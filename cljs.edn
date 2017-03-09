@@ -6,6 +6,10 @@
                                :main "sitegen.core"
                                :output-to "target/sitegen.js"
                                :optimizations :simple}}
+          :client {:src "src"
+                   :compiler {:main "client.core"
+                              :output-to "output/js/client.js"
+                              :optimizations :advanced}}
           :server {:src "src"
                    :compiler {:target :nodejs
                               :main "server.core"

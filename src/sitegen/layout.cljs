@@ -13,7 +13,8 @@
       [:div.container
         (body-header)
         content
-        (body-footer)]]])
+        (body-footer)]
+      [:script {:src "/js/client.js"}]]])
 
 (defn sidebar-layout [& columns]
   (case (count columns)

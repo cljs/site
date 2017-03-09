@@ -330,7 +330,6 @@
 
 (defn index-page-body []
   [:div
-    [:script "if (window.location.hash === '#progress') document.body.className = 'progress';"]
     [:h2 "ClojureScript API"]
     [:p
       "Welcome! This is a comprehensive reference for ClojureScript's"

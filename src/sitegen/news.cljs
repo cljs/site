@@ -109,6 +109,7 @@
 (defn get-version-additions [version]
   (concat
     (get-in api [:api :syntax :changes version :added])
+    (get-in api [:api :options :changes version :added])
     (get-in api [:api :library :changes version :added])
     (get-in api [:api :compiler :changes version :added])))
 

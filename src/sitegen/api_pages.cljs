@@ -16,6 +16,7 @@
                          hide-lib-ns?
                          lib-namespaces
                          compiler-namespaces
+                         options-namespaces
                          sym-removed?
                          get-ns-symbols
                          type-or-protocol?
@@ -32,6 +33,9 @@
     [:div version]
     [:div.sep]
     [:div [:a {:href (str *root* (urls/pretty (urls/api-ns "syntax")))} (get-in api [:namespaces "syntax" :display-as])]]
+    [:div.sep]
+    (for [ns- (options-namespaces)]
+      [:div [:a {:href (str *root* (urls/pretty (urls/api-ns ns-)))} (get-in api [:namespaces ns- :display-as])]])
     [:div.sep]
     [:div "Namespaces"]
     (for [ns- (lib-namespaces)]
@@ -78,6 +82,16 @@
                   name- (or (:display-as sym) (:name sym))]
               [:div [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
 
+(defn options-ns-sidebar [ns-]
+  (let [title (get-in api [:namespaces ns- :display-as])
+        syms (get-ns-symbols :options ns-)]
+    [:div
+      [:a {:href (str *root* (urls/pretty urls/api-index))} "< Back to Overview"]
+      [:div.sep]
+      (for [sym syms]
+        (let [name- (str ":" (:name sym))]
+          [:div [:a {:href (str "#" (:name-encode sym))} name-]]))]))
+
 ;;---------------------------------------------------------------
 ;; Page Utils
 ;;---------------------------------------------------------------
@@ -123,7 +137,10 @@
       [:em [:strong "MOVED"] ", please see " full-name])
     [:table
       [:tr
-        [:td (:type sym)]
+        [:td (if (= "option" (:type sym))
+               ({"compiler-options" "compiler option"
+                 "repl-options" "repl option"} (:ns sym))
+               (:type sym))]
         [:td (history-string (:history sym))]
         (when-let [{:keys [full-name url]} (:clj-equiv sym)]
           [:td
@@ -216,6 +233,19 @@
         [:div (markdown-with-doc-biblio summary (:md-biblio sym) :preview? true)])
       (sym-fallback-summary sym))])
 
+(defn option-sym-preview
+  "Preview of an option symbol."
+  [sym]
+  [:div {:style "position: relative;"}
+    (let [id (:name sym)]
+      [:div {:id id}
+        [:strong ":" id]])
+    [:div {:style "position: absolute; right: 0; top: 0;"}
+      [:a {:href (str *root* (urls/pretty (urls/api-sym (:ns sym) (:name-encode sym))))} "full details >"]]
+    [:div.sep]
+    (when-let [summary (:summary sym)]
+      [:div (markdown-with-doc-biblio summary (:md-biblio sym) :preview? true)])])
+
 (defn ns-page-body
   [api-type ns-]
   (let [ns-data (get-in api [:namespaces ns-])
@@ -225,7 +255,7 @@
         type-syms (filter type-or-protocol? syms)]
     [:div
       [:h2 title]
-      (when-not (get #{"syntax" "cljs.core"} ns-)
+      (when-not (get #{"cljs.core"} ns-)
         [:div (history-string (:history ns-data))])
       [:div.sep]
       (when-let [details (:details ns-data)]
@@ -275,6 +305,27 @@
   (sidebar-layout
     (syntax-ns-sidebar)
     (syntax-ns-page-body)))
+
+(defn options-ns-page-body [ns-]
+  (let [ns-data (get-in api [:namespaces ns-])
+        title (or (:display-as ns-data) ns-)
+        syms (get-ns-symbols :options ns-)]
+    [:div
+      [:h2 title]
+      [:div.sep]
+      (when-let [details (:details ns-data)]
+        [:div (markdown-with-doc-biblio details (:md-biblio ns-data) :preview? true)])
+      [:hr]
+      (interpose [:hr]
+        (for [sym syms]
+          (option-sym-preview sym)))]))
+
+(defn options-ns-page
+  "Full view of the options namespace."
+  [ns-]
+  (sidebar-layout
+    (options-ns-sidebar ns-)
+    (options-ns-page-body ns-)))
 
 (defn sym-doc-progress-color
   "Track documentation progress of a symbol by assigning it a color"
@@ -328,6 +379,20 @@
                     [:span {:class (sym-doc-progress-color sym-data)}
                       [:a {:href (str *root* (urls/pretty (urls/api-sym-prev :syntax ns- (:name-encode sym-data))))} name-]])))]])])))
 
+(defn options-ns-preview
+  "Preview of the options namespace."
+  [ns-]
+  (let [ns-data (get-in api [:namespaces ns-])
+        title (or (:display-as ns-data) ns-)
+        syms (get-ns-symbols :options ns-)]
+    (list
+      [:h4 [:a {:href (str *root* (urls/pretty (urls/api-ns ns-)))} title]]
+      (interpose " | "
+        (for [sym-data syms]
+          (let [name- (str ":" (:name sym-data))]
+            [:span {:class (sym-doc-progress-color sym-data)}
+                [:a {:href (str *root* (urls/pretty (urls/api-sym-prev :options ns- (:name-encode sym-data))))} name-]]))))))
+
 (defn index-page-body []
   [:div
     [:h2 "ClojureScript API"]
@@ -353,6 +418,10 @@
     [:hr]
     (syntax-ns-preview)
     [:hr]
+    (interpose [:hr]
+      (for [ns- (options-namespaces)]
+        (options-ns-preview ns-)))
+    [:hr]
     [:h2 "Namespaces"]
     (interpose [:hr]
       (for [ns- (lib-namespaces)]
@@ -377,9 +446,10 @@
 (defn create-ns-page! [api-type ns-]
   (let [filename (urls/api-ns* api-type ns-)]
     (urls/make-dir! filename)
-    (let [page (if (= ns- "syntax")
-                 (syntax-ns-page)
-                 (ns-page api-type ns-))]
+    (let [page (cond
+                 (= ns- "syntax") (syntax-ns-page)
+                 (= api-type :options) (options-ns-page ns-)
+                 :else (ns-page api-type ns-))]
       (->> page
            (common-layout {:head {:title (str "CLJS - " ns-)}})
            (hiccup/render)
@@ -395,7 +465,7 @@
   (doseq [ns (keys (:namespaces api))]
     (urls/make-dir! (urls/api-ns ns)))
 
-  (doseq [api-type [:syntax :library :compiler]]
+  (doseq [api-type [:syntax :options :library :compiler]]
     (doseq [ns- (get-in api [:api api-type :namespace-names])]
       (create-ns-page! api-type ns-)))
 

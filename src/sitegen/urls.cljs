@@ -51,6 +51,7 @@
   (case api-type
     :library (api-ns ns)
     :syntax (api-ns ns)
+    :options (api-ns ns)
     :compiler (api-compiler-ns ns)
     nil))
 

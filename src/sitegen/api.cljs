@@ -81,14 +81,9 @@
 ;;---------------------------------------------------------------
 
 (defn hide-lib-ns? [ns-]
-  (let [ns-data (get-in api [:namespaces ns-])]
-    (or
-      ;; pseudo-namespaces our handled manually (syntax)
-      (:pseudo-ns? ns-data) ;; we handle these manually
-
-      ;; clojure.browser is basically deprecated, so we don't show it.
-      ;; https://groups.google.com/d/msg/clojurescript/OqkjlpqKSQY/9wVGC5wFjcAJ
-      (string/starts-with? ns- "clojure.browser"))))
+  ;; clojure.browser is basically deprecated, so we don't show it.
+  ;; https://groups.google.com/d/msg/clojurescript/OqkjlpqKSQY/9wVGC5wFjcAJ
+  (string/starts-with? ns- "clojure.browser"))
 
 (defn lib-namespaces []
   (->> api :api :library :namespace-names
@@ -97,6 +92,10 @@
 
 (defn compiler-namespaces []
   (->> api :api :compiler :namespace-names
+       (sort)))
+
+(defn options-namespaces []
+  (->> api :api :options :namespace-names
        (sort)))
 
 (defn sym-removed? [sym-data]
@@ -135,7 +134,7 @@
   "cljs.core/foo can either be from the library and/or compiler API.  In some contexts,
    we cannot determine which, so we favor the library API."
   [full-name]
-  (first (filter #(get-in api [:api % :symbol-names full-name]) [:library :compiler :syntax])))
+  (first (filter #(get-in api [:api % :symbol-names full-name]) [:library :compiler :syntax :options])))
 
 (defn docname-url
   [docname & {:keys [preview?]}]

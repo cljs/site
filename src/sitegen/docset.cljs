@@ -51,7 +51,8 @@
    "binding"             "Builtin"
    "special character"   "Builtin"
    "convention"          "Style"
-   "multimethod"         "Method"})
+   "multimethod"         "Method"
+   "option"              "Option"})
 
 (defn docset-entries []
   (binding [urls/*case-sensitive* false]
@@ -76,7 +77,9 @@
 
         ;; Symbols
         (for [sym (vals (:symbols api))]
-          {:$name (or (:display-as sym) (:name sym))
+          {:$name (if (= "option" (:type sym))
+                    (str ":" (:name sym))
+                    (or (:display-as sym) (:name sym)))
            :$type (type->dash (:type sym))
            :$path (urls/api-sym (:ns sym) (:name-encode sym))})))))
 
@@ -159,9 +162,10 @@
   (let [url (urls/api-ns* api-type ns-)]
     (urls/make-dir! url)
     (binding [*root* (urls/get-root url)]
-      (let [page (if (= ns- "syntax")
-                   (api-pages/syntax-ns-page-body)
-                   (api-pages/ns-page-body api-type ns-))]
+      (let [page (cond
+                   (= ns- "syntax") (api-pages/syntax-ns-page)
+                   (= api-type :options) (api-pages/options-ns-page ns-)
+                   :else (api-pages/ns-page api-type ns-))]
         (->> page
              (docset-layout {:head {:title (str "CLJS - " ns-)}})
              (hiccup/render)
@@ -189,7 +193,7 @@
     (doseq [post news/posts]
       (create-news-page! post))
 
-    (doseq [api-type [:syntax :library :compiler]]
+    (doseq [api-type [:syntax :options :library :compiler]]
       (doseq [ns- (get-in api [:api api-type :namespace-names])]
         (create-ns-page! api-type ns-)))
     (doseq [sym (vals (:symbols api))]

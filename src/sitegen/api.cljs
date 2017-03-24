@@ -157,8 +157,8 @@
           repl-only? (str name " (repl)")
           (= ns "cljs.core") name
           (= ns "syntax") display-as
-          (= ns "compiler-options") (str ":" name)
-          (= ns "repl-options") (str ":" name)
+          (= ns "compiler-options") display-as
+          (= ns "repl-options") display-as
           :else docname))
       (if compiler?
         (str ns " (compiler)")

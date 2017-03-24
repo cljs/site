@@ -77,9 +77,7 @@
 
         ;; Symbols
         (for [sym (vals (:symbols api))]
-          {:$name (if (= "option" (:type sym))
-                    (str ":" (:name sym))
-                    (or (:display-as sym) (:name sym)))
+          {:$name (or (:display-as sym) (:name sym))
            :$type (type->dash (:type sym))
            :$path (urls/api-sym (:ns sym) (:name-encode sym))})))))
 

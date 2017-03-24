@@ -89,7 +89,7 @@
       [:a {:href (str *root* (urls/pretty urls/api-index))} "< Back to Overview"]
       [:div.sep]
       (for [sym syms]
-        (let [name- (str ":" (:name sym))]
+        (let [name- (:display-as sym)]
           [:div [:a {:href (str "#" (:name-encode sym))} name-]]))]))
 
 ;;---------------------------------------------------------------
@@ -389,7 +389,7 @@
       [:h4 [:a {:href (str *root* (urls/pretty (urls/api-ns ns-)))} title]]
       (interpose " | "
         (for [sym-data syms]
-          (let [name- (str ":" (:name sym-data))]
+          (let [name- (:display-as sym-data)]
             [:span {:class (sym-doc-progress-color sym-data)}
                 [:a {:href (str *root* (urls/pretty (urls/api-sym-prev :options ns- (:name-encode sym-data))))} name-]]))))))
 

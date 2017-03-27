@@ -24,6 +24,11 @@
                          docname-display
                          categories]]))
 
+(defn sym-doc-progress-color
+  "Track documentation progress of a symbol by assigning it a color"
+  [{:keys [summary details examples]}]
+  (if (or summary details) (if examples "g" "y") "r"))
+
 ;;---------------------------------------------------------------
 ;; Sidebar Rendering
 ;;---------------------------------------------------------------
@@ -55,7 +60,8 @@
       [:div.sep]
       (for [sym main-syms]
         (let [name- (or (:display-as sym) (:name sym))]
-          [:div [:a {:href (str "#" (:name-encode sym))} name-]]))
+          [:div {:class (sym-doc-progress-color sym)}
+            [:a {:href (str "#" (:name-encode sym))} name-]]))
       (when (seq type-syms)
         (list
           [:div.sep]
@@ -65,7 +71,7 @@
                   name- (if parent-type
                           (subs (:name sym) (inc (count parent-type)))
                           (or (:display-as sym) (:name sym)))]
-              [:div
+              [:div {:class (sym-doc-progress-color sym)}
                 [:span {:style "opacity: 0.3"} (when parent-type "└")]
                 [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
 
@@ -80,7 +86,8 @@
           (for [full-name (:entries category)]
             (let [sym (get-in api [:symbols full-name])
                   name- (or (:display-as sym) (:name sym))]
-              [:div [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
+              [:div {:class (sym-doc-progress-color sym)}
+                [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
 
 (defn options-ns-sidebar [ns-]
   (let [title (get-in api [:namespaces ns- :display-as])
@@ -90,7 +97,8 @@
       [:div.sep]
       (for [sym syms]
         (let [name- (:display-as sym)]
-          [:div [:a {:href (str "#" (:name-encode sym))} name-]]))]))
+          [:div {:class (sym-doc-progress-color sym)}
+            [:a {:href (str "#" (:name-encode sym))} name-]]))]))
 
 ;;---------------------------------------------------------------
 ;; Page Utils
@@ -130,7 +138,8 @@
   "Full view of a symbol."
   [sym]
   [:div
-    [:h1 (docname-display (:full-name sym))]
+    [:h1 {:class (sym-doc-progress-color sym)}
+      (docname-display (:full-name sym))]
     (when-let [name (:known-as sym)]
       [:em "known as " name])
     (when-let [full-name (:moved sym)]
@@ -220,8 +229,8 @@
   [:div {:style "position: relative;"}
     (let [id (:name-encode sym)
           title (or (:display-as sym) (:name sym))]
-      [:div {:id id}
-        [:strong title]
+      [:div {:id id :class (sym-doc-progress-color sym)}
+        [:strong  title]
         (when-let [name (:known-as sym)]
           [:em "- known as " name])
         " - " (:type sym)])
@@ -238,7 +247,7 @@
   [sym]
   [:div {:style "position: relative;"}
     (let [id (:name sym)]
-      [:div {:id id}
+      [:div {:id id :class (sym-doc-progress-color sym)}
         [:strong ":" id]])
     [:div {:style "position: absolute; right: 0; top: 0;"}
       [:a {:href (str *root* (urls/pretty (urls/api-sym (:ns sym) (:name-encode sym))))} "full details >"]]
@@ -326,11 +335,6 @@
   (sidebar-layout
     (options-ns-sidebar ns-)
     (options-ns-page-body ns-)))
-
-(defn sym-doc-progress-color
-  "Track documentation progress of a symbol by assigning it a color"
-  [{:keys [summary details examples]}]
-  (if (or summary details) (if examples "g" "y") "r"))
 
 (defn ns-preview
   "Preview of a namespace."

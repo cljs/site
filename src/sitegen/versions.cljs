@@ -65,7 +65,7 @@
 
 (defn create-versions-page! []
   (->> (versions-page)
-       (common-layout nil)
+       (common-layout {:head {:title "CLJS Versions"}})
        (hiccup/render)
        (urls/write! urls/versions)))
 

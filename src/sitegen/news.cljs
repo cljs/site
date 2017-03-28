@@ -171,14 +171,14 @@
 
 (defn create-index-page! []
   (->> (post-page (last posts))
-       (common-layout nil)
+       (common-layout {:head {:title (str "CLJS News")}})
        (hiccup/render)
        (urls/write! urls/news-index)))
 
 (defn create-post-pages! []
   (doseq [post posts]
     (->> (post-page post)
-         (common-layout nil)
+         (common-layout {:head {:title (str "CLJS - " (:version post))}})
          (hiccup/render)
          (urls/write! (:url post)))))
 

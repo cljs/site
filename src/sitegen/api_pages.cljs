@@ -453,9 +453,10 @@
     (let [page (cond
                  (= ns- "syntax") (syntax-ns-page)
                  (= api-type :options) (options-ns-page ns-)
-                 :else (ns-page api-type ns-))]
+                 :else (ns-page api-type ns-))
+          title (or (get-in api [:namespaces ns- :display-as]) ns-)]
       (->> page
-           (common-layout {:head {:title (str "CLJS - " ns-)}})
+           (common-layout {:head {:title (str "CLJS - " title)}})
            (hiccup/render)
            (urls/write! filename)))))
 

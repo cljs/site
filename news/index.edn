@@ -355,4 +355,9 @@
   :version "1.9.494"
   :author "David Nolen"
   :title "another bugfix release"
-  :google-group-msg "clojurescript/cw3bQL-FsUA/CWICRwKyAAAJ"}]
+  :google-group-msg "clojurescript/cw3bQL-FsUA/CWICRwKyAAAJ"}
+ {:date "2017-04-12"
+  :version "1.9.518"
+  :author "David Nolen"
+  :title "`async` issue resolved"
+  :google-group-msg "clojurescript/c_9LafTpS4g/xkZGIYPMBwAJ"}]

@@ -183,14 +183,14 @@
         [:hr]))
     (when-let [details (:details sym)]
       (list
-         [:h3 "Details:"]
+        [:h3 "Details:"]
         [:div (markdown-with-doc-biblio details (:md-biblio sym))]
         [:hr]))
     (when-let [examples (:examples sym)]
-       (list
-         [:h3 "Examples:"]
-         [:div (markdown-with-doc-biblio examples (:md-biblio sym))]
-         [:hr]))
+      (list
+        [:h3 "Examples:"]
+        [:div (markdown-with-doc-biblio examples (:md-biblio sym))]
+        [:hr]))
     (when-let [see-also (seq (:see-also sym))]
       (list
         [:h3 "See Also:"]

@@ -131,6 +131,28 @@
           (str "[doc:" docname "]:" (str *root* (docname-url docname :preview? preview?))))))))
 
 ;;---------------------------------------------------------------
+;; Warnings
+;;---------------------------------------------------------------
+
+(def warnings-option->pseudo-ns
+  "All the specific warning types for an warning option are listed in a pseudo-ns."
+  {"compiler-options/warnings"         "warnings"
+   "compiler-options/closure-warnings" "closure-warnings"})
+
+(defn warning-symbols
+  "Get all the warning symbols for the given warning option."
+  [option-sym]
+  (let [ns- (warnings-option->pseudo-ns (:full-name option-sym))
+        syms (get-ns-symbols :options ns-)]
+    syms))
+
+(defn warnings-list
+  "Get a markdown list of warning keys that can be used for this warning option"
+  [option-sym]
+  (let [syms (warning-symbols option-sym)]
+    nil))
+
+;;---------------------------------------------------------------
 ;; Pages
 ;;---------------------------------------------------------------
 

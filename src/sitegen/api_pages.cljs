@@ -190,8 +190,8 @@
       (list
         [:h3 "Options:"]
         [:ul
-          (for [sym (get-ns-symbols :options sub-options-ns)]
-            [:li [:code (str ":" (:name sym))]])]
+          (for [opt (get-ns-symbols :options sub-options-ns)]
+            [:li [:code (str ":" (:name opt))]])]
         [:hr]))
     (when-let [examples (:examples sym)]
       (list

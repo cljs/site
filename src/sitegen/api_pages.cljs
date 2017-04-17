@@ -131,28 +131,6 @@
           (str "[doc:" docname "]:" (str *root* (docname-url docname :preview? preview?))))))))
 
 ;;---------------------------------------------------------------
-;; Warnings
-;;---------------------------------------------------------------
-
-(def warnings-option->pseudo-ns
-  "All the specific warning types for an warning option are listed in a pseudo-ns."
-  {"compiler-options/warnings"         "warnings"
-   "compiler-options/closure-warnings" "closure-warnings"})
-
-(defn warning-symbols
-  "Get all the warning symbols for the given warning option."
-  [option-sym]
-  (let [ns- (warnings-option->pseudo-ns (:full-name option-sym))
-        syms (get-ns-symbols :options ns-)]
-    syms))
-
-(defn warnings-list
-  "Get a markdown list of warning keys that can be used for this warning option"
-  [option-sym]
-  (let [syms (warning-symbols option-sym)]
-    nil))
-
-;;---------------------------------------------------------------
 ;; Pages
 ;;---------------------------------------------------------------
 
@@ -207,6 +185,13 @@
       (list
         [:h3 "Details:"]
         [:div (markdown-with-doc-biblio details (:md-biblio sym))]
+        [:hr]))
+    (when-let [sub-options-ns (:sub-options-ns sym)]
+      (list
+        [:h3 "Options:"]
+        [:ul
+          (for [sym (get-ns-symbols :options sub-options-ns)]
+            [:li [:code (str ":" (:name sym))]])]
         [:hr]))
     (when-let [examples (:examples sym)]
       (list
@@ -488,18 +473,26 @@
        (hiccup/render)
        (urls/write! urls/api-index)))
 
+(defn render-ns? [ns-]
+  (not (get-in api [:namespaces ns- :sub-options-ns])))
+
+(defn render-sym? [sym]
+  (render-ns? (:ns sym)))
+
 (defn render! []
-  (doseq [ns (keys (:namespaces api))]
-    (urls/make-dir! (urls/api-ns ns)))
+  (doseq [ns- (keys (:namespaces api))
+          :when (render-ns? ns-)]
+      (urls/make-dir! (urls/api-ns ns-)))
 
   (doseq [api-type [:syntax :options :library :compiler]]
-    (doseq [ns- (get-in api [:api api-type :namespace-names])]
+    (doseq [ns- (get-in api [:api api-type :namespace-names])
+            :when (render-ns? ns-)]
       (create-ns-page! api-type ns-)))
 
   (let [syms (->> (vals (:symbols api))
                   (sort-by :full-name))]
     (create-index-page!)
-    (doseq [sym syms]
+    (doseq [sym syms :when (render-sym? sym)]
       (console/replace-line "Creating page for" (:full-name sym))
       (create-sym-page! sym))
     (console/replace-line "Done creating API pages."))

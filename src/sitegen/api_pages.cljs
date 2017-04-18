@@ -474,7 +474,7 @@
        (urls/write! urls/api-index)))
 
 (defn ns-has-page? [ns-]
-  (not (get-in api [:namespaces ns- :sub-options-ns?])))
+  (not (get-in api [:namespaces ns- :sub-options-sym])))
 
 (defn sym-has-page? [sym]
   (ns-has-page? (:ns sym)))

@@ -96,7 +96,7 @@
 
 (defn options-namespaces []
   (->> (get-in api [:api :options :namespace-names])
-       (remove #(get-in api [:namespaces % :sub-options-ns?]))
+       (remove #(get-in api [:namespaces % :sub-options-sym]))
        (sort)))
 
 (defn sym-removed? [sym-data]

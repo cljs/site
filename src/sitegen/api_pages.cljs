@@ -473,26 +473,26 @@
        (hiccup/render)
        (urls/write! urls/api-index)))
 
-(defn render-ns? [ns-]
-  (not (get-in api [:namespaces ns- :sub-options-ns])))
+(defn ns-has-page? [ns-]
+  (not (get-in api [:namespaces ns- :sub-options-ns?])))
 
-(defn render-sym? [sym]
-  (render-ns? (:ns sym)))
+(defn sym-has-page? [sym]
+  (ns-has-page? (:ns sym)))
 
 (defn render! []
   (doseq [ns- (keys (:namespaces api))
-          :when (render-ns? ns-)]
+          :when (ns-has-page? ns-)]
       (urls/make-dir! (urls/api-ns ns-)))
 
   (doseq [api-type [:syntax :options :library :compiler]]
     (doseq [ns- (get-in api [:api api-type :namespace-names])
-            :when (render-ns? ns-)]
+            :when (ns-has-page? ns-)]
       (create-ns-page! api-type ns-)))
 
   (let [syms (->> (vals (:symbols api))
                   (sort-by :full-name))]
     (create-index-page!)
-    (doseq [sym syms :when (render-sym? sym)]
+    (doseq [sym syms :when (sym-has-page? sym)]
       (console/replace-line "Creating page for" (:full-name sym))
       (create-sym-page! sym))
     (console/replace-line "Done creating API pages."))

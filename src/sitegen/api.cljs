@@ -86,16 +86,17 @@
   (string/starts-with? ns- "clojure.browser"))
 
 (defn lib-namespaces []
-  (->> api :api :library :namespace-names
+  (->> (get-in api [:api :library :namespace-names])
        (filter (comp not hide-lib-ns?))
        (sort)))
 
 (defn compiler-namespaces []
-  (->> api :api :compiler :namespace-names
+  (->> (get-in api [:api :compiler :namespace-names])
        (sort)))
 
 (defn options-namespaces []
-  (->> api :api :options :namespace-names
+  (->> (get-in api [:api :options :namespace-names])
+       (remove #(get-in api [:namespaces % :sub-options-ns?]))
        (sort)))
 
 (defn sym-removed? [sym-data]

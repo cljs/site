@@ -52,7 +52,8 @@
    "special character"   "Builtin"
    "convention"          "Style"
    "multimethod"         "Method"
-   "option"              "Option"})
+   "option"              "Option"
+   "warning"             "Error"})
 
 (defn docset-entries []
   (binding [urls/*case-sensitive* false]

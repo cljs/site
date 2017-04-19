@@ -156,7 +156,7 @@
           (urls/api-ns ns))))))
 
 (defn docname-display
-  [docname]
+  [docname & {:keys [prefer-docname?]}]
   (let [{:keys [ns name compiler?]} (parse-docname docname)]
     (if name
       (let [{:keys [repl-only? display-as]} (get-in api [:symbols docname])]
@@ -164,6 +164,7 @@
           repl-only? (str name " (repl)")
           (= ns "cljs.core") name
           (= ns "syntax") display-as
+          prefer-docname? docname
           (= ns "compiler-options") display-as
           (= ns "repl-options") display-as
           (= ns "warnings") display-as

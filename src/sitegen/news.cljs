@@ -136,7 +136,7 @@
           [:ul
             (for [docname additions]
               [:li [:a {:href (str *root* (api/docname-url docname))}
-                     (api/docname-display docname)]])]]))])
+                     (api/docname-display docname :prefer-docname? true)]])]]))])
 
 
 

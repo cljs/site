@@ -142,6 +142,8 @@
       [:div {:id id :class (sym-doc-progress-color sym)}
         [:strong (str ":" id)]])
     [:div {:style "position: absolute; right: 0; top: 0;"}
+      [:span {:style "opacity:0.3"} (history-string (:history sym))]
+      " | "
       [:a {:href (:edit-url sym)} "Edit"]]
     [:div.sep]
     (when-let [summary (:summary sym)]

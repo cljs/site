@@ -134,6 +134,19 @@
 ;; Pages
 ;;---------------------------------------------------------------
 
+(defn sub-option-preview
+  "The only view for a sub-option symbol is a preview."
+  [sym]
+  [:div {:style "position: relative;"}
+    (let [id (:name sym)]
+      [:div {:id id :class (sym-doc-progress-color sym)}
+        [:strong (str ":" id)]])
+    [:div {:style "position: absolute; right: 0; top: 0;"}
+      [:a {:href (:edit-url sym)} "Edit"]]
+    [:div.sep]
+    (when-let [summary (:summary sym)]
+      [:div (markdown-with-doc-biblio summary (:md-biblio sym))])])
+
 (defn sym-page
   "Full view of a symbol."
   [sym]
@@ -189,9 +202,9 @@
     (when-let [sub-options-ns (:sub-options-ns sym)]
       (list
         [:h3 "Options:"]
-        [:ul
+        (interpose [:hr]
           (for [opt (get-ns-symbols :options sub-options-ns)]
-            [:li [:code (str ":" (:name opt))]])]
+            (sub-option-preview opt)))
         [:hr]))
     (when-let [examples (:examples sym)]
       (list

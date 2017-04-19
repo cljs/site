@@ -120,12 +120,16 @@
 ;; Docname Utilities
 ;;---------------------------------------------------------------
 
+(defn split-symbol [sym]
+  (when sym
+    ((juxt namespace name) (symbol sym))))
+
 (defn parse-docname
   "foo/bar      <-- normal symbol
    foo          <-- namespace `foo`
    compiler/foo <-- compiler namespace `foo`"
   [docname]
-  (let [[a b] ((juxt namespace name) (symbol docname))]
+  (let [[a b] (split-symbol docname)]
     (cond
       (= a "compiler") {:compiler? true, :ns a}
       (nil? a)         {:ns b}
@@ -142,9 +146,11 @@
   (let [{:keys [ns name compiler?]} (parse-docname docname)]
     (urls/pretty
       (if name
-        (if preview?
-          (urls/api-sym-prev (guess-api-type docname) ns (get-in api [:symbols docname :name-encode]))
-          (urls/api-sym ns (get-in api [:symbols docname :name-encode])))
+        (if-let [sub-opt (get-in api [:symbols (get-in api [:namespaces ns :sub-options-sym])])]
+          (str (urls/api-sym (:ns sub-opt) (:name-encode sub-opt)) "#" name)
+          (if preview?
+            (urls/api-sym-prev (guess-api-type docname) ns (get-in api [:symbols docname :name-encode]))
+            (urls/api-sym ns (get-in api [:symbols docname :name-encode]))))
         (if compiler?
           (urls/api-compiler-ns ns)
           (urls/api-ns ns))))))
@@ -160,6 +166,8 @@
           (= ns "syntax") display-as
           (= ns "compiler-options") display-as
           (= ns "repl-options") display-as
+          (= ns "warnings") display-as
+          (= ns "closure-warnings") display-as
           :else docname))
       (if compiler?
         (str ns " (compiler)")

@@ -27,8 +27,8 @@
 (defn pretty [url]
   (if *pretty-links*
     (-> url
-        (string/replace #"/index\.html$" "")
-        (string/replace #"\.html$" ""))
+        (string/replace #"/index\.html" "")
+        (string/replace #"\.html" ""))
     url))
 
 (def  home                                  "/index.html")

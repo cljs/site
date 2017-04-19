@@ -185,7 +185,8 @@
                          :valign "middle"}]
                   " in clojure"]])
             (when edn-url
-              [:td [:a {:href edn-url} " in edn"]])))]]
+              [:td [:a {:href edn-url} " in edn"]])))
+        [:td [:a {:href (:edit-url sym)} "Edit"]]]]
 
     (when-let [usage (seq (:usage sym))]
       (list
@@ -229,10 +230,7 @@
       (sym-source source))
     (when-let [extra-sources (seq (:extra-sources sym))]
       (for [source extra-sources]
-        (sym-source source)))
-
-    [:div
-      [:a {:href (:edit-url sym)} "Edit Here!"]]])
+        (sym-source source)))])
 
 (defn sym-fallback-summary
   "If a symbol has no summary, we create one using Usage and Docstring."

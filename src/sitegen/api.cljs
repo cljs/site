@@ -80,6 +80,9 @@
 ;; Namespace Utilities
 ;;---------------------------------------------------------------
 
+(defn removed? [sym-data]
+  (= "-" (first (last (:history sym-data)))))
+
 (defn hide-lib-ns? [ns-]
   ;; clojure.browser is basically deprecated, so we don't show it.
   ;; https://groups.google.com/d/msg/clojurescript/OqkjlpqKSQY/9wVGC5wFjcAJ
@@ -87,7 +90,10 @@
 
 (defn lib-namespaces []
   (->> (get-in api [:api :library :namespace-names])
-       (filter (comp not hide-lib-ns?))
+       (remove hide-lib-ns?)
+       (map #(get-in api [:namespaces %]))
+       (remove removed?)
+       (map :ns)
        (sort)))
 
 (defn compiler-namespaces []
@@ -99,15 +105,12 @@
        (remove #(get-in api [:namespaces % :sub-options-sym]))
        (sort)))
 
-(defn sym-removed? [sym-data]
-  (= "-" (first (last (:history sym-data)))))
-
 (defn get-ns-symbols [api-type ns-]
   (let [syms
         (->> (get-in api [:api api-type :symbol-names])
              (filter #(string/starts-with? % (str ns- "/")))
              (map #(get-in api [:symbols %]))
-             (remove sym-removed?))]
+             (remove removed?))]
     (if (= "syntax" ns-)
       (sort-by #(string/replace (string/upper-case (:name %)) #"[^a-zA-Z ]" "") syms)
       (sort-by :name syms))))

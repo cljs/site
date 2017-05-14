@@ -17,7 +17,6 @@
                          lib-namespaces
                          compiler-namespaces
                          options-namespaces
-                         sym-removed?
                          get-ns-symbols
                          type-or-protocol?
                          docname-url

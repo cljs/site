@@ -14,6 +14,10 @@
 (def version nil)
 (def version-has-news-post? nil)
 
+(defn get-item [full-name]
+  (or (get-in api [:symbols full-name])
+      (get-in api [:namespaces full-name])))
+
 (defn master-version? [v]
   (string/ends-with? v "+"))
 

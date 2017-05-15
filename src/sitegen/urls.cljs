@@ -47,6 +47,12 @@
 (defn api-sym         [ns name-encode] (str "/api/" ns "/" (protect-case name-encode) ".html"))
 (defn api-compiler-ns [ns]             (str "/api/compiler/" ns "/index.html"))
 
+(defn api-item
+  [{:keys [ns name-encode type]}]
+  (if (= type "namespace")
+    (api-ns ns)
+    (api-sym ns name-encode)))
+
 (defn api-ns* [api-type ns]
   (case api-type
     :library (api-ns ns)

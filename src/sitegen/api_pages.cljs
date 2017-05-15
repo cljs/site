@@ -10,6 +10,7 @@
     [sitegen.layout :refer [common-layout sidebar-layout]]
     [sitegen.state :refer [*docset?*]]
     [sitegen.api :refer [api
+                         get-item
                          master-version?
                          version
                          version-has-news-post?
@@ -103,12 +104,18 @@
 ;; Page Utils
 ;;---------------------------------------------------------------
 
-(defn history-string [history]
-  (let [change-str {"-" "Removed in "
-                    "+" "Added in "}]
-    (string/join ", "
-      (for [[change version] history]
-        (str (change-str change) version)))))
+(defn history-block
+  [{:keys [history moved-from] :as item}]
+  (for [[change version] (reverse history)]
+    (case change
+      "+" (if moved-from
+            (list
+              "previously "
+              [:a {:href (urls/pretty (urls/api-item (get-item moved-from)))} moved-from])
+            (if (= 1 (count history))
+              (str "since v" version)
+              (str "added v" version)))
+      "-" (str "removed v" version))))
 
 (defn sym-source
   [{:keys [title code repo filename] :as source}]
@@ -141,7 +148,7 @@
       [:div {:id id :class (sym-doc-progress-color sym)}
         [:strong (str ":" id)]])
     [:div {:style "position: absolute; right: 0; top: 0;"}
-      [:span {:style "opacity:0.3"} (history-string (:history sym))]
+      [:span {:style "opacity:0.3"} (interpose ", " (history-block sym))]
       " | "
       [:a {:href (:edit-url sym)} "Edit"]]
     [:div.sep]
@@ -153,18 +160,22 @@
   [sym]
   [:div
     [:h1 {:class (sym-doc-progress-color sym)}
-      (docname-display (:full-name sym))]
+      (cond->> (docname-display (:full-name sym))
+        (:removed sym) (vector :s))]
     (when-let [name (:known-as sym)]
       [:em "known as " name])
-    (when-let [full-name (:moved sym)]
-      [:em [:strong "MOVED"] ", please see " full-name])
+    (when-let [moved-to (:moved-to sym)]
+      [:div
+        [:em [:strong "MOVED"] ", please see "
+          [:a {:href (urls/pretty (urls/api-item (get-item moved-to)))} moved-to]]])
     [:table
       [:tr
         [:td (if (= "option" (:type sym))
                ({"compiler-options" "compiler option"
                  "repl-options" "repl option"} (:ns sym))
                (:type sym))]
-        [:td (history-string (:history sym))]
+        (for [h (history-block sym)]
+          [:td h])
         (when-let [{:keys [full-name url]} (:clj-equiv sym)]
           [:td
             (when (= "clojure" (-> sym :source :repo))
@@ -282,9 +293,15 @@
         main-syms (remove type-or-protocol? syms)
         type-syms (filter type-or-protocol? syms)]
     [:div
-      [:h2 title]
+      [:h2
+        (cond->> title
+          (:removed ns-data) (vector :s))]
+      (when-let [moved-to (:moved-to ns-data)]
+        [:div
+          [:em [:strong "MOVED"] ", please see "
+            [:a {:href (urls/pretty (urls/api-item (get-item moved-to)))} moved-to]]])
       (when-not (get #{"cljs.core"} ns-)
-        [:div (history-string (:history ns-data))])
+        [:div (interpose [:br] (history-block ns-data))])
       [:div.sep]
       (when-let [details (:details ns-data)]
         [:div (markdown-with-doc-biblio details (:md-biblio ns-data) :preview? true)])

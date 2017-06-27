@@ -370,4 +370,9 @@
   :version "1.9.562"
   :author "David Nolen"
   :title "Clojure 1.9.0-alpha17 parity"
-  :google-group-msg "clojurescript/moj4RqYLe0s/d2hZonClBwAJ"}]
+  :google-group-msg "clojurescript/moj4RqYLe0s/d2hZonClBwAJ"}
+ {:date "2017-06-27"
+  :version "1.9.660"
+  :author "David Nolen"
+  :title "compiler performance, runtime performance, cljs.spec fixes"
+  :google-group-msg "clojurescript/GGxwZgUetLE/fHfRQH1mAAAJ"}]

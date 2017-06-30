@@ -375,4 +375,9 @@
   :version "1.9.660"
   :author "David Nolen"
   :title "compiler performance, runtime performance, cljs.spec fixes"
-  :google-group-msg "clojurescript/GGxwZgUetLE/fHfRQH1mAAAJ"}]
+  :google-group-msg "clojurescript/GGxwZgUetLE/fHfRQH1mAAAJ"}
+ {:date "2017-06-30"
+  :version "1.9.671"
+  :author "David Nolen"
+  :title "bugfix release"
+  :google-group-msg "clojurescript/gihtDcPEptg/dMO1d-OPBgAJ"}]

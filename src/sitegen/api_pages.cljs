@@ -479,7 +479,8 @@
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)
-       (common-layout {:head {:title (str "CLJS - " (docname-display (:full-name sym)))}})
+       (common-layout {:head {:title (str "CLJS - " (docname-display (:full-name sym)))}
+                       :interactive true})
        (hiccup/render)
        (urls/write! (urls/api-sym ns name-encode))))
 

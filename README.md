@@ -39,6 +39,13 @@ $ cljs watch sitegen
 $ node target/sitegen.js
 ```
 
+Build client-side code:
+
+```
+$ cljs watch client
+$ cljs watch interactive
+```
+
 To publish the site to the [GitHub Pages deployment repo](https://github.com/cljs/cljs.github.io):
 
 ```

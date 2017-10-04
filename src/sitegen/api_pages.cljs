@@ -163,7 +163,7 @@
       (cond->> (docname-display (:full-name sym))
         (:removed sym) (vector :s))]
     (when-let [name (:known-as sym)]
-      [:em "known as " name])
+      [:em "known as \"" name "\""])
     (when-let [moved-to (:moved-to sym)]
       [:div
         [:em [:strong "MOVED"] ", please see "
@@ -260,9 +260,9 @@
     (let [id (:name-encode sym)
           title (or (:display-as sym) (:name sym))]
       [:div {:id id :class (sym-doc-progress-color sym)}
-        [:strong  title]
+        [:strong title]
         (when-let [name (:known-as sym)]
-          [:em "- known as " name])
+          [:em "- \"" name "\""])
         " - " (:type sym)])
     [:div {:style "position: absolute; right: 0; top: 0;"}
       [:a {:href (str *root* (urls/pretty (urls/api-sym (:ns sym) (:name-encode sym))))} "full details >"]]

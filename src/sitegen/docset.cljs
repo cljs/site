@@ -47,6 +47,7 @@
    "tagged literal"      "Tag"
    "syntax"              "Operator"  ;; <-- Pending "Syntax"
    "special symbol"      "Constant"
+   "symbolic value"      "Constant"
    "special namespace"   "Namespace"
    "binding"             "Builtin"
    "special character"   "Builtin"

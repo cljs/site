@@ -7,9 +7,10 @@
                               "symbol"]}
  {:title "Special Symbols" :entries ["true"
                                      "false"
-                                     "nil"
-                                     "NaN"
-                                     "Infinity"]}
+                                     "nil"]}
+ {:title "Symbolic Values" :entries ["NaN"
+                                     "Inf"
+                                     "-Inf"]}
  {:title "Collections" :entries ["vector"
                                  "list"
                                  "map"

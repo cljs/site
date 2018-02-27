@@ -17,26 +17,26 @@ This is a static site generator written in CLJS, running on Node.
 Prerequisites:
 
 - [Node](https://nodejs.org/)
-- [npm-cljs](https://github.com/shaunlebron/npm-cljs) (custom)
+- [Yarn](https://yarnpkg.com/)
 
 Build:
 
 ```
-$ npm install
+$ yarn
 ```
 
 Static server:
 
 ```
-$ cljs build server
-$ node target/server.js
+$ yarn build-server
+$ yarn server
 ```
 
 Site and Docset generator:
 
 ```
-$ cljs watch sitegen
-$ node target/sitegen.js
+$ yarn build-sitegen
+$ yarn sitegen
 ```
 
 To publish the site to the [GitHub Pages deployment repo](https://github.com/cljs/cljs.github.io):

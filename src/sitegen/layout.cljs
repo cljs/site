@@ -5,6 +5,7 @@
 (declare head)
 (declare body-header)
 (declare body-footer)
+(declare interactive)
 
 (defn common-layout [opts content]
   [:html
@@ -14,7 +15,8 @@
         (body-header)
         content
         (body-footer)]
-      [:script {:src "/js/client.js"}]]])
+      [:script {:src "/js/client.js"}]
+      (interactive (:interactive opts))]])
 
 (defn sidebar-layout [& columns]
   (case (count columns)
@@ -90,3 +92,7 @@
         [:a {:href "http://opensource.org/licenses/eclipse-1.0.php"} "EPL 1.0"]
         [:br]
         "Copyright © Rich Hickey"]]])
+
+(defn interactive [is-interactive]
+  (when is-interactive
+    [:script {:src (str "/js/interactive.js")}]))

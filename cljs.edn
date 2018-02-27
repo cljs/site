@@ -10,6 +10,10 @@
                    :compiler {:main "client.core"
                               :output-to "output/js/client.js"
                               :optimizations :advanced}}
+          :interactive {:src "src"
+                        :compiler {:main "client.interactive"
+                                   :output-to "output/js/interactive.js"
+                                   :optimizations :advanced}}
           :server {:src "src"
                    :compiler {:target :nodejs
                               :main "server.core"

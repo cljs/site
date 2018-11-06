@@ -400,4 +400,7 @@
  {:date "2018-06-15"
   :version "1.10.312"
   :author "David Nolen"
-  :google-group-msg "clojurescript/51gAyDYYZJA/umWvCpA-AwAJ"}]
+  :google-group-msg "clojurescript/51gAyDYYZJA/umWvCpA-AwAJ"}
+ {:date "2018-10-05"
+  :version "1.10.439"
+  :google-group-msg "clojurescript/-KcuMIlwssQ/uCGebPdYBgAJ"}]

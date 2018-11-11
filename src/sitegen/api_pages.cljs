@@ -130,9 +130,8 @@
 (defn markdown-with-doc-biblio
   [body biblio & {:keys [preview?]}]
   (markdown/render
-    (string/join "\n"
-      (cons
-        body
+    (str body "\n\n"
+      (string/join "\n"
         (for [docname biblio]
           (str "[doc:" docname "]:" (str *root* (docname-url docname :preview? preview?))))))))
 

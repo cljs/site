@@ -5,6 +5,7 @@
 (def express (js/require "express"))
 (def fs (js/require "fs"))
 (def path (js/require "path"))
+(def opn (js/require "opn"))
 
 (def root (str (.resolve path ".") "/output"))
 (def port 3795)
@@ -17,7 +18,9 @@
   (next))
 
 (defn on-init []
-  (println "server listening on port" port))
+  (let [url (str "http://localhost:" port)]
+    (println "Serving at" url)
+    (opn url)))
 
 (defn -main []
   (let [server (express)]

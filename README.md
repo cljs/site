@@ -1,6 +1,6 @@
 # ClojureScript site
 
-Hosted at [http://cljs.github.io/api/].
+Hosted at <http://cljs.github.io/api/>.
 
 [clojurescript.org](https://clojurescript.org/) now exists, but this is here mainly for:
 - API docs (for website and Dash)

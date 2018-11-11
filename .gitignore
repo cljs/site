@@ -5,10 +5,6 @@ pom.xml.asc
 /classes/
 /target/
 /checkouts/
-.lein-deps-sum
-.lein-repl-history
-.lein-plugins/
-.lein-failures
 /resources/public/
 *.swp
 
@@ -21,7 +17,6 @@ pom.xml.asc
 /node_modules/
 
 cljs-api.edn
-
 .deps-cache.edn
 
 out
@@ -29,3 +24,7 @@ out
 /docset/ClojureScript.docset
 /docset/ClojureScript.tgz
 /docset/Dash-User-Contributions
+
+/.cpcache
+/server.js
+/sitegen.js

@@ -1,14 +1,12 @@
-# A website for ClojureScript
+# ClojureScript site
 
-- [ ] import homepage (selling points)
-- [ ] import book, [ClojureScript Unraveled](https://leanpub.com/clojurescript-unraveled)
-- [x] import [API docs](https://github.com/cljs/api)
-- [ ] import [cheatsheet](http://cljs.info/cheatsheet)
-- [x] create _News_ page (blog posts)
-- [x] copy over [_ANN ClojureScript_] release emails to _News_
-- [ ] REPL page [using replumb](http://clojurescript.io/), used by [different projects](https://github.com/Lambda-X/replumb#community)
+Hosted at [http://cljs.github.io/api/].
 
-[_ANN ClojureScript_]:https://groups.google.com/forum/#!topicsearchin/clojurescript/%22the$20Clojure$20compiler$20that$20emits$20JavaScript$20source$20code%22
+[clojurescript.org](https://clojurescript.org/) now exists, but this is here mainly for:
+- API docs (for website and Dash)
+- release post index (announcements from mailing list)
+
+In the future, I'd like to see this integrated into the official site.
 
 ## Development
 
@@ -16,27 +14,28 @@ This is a static site generator written in CLJS, running on Node.
 
 Prerequisites:
 
+- [Clojure](https://clojure.org/guides/getting_started)
 - [Node](https://nodejs.org/)
-- [Yarn](https://yarnpkg.com/)
 
-Build:
+Fetch depencies:
 
 ```
-$ yarn
+$ npm install
 ```
 
 Static server:
 
 ```
-$ yarn build-server
-$ yarn server
+$ ./build-server
+$ npm run server
 ```
 
 Site and Docset generator:
 
 ```
-$ yarn build-sitegen
-$ yarn sitegen
+$ ./build-client
+$ ./build-sitegen
+$ npm run sitegen
 ```
 
 To publish the site to the [GitHub Pages deployment repo](https://github.com/cljs/cljs.github.io):

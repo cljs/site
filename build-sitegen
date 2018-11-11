@@ -1,0 +1,5 @@
+clj -m cljs.main \
+  -t node \
+  -o sitegen.js \
+  -O simple \
+  -c sitegen.core

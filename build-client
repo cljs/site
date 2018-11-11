@@ -1,0 +1,4 @@
+clj -m cljs.main \
+  -o output/js/client.js \
+  -O advanced \
+  -c client.core

@@ -1,5 +1,4 @@
 clj -m cljs.main \
   -t node \
   -o server.js \
-  -O simple \
   -c server.core

@@ -42,7 +42,6 @@
     (for [ns- (options-namespaces)]
       [:div [:a {:href (str *root* (urls/pretty (urls/api-ns ns-)))} (get-in api [:namespaces ns- :display-as])]])
     [:div.sep]
-    [:div "Namespaces"]
     (for [ns- (lib-namespaces)]
       [:div [:a {:href (str *root* (urls/pretty (urls/api-ns ns-)))} ns-]])
     [:div.sep]
@@ -346,7 +345,6 @@
       (for [ns- (options-namespaces)]
         (ns-preview :options ns-)))
     [:hr]
-    [:h2 "Namespaces"]
     (interpose [:hr]
       (for [ns- (lib-namespaces)]
         (ns-preview :library ns-)))

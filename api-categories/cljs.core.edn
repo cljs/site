@@ -1,5 +1,7 @@
-[{:title "Compiled" :entries ["*clojurescript-version*" "*target*"]}
- {:title "Command Line" :entries ["*command-line-args*" "*main-cli-fn*"]}
+[{:title "Compiled" :entries ["*clojurescript-version*"
+                              "*target*"]}
+ {:title "Command Line" :entries ["*command-line-args*"
+                                  "*main-cli-fn*"]}
  {:title "Arithmetic" :entries ["*"
                                 "+"
                                 "-"
@@ -18,7 +20,9 @@
                                 ">"
                                 "<="
                                 ">="]}
- {:title "Boolean" :entries ["and" "or" "not"]}
+ {:title "Boolean" :entries ["and"
+                             "or"
+                             "not"]}
  {:title "Bitwise" :entries ["bit-and"
                              "bit-and-not"
                              "bit-clear"
@@ -35,12 +39,43 @@
  {:title "Cast" :entries ["boolean"
                           "char"
                           "int"]}
- {:title "REPL values" :entries ["*1" "*2" "*3" "*e"]}
- {:title "Exceptions" :entries ["try" "catch" "finally" "throw"]}
- {:title "Threading" :entries ["->" "->>" "as->" "cond->" "cond->>" "some->" "some->>"]}
- {:title "Array" :entries ["aget" "aset" "alength" "amap" "areduce" "aclone"]}
- {:title "Transient" :entries ["transient" "persistent!" "conj!" "pop!" "assoc!" "dissoc!" "disj!"]}
- {:title "Atoms" :entries ["atom" "deref" "swap!" "reset!" "compare-and-set!" "add-watch" "remove-watch" "set-validator!" "get-validator"]}
+ {:title "REPL values" :entries ["*1"
+                                 "*2"
+                                 "*3"
+                                 "*e"]}
+ {:title "Exceptions" :entries ["try"
+                                "catch"
+                                "finally"
+                                "throw"]}
+ {:title "Threading" :entries ["->"
+                               "->>"
+                               "as->"
+                               "cond->"
+                               "cond->>"
+                               "some->"
+                               "some->>"]}
+ {:title "Array" :entries ["aget"
+                           "aset"
+                           "alength"
+                           "amap"
+                           "areduce"
+                           "aclone"]}
+ {:title "Transient" :entries ["transient"
+                               "persistent!"
+                               "conj!"
+                               "pop!"
+                               "assoc!"
+                               "dissoc!"
+                               "disj!"]}
+ {:title "Atoms" :entries ["atom"
+                           "deref"
+                           "swap!"
+                           "reset!"
+                           "compare-and-set!"
+                           "add-watch"
+                           "remove-watch"
+                           "set-validator!"
+                           "get-validator"]}
  {:title "Metadata" :entries ["meta"
                               "with-meta"
                               "vary-meta"

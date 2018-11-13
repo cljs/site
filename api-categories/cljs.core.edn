@@ -33,21 +33,32 @@
                              "bit-test"
                              "bit-xor"]}
  {:title "Cast" :entries ["boolean"
-                          "byte"
-                          "short"
-                          "int"
-                          "long"
-                          "float"
-                          "double"]}
- {:title "Cast Many" :entries ["booleans"
-                               "bytes"
-                               "shorts"
-                               "ints"
-                               "longs"
-                               "floats"
-                               "doubles"]}
+                          "char"
+                          "int"]}
  {:title "REPL values" :entries ["*1" "*2" "*3" "*e"]}
+ {:title "Exceptions" :entries ["try" "catch" "finally" "throw"]}
  {:title "Threading" :entries ["->" "->>" "as->" "cond->" "cond->>" "some->" "some->>"]}
+ {:title "Array" :entries ["aget" "aset" "alength" "amap" "areduce" "aclone"]}
+ {:title "Transient" :entries ["transient" "persistent!" "conj!" "pop!" "assoc!" "dissoc!" "disj!"]}
+ {:title "Atoms" :entries ["atom" "deref" "swap!" "reset!" "compare-and-set!" "add-watch" "remove-watch" "set-validator!" "get-validator"]}
+ {:title "Metadata" :entries ["meta"
+                              "with-meta"
+                              "vary-meta"
+                              "reset-meta!"
+                              "alter-meta!"]}
+ {:title "JS" :entries ["js*"
+                        "js-arguments"
+                        "js-comment"
+                        "js-debugger"
+                        "js-delete"
+                        "js-in"
+                        "js-inline-comment"
+                        "js-invoke"
+                        "js-keys"
+                        "js-mod"
+                        "js-obj"
+                        "js-reserved"
+                        "js-str"]}
  {:title "Print settings" :entries ["*print-dup*"
                                     "*print-err-fn*"
                                     "*print-fn*"
@@ -80,4 +91,30 @@
                                "unchecked-set"
                                "unchecked-short"
                                "unchecked-subtract"
-                               "unchecked-subtract-int"]}]
+                               "unchecked-subtract-int"]}
+ {:title "MurmurHash3" :entries ["m3-C1"
+                                 "m3-C2"
+                                 "m3-fmix"
+                                 "m3-hash-int"
+                                 "m3-hash-unencoded-chars"
+                                 "m3-mix-H1"
+                                 "m3-mix-K1"
+                                 "m3-seed"]}
+ {:title "ES6 Iteration" :entries ["es6-entries-iterator"
+                                   "es6-iterable"
+                                   "es6-iterator"
+                                   "es6-iterator-seq"
+                                   "es6-set-entries-iterator"]}
+ {:title "Dummy Cast" :entries ["byte"
+                                "short"
+                                "long"
+                                "float"
+                                "double"]}
+ {:title "Dummy Cast Many" :entries ["booleans"
+                                     "chars"
+                                     "bytes"
+                                     "shorts"
+                                     "ints"
+                                     "longs"
+                                     "floats"
+                                     "doubles"]}]

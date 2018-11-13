@@ -19,7 +19,8 @@
                                 "<"
                                 ">"
                                 "<="
-                                ">="]}
+                                ">="
+                                "compare"]}
  {:title "Boolean" :entries ["and"
                              "or"
                              "not"]}
@@ -39,10 +40,20 @@
  {:title "Cast" :entries ["boolean"
                           "char"
                           "int"]}
- {:title "REPL values" :entries ["*1"
-                                 "*2"
-                                 "*3"
-                                 "*e"]}
+ {:title "REPL results" :entries ["*1"
+                                  "*2"
+                                  "*3"
+                                  "*e"]}
+ {:title "REPL load" :entries ["require"
+                               "require-macros"
+                               "import"
+                               "import-macros"
+                               "use"
+                               "use-macros"
+                               "refer-clojure"
+                               "load"
+                               "load-file"
+                               "load-namespace"]}
  {:title "Exceptions" :entries ["try"
                                 "catch"
                                 "finally"
@@ -71,29 +82,111 @@
                            "deref"
                            "swap!"
                            "reset!"
+                           "swap-vals!"
+                           "reset-vals!"
                            "compare-and-set!"
                            "add-watch"
                            "remove-watch"
                            "set-validator!"
                            "get-validator"]}
+ {:title "Delay" :entries ["delay"
+                           "force"]}
  {:title "Metadata" :entries ["meta"
                               "with-meta"
                               "vary-meta"
                               "reset-meta!"
                               "alter-meta!"]}
- {:title "JS" :entries ["js*"
-                        "js-arguments"
-                        "js-comment"
-                        "js-debugger"
-                        "js-delete"
-                        "js-in"
-                        "js-inline-comment"
-                        "js-invoke"
-                        "js-keys"
-                        "js-mod"
-                        "js-obj"
-                        "js-reserved"
-                        "js-str"]}
+ {:title "Create vars" :entries ["def"
+                                 "defonce"
+                                 "goog-define"]}
+ {:title "Bindings" :entries ["let"
+                              "let*"
+                              "letfn"
+                              "letfn*"
+                              "binding"
+                              "with-redefs"]}
+ {:title "Functions" :entries ["defn"
+                               "defn-"
+                               "fn"
+                               "fn*"]}
+ {:title "Macro" :entries ["defmacro"
+                           "macroexpand"
+                           "macroexpand-1"
+                           "gensym"]}
+ {:title "Multifunctions" :entries ["defmulti"
+                                    "defmethod"
+                                    "get-method"
+                                    "methods"
+                                    "prefer-method"
+                                    "prefers"
+                                    "remove-method"
+                                    "remove-all-methods"]}
+ {:title "Protocol" :entries ["defprotocol"
+                              "extend-protocol"]}
+ {:title "Type" :entries ["deftype"
+                          "deftype*"
+                          "extend-type"]}
+ {:title "Record" :entries ["defrecord"
+                            "defrecord*"]}
+ {:title "Ad-hoc Instance" :entries ["reify" "specify" "specify!"]}
+ {:title "Time" :entries ["system-time"
+                          "time"
+                          "simple-benchmark"]}
+ {:title "Collection content tests" :entries ["contains?"
+                                              "distinct?"
+                                              "empty?"
+                                              "every?"
+                                              "not-every?"
+                                              "some"
+                                              "not-any?"]}
+ {:title "Collection interface tests" :entries ["sequential?"
+                                                "associative?"
+                                                "sorted?"
+                                                "counted?"
+                                                "reversible?"
+                                                "seqable?"]}
+ {:title "Collection type tests" :entries ["coll?"
+                                           "seq?"
+                                           "vector?"
+                                           "list?"
+                                           "map?"
+                                           "set?"]}
+ {:title "JSON<>EDN" :entries ["js->clj"
+                               "clj->js"]}
+ {:title "JS interop" :entries ["."
+                                ".."
+                                "doto"
+                                "new"]}
+ {:title "JS syntax" :entries ["js*"
+                               "js-arguments"
+                               "js-comment"
+                               "js-debugger"
+                               "js-delete"
+                               "js-in"
+                               "js-inline-comment"
+                               "js-invoke"
+                               "js-keys"
+                               "js-mod"
+                               "js-obj"
+                               "js-reserved"
+                               "js-str"
+                               "this-as"]}
+ {:title "Random" :entries ["rand"
+                            "rand-int"
+                            "rand-nth"
+                            "random-uuid"
+                            "random-sample"]}
+ {:title "Print (machine-readable)" :entries ["pr"
+                                              "pr-str"
+                                              "pr-str*"
+                                              "pr-str-with-opts"
+                                              "prn"
+                                              "prn-str"
+                                              "prn-str-with-opts"]}
+ {:title "Print (human-readable)" :entries ["print"
+                                            "print-str"
+                                            "println"
+                                            "println-str"]}
  {:title "Print settings" :entries ["*print-dup*"
                                     "*print-err-fn*"
                                     "*print-fn*"
@@ -103,7 +196,27 @@
                                     "*print-meta*"
                                     "*print-namespace-maps*"
                                     "*print-newline*"
-                                    "*print-readably*"]}
+                                    "*print-readably*"
+                                    "set-print-fn!"
+                                    "set-print-err-fn!"]}
+ {:title "Tap" :entries ["add-tap"
+                         "remove-tap"
+                         "tap>"
+                         "*exec-tap-fn*"]}
+ {:title "Volatile" :entries ["volatile!"
+                              "vswap!"
+                              "vreset!"]}
+ {:title "Hierarchy" :entries ["make-hierarchy"
+                               "derive"
+                               "underive"
+                               "parents"
+                               "ancestors"
+                               "descendants"
+                               "isa?"]}
+ {:title "Regex" :entries ["re-find"
+                           "re-matches"
+                           "re-pattern"
+                           "re-seq"]}
  {:title "Unchecked" :entries ["unchecked-add"
                                "unchecked-add-int"
                                "unchecked-byte"
@@ -127,6 +240,10 @@
                                "unchecked-short"
                                "unchecked-subtract"
                                "unchecked-subtract-int"]}
+ {:title "Coercive" :entries ["coercive-="
+                              "coercive-boolean"
+                              "coercive-not"
+                              "coercive-not="]}
  {:title "MurmurHash3" :entries ["m3-C1"
                                  "m3-C2"
                                  "m3-fmix"
@@ -140,6 +257,13 @@
                                    "es6-iterator"
                                    "es6-iterator-seq"
                                    "es6-set-entries-iterator"]}
+ {:title "Chunk" :entries ["chunk"
+                           "chunk-append"
+                           "chunk-buffer"
+                           "chunk-cons"
+                           "chunk-first"
+                           "chunk-next"
+                           "chunk-rest"]}
  {:title "Dummy Cast" :entries ["byte"
                                 "short"
                                 "long"

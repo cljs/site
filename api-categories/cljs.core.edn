@@ -53,11 +53,14 @@
                                "refer-clojure"
                                "load"
                                "load-file"
-                               "load-namespace"]}
+                               "load-namespace"
+                               "*loaded-libs*"]}
  {:title "Exceptions" :entries ["try"
                                 "catch"
                                 "finally"
                                 "throw"]}
+ {:title "Assert" :entries ["assert"
+                            "*assert*"]}
  {:title "Threading" :entries ["->"
                                "->>"
                                "as->"
@@ -65,12 +68,6 @@
                                "cond->>"
                                "some->"
                                "some->>"]}
- {:title "Array" :entries ["aget"
-                           "aset"
-                           "alength"
-                           "amap"
-                           "areduce"
-                           "aclone"]}
  {:title "Transient" :entries ["transient"
                                "persistent!"
                                "conj!"
@@ -153,6 +150,13 @@
                                            "set?"]}
  {:title "JSON<>EDN" :entries ["js->clj"
                                "clj->js"]}
+ {:title "Array" :entries ["array"
+                           "aget"
+                           "aset"
+                           "alength"
+                           "amap"
+                           "areduce"
+                           "aclone"]}
  {:title "JS interop" :entries ["."
                                 ".."
                                 "doto"
@@ -187,6 +191,10 @@
                                             "print-str"
                                             "println"
                                             "println-str"]}
+ {:title "Print core" :entries ["string-print"
+                                "newline"
+                                "with-out-str"
+                                "flush"]}
  {:title "Print settings" :entries ["*print-dup*"
                                     "*print-err-fn*"
                                     "*print-fn*"
@@ -197,8 +205,10 @@
                                     "*print-namespace-maps*"
                                     "*print-newline*"
                                     "*print-readably*"
+                                    "*out*"
                                     "set-print-fn!"
-                                    "set-print-err-fn!"]}
+                                    "set-print-err-fn!"
+                                    "enable-console-print!"]}
  {:title "Tap" :entries ["add-tap"
                          "remove-tap"
                          "tap>"

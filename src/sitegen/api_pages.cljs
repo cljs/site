@@ -22,7 +22,7 @@
                          type-or-protocol?
                          docname-url
                          docname-display
-                         categories]]))
+                         categorize-syms]]))
 
 (defn sym-doc-progress-color
   "Track documentation progress of a symbol by assigning it a color"
@@ -53,52 +53,22 @@
 (defn ns-sidebar [api-type ns-]
   (let [title (or (get-in api [:namespaces ns- :display-as]) ns-)
         syms (get-ns-symbols api-type ns-)
-        main-syms (remove type-or-protocol? syms)
-        type-syms (filter type-or-protocol? syms)]
+        cats (categorize-syms ns- syms)]
     [:div
       [:a {:href (str *root* (urls/pretty urls/api-index))} "< Back to Overview"]
       [:div.sep]
-      (for [sym main-syms]
-        (let [name- (or (:display-as sym) (:name sym))]
-          [:div {:class (sym-doc-progress-color sym)}
-            [:a {:href (str "#" (:name-encode sym))} name-]]))
-      (when (seq type-syms)
+      (for [cat cats]
         (list
-          [:div.sep]
-          [:div "Types and Protocols"]
-          (for [sym type-syms]
-            (let [parent-type (:parent-type sym)
+          [:div.sep (:title cat)]
+          (for [full-name (:entries cat)]
+            (let [sym (get-in api [:symbols full-name])
+                  parent-type (:parent-type sym)
                   name- (if parent-type
                           (subs (:name sym) (inc (count parent-type)))
                           (or (:display-as sym) (:name sym)))]
               [:div {:class (sym-doc-progress-color sym)}
                 [:span {:style "opacity: 0.3"} (when parent-type "└")]
                 [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
-
-(defn syntax-ns-sidebar []
-  (let [ns- "syntax"
-        title (get-in api [:namespaces ns- :display-as])]
-    [:div
-      [:a {:href (str *root* (urls/pretty urls/api-index))} "< Back to Overview"]
-      (for [category (:syntax categories)]
-        (list
-          [:div.sep (:title category)]
-          (for [full-name (:entries category)]
-            (let [sym (get-in api [:symbols full-name])
-                  name- (or (:display-as sym) (:name sym))]
-              [:div {:class (sym-doc-progress-color sym)}
-                [:a {:href (str "#" (:name-encode sym))} name-]]))))]))
-
-(defn options-ns-sidebar [ns-]
-  (let [title (get-in api [:namespaces ns- :display-as])
-        syms (get-ns-symbols :options ns-)]
-    [:div
-      [:a {:href (str *root* (urls/pretty urls/api-index))} "< Back to Overview"]
-      [:div.sep]
-      (for [sym syms]
-        (let [name- (:display-as sym)]
-          [:div {:class (sym-doc-progress-color sym)}
-            [:a {:href (str "#" (:name-encode sym))} name-]]))]))
 
 ;;---------------------------------------------------------------
 ;; Page Utils
@@ -289,8 +259,7 @@
   (let [ns-data (get-in api [:namespaces ns-])
         title (or (:display-as ns-data) ns-)
         syms (get-ns-symbols api-type ns-)
-        main-syms (remove type-or-protocol? syms)
-        type-syms (filter type-or-protocol? syms)]
+        cats (categorize-syms ns- syms)]
     [:div
       [:h2
         (cond->> title
@@ -299,23 +268,20 @@
         [:div
           [:em [:strong "MOVED"] ", please see "
             [:a {:href (urls/pretty (urls/api-item (get-item moved-to)))} moved-to]]])
-      (when-not (get #{"cljs.core"} ns-)
+      (when-not (get #{"cljs.core" "syntax" "compiler-options" "repl-options"} ns-)
         [:div (interpose [:br] (history-block ns-data))])
       [:div.sep]
       (when-let [details (:details ns-data)]
         [:div (markdown-with-doc-biblio details (:md-biblio ns-data) :preview? true)])
       [:hr]
       (interpose [:hr]
-        (for [sym main-syms]
-          (sym-preview sym)))
-      (when (seq type-syms)
-        (list
-          [:div.sep]
-          [:h4 "Types and Protocols"]
-          [:hr]
-          (interpose [:hr]
-            (for [sym type-syms]
-              (sym-preview sym)))))]))
+        (for [cat cats]
+          (list
+            [:h4 (:title cat)]
+            (interpose [:hr]
+              (for [full-name (:entries cat)]
+                (let [sym (get-in api [:symbols full-name])]
+                  (sym-preview sym)))))))]))
 
 (defn ns-page
   "Full view of the namespace."
@@ -324,53 +290,6 @@
     (ns-sidebar api-type ns-)
     (ns-page-body api-type ns-)))
 
-(defn syntax-ns-page-body []
-  (let [ns- "syntax"
-        ns-data (get-in api [:namespaces ns-])
-        title (or (:display-as ns-data) ns-)]
-    [:div
-      [:h2 title]
-      [:div.sep]
-      (when-let [details (:details ns-data)]
-        [:div (markdown-with-doc-biblio details (:md-biblio ns-data) :preview? true)])
-      [:hr]
-      (interpose [:hr]
-        (for [category (:syntax categories)]
-          (list
-            [:h4 (:title category)]
-            (interpose [:hr]
-              (for [full-name (:entries category)]
-                (let [sym (get-in api [:symbols full-name])]
-                  (sym-preview sym)))))))]))
-
-(defn syntax-ns-page
-  "Full view of the syntax namespace."
-  []
-  (sidebar-layout
-    (syntax-ns-sidebar)
-    (syntax-ns-page-body)))
-
-(defn options-ns-page-body [ns-]
-  (let [ns-data (get-in api [:namespaces ns-])
-        title (or (:display-as ns-data) ns-)
-        syms (get-ns-symbols :options ns-)]
-    [:div
-      [:h2 title]
-      [:div.sep]
-      (when-let [details (:details ns-data)]
-        [:div (markdown-with-doc-biblio details (:md-biblio ns-data) :preview? true)])
-      [:hr]
-      (interpose [:hr]
-        (for [sym syms]
-          (option-sym-preview sym)))]))
-
-(defn options-ns-page
-  "Full view of the options namespace."
-  [ns-]
-  (sidebar-layout
-    (options-ns-sidebar ns-)
-    (options-ns-page-body ns-)))
-
 (defn ns-preview
   "Preview of a namespace."
   [api-type ns-]
@@ -378,59 +297,24 @@
         ns-url (if (= api-type :compiler) urls/api-compiler-ns urls/api-ns)
         title (or (:display-as ns-data) ns-)
         syms (get-ns-symbols api-type ns-)
-        main-syms (remove type-or-protocol? syms)
-        type-syms (filter type-or-protocol? syms)]
+        cats (categorize-syms ns- syms)]
     (list
       [:h4 [:a {:href (str *root* (urls/pretty (ns-url ns-)))} title]]
       [:p (:summary ns-data)]
-      (interpose " | "
-        (for [sym-data main-syms]
-          (let [name- (or (:display-as sym-data) (:name sym-data))]
-            [:span {:class (sym-doc-progress-color sym-data)}
-              [:a {:href (str *root* (urls/pretty (urls/api-sym-prev api-type ns- (:name-encode sym-data))))} name-]])))
-      (when (seq type-syms)
-        (list
-          [:div.sep]
-          [:span "Types and Protocols: "]
-          (interpose " | "
-            (for [sym-data type-syms]
-              (let [name- (or (:display-as sym-data) (:name sym-data))]
-                [:span {:class (sym-doc-progress-color sym-data)}
-                  [:a {:href (str *root* (urls/pretty (urls/api-sym-prev api-type ns- (:name-encode sym-data))))} name-]]))))))))
-
-(defn syntax-ns-preview
-  "Preview of the syntax namespace."
-  []
-  (let [ns- "syntax"
-        ns-data (get-in api [:namespaces ns-])
-        title (or (:display-as ns-data) ns-)]
-    (list
-      [:h4 [:a {:href (str *root* (urls/pretty (urls/api-ns ns-)))} title]]
       [:table
-        (for [category (:syntax categories)]
-          [:tr
-            [:td (:title category) ": "]
-            [:td
-              (interpose " | "
-                (for [sym (:entries category)]
-                  (let [sym-data (get-in api [:symbols sym])
-                        name- (or (:display-as sym-data) (:name sym-data))]
-                    [:span {:class (sym-doc-progress-color sym-data)}
-                      [:a {:href (str *root* (urls/pretty (urls/api-sym-prev :syntax ns- (:name-encode sym-data))))} name-]])))]])])))
-
-(defn options-ns-preview
-  "Preview of the options namespace."
-  [ns-]
-  (let [ns-data (get-in api [:namespaces ns-])
-        title (or (:display-as ns-data) ns-)
-        syms (get-ns-symbols :options ns-)]
-    (list
-      [:h4 [:a {:href (str *root* (urls/pretty (urls/api-ns ns-)))} title]]
-      (interpose " | "
-        (for [sym-data syms]
-          (let [name- (:display-as sym-data)]
-            [:span {:class (sym-doc-progress-color sym-data)}
-                [:a {:href (str *root* (urls/pretty (urls/api-sym-prev :options ns- (:name-encode sym-data))))} name-]]))))))
+        (for [cat cats]
+          (let [empty-title? (= (:title cat) "")]
+            [:tr
+              (when-not empty-title?
+                [:td {:style "vertical-align:top; width:128px"}
+                  (:title cat) ": "])
+              [:td {:colspan (if empty-title? 2 1)}
+                (interpose " | "
+                  (for [sym (:entries cat)]
+                    (let [sym-data (get-in api [:symbols sym])
+                          name- (or (:display-as sym-data) (:name sym-data))]
+                      [:span {:class (sym-doc-progress-color sym-data)}
+                        [:a {:href (str *root* (urls/pretty (urls/api-sym-prev api-type ns- (:name-encode sym-data))))} name-]])))]]))])))
 
 (defn index-page-body []
   [:div
@@ -454,12 +338,13 @@
         "Get these docs for "
         [:a {:href "https://kapeli.com/dash"} "Dash"]
         " under User Contributed downloads."])
+    [:style "tr:last-child td {border-bottom:0}"]
     [:hr]
-    (syntax-ns-preview)
+    (ns-preview :syntax "syntax")
     [:hr]
     (interpose [:hr]
       (for [ns- (options-namespaces)]
-        (options-ns-preview ns-)))
+        (ns-preview :options ns-)))
     [:hr]
     [:h2 "Namespaces"]
     (interpose [:hr]
@@ -485,10 +370,7 @@
 (defn create-ns-page! [api-type ns-]
   (let [filename (urls/api-ns* api-type ns-)]
     (urls/make-dir! filename)
-    (let [page (cond
-                 (= ns- "syntax") (syntax-ns-page)
-                 (= api-type :options) (options-ns-page ns-)
-                 :else (ns-page api-type ns-))
+    (let [page (ns-page api-type ns-)
           title (or (get-in api [:namespaces ns- :display-as]) ns-)]
       (->> page
            (common-layout {:head {:title (str "CLJS - " title)}})

@@ -162,10 +162,7 @@
   (let [url (urls/api-ns* api-type ns-)]
     (urls/make-dir! url)
     (binding [*root* (urls/get-root url)]
-      (let [page (cond
-                   (= ns- "syntax") (api-pages/syntax-ns-page)
-                   (= api-type :options) (api-pages/options-ns-page ns-)
-                   :else (api-pages/ns-page api-type ns-))]
+      (let [page (api-pages/ns-page api-type ns-)]
         (->> page
              (docset-layout {:head {:title (str "CLJS - " ns-)}})
              (hiccup/render)

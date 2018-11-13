@@ -24,6 +24,7 @@
 (def api-url "https://raw.githubusercontent.com/cljs/api/master/cljs-api.edn")
 (def api-filename "cljs-api.edn")
 
+(declare set-categories!)
 (defn update! []
   (let [downloaded? (io/path-exists? api-filename)]
     (when-not downloaded?
@@ -31,7 +32,8 @@
       (->> (io/slurp api-url)
            (io/spit api-filename)))
     (set! api (read-string (io/slurp api-filename)))
-    (set! version (:version api))))
+    (set! version (:version api))
+    (set-categories!)))
 
 (defn pre-releases
   "List pre-releases that came before a main release."
@@ -45,6 +47,7 @@
 ;; API Categories
 ;;---------------------------------------------------------------
 
+(declare type-or-protocol?)
 (defn get-ns-categories [ns]
   (let [categories (read-string (io/slurp (str "api-categories/" ns ".edn")))
         process-entry #(str ns "/" %)
@@ -52,33 +55,46 @@
         process-category #(update % :entries process-entries)]
     (mapv process-category categories)))
 
-(def categories
-  {:syntax (get-ns-categories "syntax")
-   :cljs.core (get-ns-categories "cljs.core")})
+(def categories {})
 
-(defn ensure-all-syntax-categorized []
-  (let [all (->> (:symbols api)
-                 (vals)
-                 (filter #(= (:ns %) "syntax"))
-                 (map :full-name)
-                 (set))
-        categorized (->> (:syntax categories)
-                         (map :entries)
-                         (apply concat)
-                         (set))
-        unrecognized (set/difference categorized all)
-        uncategorized (set/difference all categorized)]
-    (when (or (seq uncategorized)
-              (seq unrecognized))
-      (when (seq uncategorized)
-        (println "The following syntax entries are not categorized:")
-        (doseq [s uncategorized]
-          (println "  -" s)))
+(defn set-categories! []
+  (set! categories
+    {"syntax" (get-ns-categories "syntax")
+     "cljs.core" (get-ns-categories "cljs.core")}))
+
+(defn categorize-syms* [ns- syms]
+  (when-let [cats (get categories ns-)]
+    (let [all (set (map :full-name syms))
+          categorized (->> cats
+                           (map :entries)
+                           (apply concat)
+                           (set))
+          unrecognized (set/difference categorized all)
+          uncategorized (set/difference all categorized)
+          type? #(type-or-protocol? (get-in api [:symbols %]))
+          uncat (remove type? uncategorized)
+          types (filter type? uncategorized)]
       (when (seq unrecognized)
-        (println "The following syntax entries are not recognized:")
+        (println "The following" ns- "entries are not recognized:")
         (doseq [s unrecognized]
-          (println "  -" s)))
-      (js/process.exit 1))))
+          (println "  -" s))
+        (js/process.exit 1))
+      (cond-> cats
+        (seq uncat)
+        (conj {:title "Uncategorized" :entries (sort uncat)})
+
+        (seq types)
+        (conj {:title "Types and Protocols" :entries (sort types)})))))
+
+;; FIXME: assuming api-type can be inferred from ns-
+;; (so this will break if we are looking up a compiler ns)
+(defn categorize-syms [ns- syms]
+  (or (categorize-syms* ns- syms)
+      (let [main-syms (remove type-or-protocol? syms)
+            type-syms (filter type-or-protocol? syms)]
+        (cond-> [{:title "" :entries (map :full-name main-syms)}]
+          (seq type-syms)
+          (conj {:title "Types and Protocols" :entries (map :full-name type-syms)})))))
 
 ;;---------------------------------------------------------------
 ;; Namespace Utilities
@@ -180,7 +196,3 @@
       (if compiler?
         (str ns " (compiler)")
         (or (get-in api [:namespaces ns :display-as]) ns)))))
-
-
-(defn check! []
-  (ensure-all-syntax-categorized))

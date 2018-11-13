@@ -129,25 +129,25 @@
  {:title "Time" :entries ["system-time"
                           "time"
                           "simple-benchmark"]}
- {:title "Collection content tests" :entries ["contains?"
-                                              "distinct?"
-                                              "empty?"
-                                              "every?"
-                                              "not-every?"
-                                              "some"
-                                              "not-any?"]}
- {:title "Collection interface tests" :entries ["sequential?"
-                                                "associative?"
-                                                "sorted?"
-                                                "counted?"
-                                                "reversible?"
-                                                "seqable?"]}
- {:title "Collection type tests" :entries ["coll?"
-                                           "seq?"
-                                           "vector?"
-                                           "list?"
-                                           "map?"
-                                           "set?"]}
+ {:title "Collection content?" :entries ["contains?"
+                                         "distinct?"
+                                         "empty?"
+                                         "every?"
+                                         "not-every?"
+                                         "some"
+                                         "not-any?"]}
+ {:title "Collection interface?" :entries ["sequential?"
+                                           "associative?"
+                                           "sorted?"
+                                           "counted?"
+                                           "reversible?"
+                                           "seqable?"]}
+ {:title "Collection type?" :entries ["coll?"
+                                      "seq?"
+                                      "vector?"
+                                      "list?"
+                                      "map?"
+                                      "set?"]}
  {:title "JSON<>EDN" :entries ["js->clj"
                                "clj->js"]}
  {:title "Array" :entries ["array"
@@ -180,17 +180,17 @@
                             "rand-nth"
                             "random-uuid"
                             "random-sample"]}
- {:title "Print (machine-readable)" :entries ["pr"
-                                              "pr-str"
-                                              "pr-str*"
-                                              "pr-str-with-opts"
-                                              "prn"
-                                              "prn-str"
-                                              "prn-str-with-opts"]}
- {:title "Print (human-readable)" :entries ["print"
-                                            "print-str"
-                                            "println"
-                                            "println-str"]}
+ {:title "Print" :entries ["pr"
+                           "pr-str"
+                           "pr-str*"
+                           "pr-str-with-opts"
+                           "prn"
+                           "prn-str"
+                           "prn-str-with-opts"]}
+ {:title "Print (human)" :entries ["print"
+                                   "print-str"
+                                   "println"
+                                   "println-str"]}
  {:title "Print core" :entries ["string-print"
                                 "newline"
                                 "with-out-str"
@@ -205,6 +205,7 @@
                                     "*print-namespace-maps*"
                                     "*print-newline*"
                                     "*print-readably*"
+                                    "*flush-on-newline*"
                                     "*out*"
                                     "set-print-fn!"
                                     "set-print-err-fn!"

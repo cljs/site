@@ -1,7 +1,10 @@
 === Entries
 main
-preloads
 modules
+
+=== Preloads
+preloads
+browser-repl
 
 === Output
 output-to
@@ -90,3 +93,6 @@ compiler-stats
 === Watch
 watch-fn
 watch-error-fn
+
+=== Bootstrap
+dump-core

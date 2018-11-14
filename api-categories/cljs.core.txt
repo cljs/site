@@ -11,6 +11,7 @@
 +
 -
 /
+divide
 quot
 rem
 mod
@@ -23,21 +24,23 @@ max
 min-key
 max-key
 
-=== Comparison
+=== Boolean
+and
+or
+not
+
+=== Equality
 =
-==
 not=
+==
+identical?
+
+=== Comparison
 <
 >
 <=
 >=
 compare
-identical?
-
-=== Boolean
-and
-or
-not
 
 === Number sign?
 pos?
@@ -70,6 +73,18 @@ true?
 nil?
 undefined?
 
+=== Any kind?
+any?
+
+=== String kind?
+string?
+char?
+
+=== Cast
+boolean
+char
+int
+
 === Bitwise
 bit-and
 bit-and-not
@@ -84,11 +99,8 @@ bit-shift-right
 bit-shift-right-zero-fill
 bit-test
 bit-xor
-
-=== Cast
-boolean
-char
-int
+unsigned-bit-shift-right
+int-rotate-left
 
 === REPL results
 *1
@@ -115,6 +127,12 @@ catch
 finally
 throw
 
+=== Exception info
+ex-info
+ex-message
+ex-data
+ex-cause
+
 === Assert
 assert
 *assert*
@@ -137,9 +155,17 @@ assoc!
 dissoc!
 disj!
 
-=== Atoms
-atom
+=== Volatile
+volatile!
+vswap!
+vreset!
+volatile?
+
+=== Deref
 deref
+
+=== Atom Ref
+atom
 swap!
 reset!
 swap-vals!
@@ -150,9 +176,10 @@ remove-watch
 set-validator!
 get-validator
 
-=== Delay
+=== Delay Ref
 delay
 force
+delay?
 
 === Metadata
 meta
@@ -186,7 +213,7 @@ macroexpand
 macroexpand-1
 gensym
 
-=== Multifunctions
+=== Multimethod
 defmulti
 defmethod
 get-method
@@ -195,6 +222,17 @@ prefer-method
 prefers
 remove-method
 remove-all-methods
+default-dispatch-val
+dispatch-fn
+
+=== Hierarchy
+make-hierarchy
+derive
+underive
+parents
+ancestors
+descendants
+isa?
 
 === Protocol
 defprotocol
@@ -214,10 +252,21 @@ reify
 specify
 specify!
 
-=== Time
+=== Timing
 system-time
 time
 simple-benchmark
+
+=== Time instance
+inst-ms
+inst?
+
+=== Map Entry
+keys
+vals
+key
+val
+map-entry?
 
 === Collection content?
 contains?
@@ -244,11 +293,41 @@ list?
 map?
 set?
 
+=== Collection->Seq
+seq
+sequence
+
+=== Seq->Collection
+vec
+set
+zipmap
+
+=== Args->Collection
+list
+list*
+vector
+hash-map
+array-map
+sorted-map
+sorted-map-by
+hash-set
+sorted-set
+sorted-set-by
+obj-map
+
+=== Count
+count
+bounded-count
+
 === JSON<>EDN
 js->clj
 clj->js
 
-=== Array
+=== JS kind?
+array?
+object?
+
+=== JS array
 array
 aget
 aset
@@ -256,6 +335,10 @@ alength
 amap
 areduce
 aclone
+
+=== JS object
+js-obj
+js-keys
 
 === JS interop
 .
@@ -272,9 +355,7 @@ js-delete
 js-in
 js-inline-comment
 js-invoke
-js-keys
 js-mod
-js-obj
 js-reserved
 js-str
 this-as
@@ -283,8 +364,49 @@ this-as
 rand
 rand-int
 rand-nth
-random-uuid
 random-sample
+
+=== UUID
+random-uuid
+uuid
+uuid?
+
+=== Name create
+keyword
+symbol
+
+=== Name extract
+name
+namespace
+
+=== Name munge
+munge
+demunge
+CHAR_MAP
+DEMUNGE_MAP
+DEMUNGE_PATTERN
+
+=== Name kind?
+keyword?
+symbol?
+ident?
+
+=== Name qualified?
+qualified-keyword?
+qualified-symbol?
+qualified-ident?
+
+=== Name unqualified?
+simple-keyword?
+simple-symbol?
+simple-ident?
+
+=== Name reserved?
+special-symbol?
+
+=== Name identical?
+keyword-identical?
+symbol-identical?
 
 === Machine-readable printing
 pr
@@ -334,25 +456,12 @@ remove-tap
 tap>
 *exec-tap-fn*
 
-=== Volatile
-volatile!
-vswap!
-vreset!
-
-=== Hierarchy
-make-hierarchy
-derive
-underive
-parents
-ancestors
-descendants
-isa?
-
 === Regex
 re-find
 re-matches
 re-pattern
 re-seq
+regexp?
 
 === Unchecked
 unchecked-add
@@ -427,3 +536,14 @@ ints
 longs
 floats
 doubles
+
+=== Arrays
+double-array
+long-array
+int-array
+
+=== Iters
+array-iter
+nil-iter
+seq-iter
+string-iter

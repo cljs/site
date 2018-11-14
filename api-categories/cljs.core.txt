@@ -250,19 +250,23 @@ rand-nth
 random-uuid
 random-sample
 
-=== Print
+=== Machine-readable printing
 pr
+prn
+
+=== Human-readable printing
+print
+println
+
+=== Machine-readable string
 pr-str
 pr-str*
 pr-str-with-opts
-prn
 prn-str
 prn-str-with-opts
 
-=== Print (human)
-print
+=== Human-readable string
 print-str
-println
 println-str
 
 === Print core

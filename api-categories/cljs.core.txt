@@ -540,7 +540,7 @@ replicate
 iterate
 range
 
-=== Function
+=== Derive function
 partial
 constantly
 repeatedly

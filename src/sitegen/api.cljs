@@ -47,8 +47,8 @@
 ;; API Categories
 ;;---------------------------------------------------------------
 
-(defn get-categories-file [ns-]
-  (let [txt (string/trim (io/slurp (str "api-categories/" ns- ".txt")))]
+(defn parse-categories-file [ns- file]
+  (let [txt (string/trim (io/slurp file))]
     (vec (for [section (rest (string/split txt #"=== "))]
            (let [lines (string/split-lines (string/trim section))]
              {:title (first lines)
@@ -56,9 +56,10 @@
 
 (def categories {})
 (defn set-categories! []
-  (set! categories
-    {"syntax" (get-categories-file "syntax")
-     "cljs.core" (get-categories-file "cljs.core")}))
+  (let [files (io/glob "api-categories/*.txt")
+        names (map #(io/basename % ".txt") files)
+        parsed (map #(parse-categories-file %1 %2) names files)]
+    (set! categories (zipmap names parsed))))
 
 (declare type-or-protocol?)
 (defn categorize-syms* [ns- syms]

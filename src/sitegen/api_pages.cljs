@@ -300,7 +300,7 @@
     (list
       [:h4 [:a {:href (str *root* (urls/pretty (ns-url ns-)))} title]]
       [:p (:summary ns-data)]
-      [:table
+      [:table {:style "line-height: 1.6em"}
         (for [cat cats]
           (let [empty-title? (= (:title cat) "")]
             [:tr
@@ -308,11 +308,11 @@
                 [:td {:style "vertical-align:top; width:128px"}
                   (:title cat)])
               [:td {:colspan (if empty-title? 2 1)}
-                (interpose " | "
+                (interpose [:span {:style "color: #e1e1e1"} " | "]
                   (for [sym (:entries cat)]
                     (let [sym-data (get-in api [:symbols sym])
                           name- (or (:display-as sym-data) (:name sym-data))]
-                      [:span {:class (sym-doc-progress-color sym-data)}
+                      [:span {:class (sym-doc-progress-color sym-data) :style "white-space: nowrap"}
                         [:a {:href (str *root* (urls/pretty (urls/api-sym-prev api-type ns- (:name-encode sym-data))))} name-]])))]]))])))
 
 (defn index-page-body []

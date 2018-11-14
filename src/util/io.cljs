@@ -9,6 +9,8 @@
 (def fs-extra (js/require "fs-extra"))
 (def request (js/require "sync-request"))
 (def existsSync (js/require "exists-sync"))
+(def glob-lib (js/require "glob"))
+(def path-lib (js/require "path"))
 
 (def request-opts
   #js{:headers
@@ -37,6 +39,12 @@
 
 (defn copy [src dest]
   (.copySync fs-extra src dest))
+
+(defn glob [pattern]
+  (.sync glob-lib pattern))
+
+(defn basename [path ext]
+  (.basename path-lib path ext))
 
 ;; Helpers
 

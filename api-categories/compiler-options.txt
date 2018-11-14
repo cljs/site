@@ -1,0 +1,92 @@
+=== Entries
+main
+preloads
+modules
+
+=== Output
+output-to
+output-dir
+asset-path
+fingerprint
+
+=== Output formatting
+output-wrapper
+preamble
+pretty-print
+print-input-delimiter
+
+=== Optimization
+optimizations
+optimize-constants
+static-fns
+fn-invoke-direct
+
+=== Source map
+source-map
+source-map-asset-path
+source-map-path
+source-map-timestamp
+
+=== Translation
+language-in
+language-out
+rewrite-polyfills
+
+=== Libs
+libs
+foreign-libs
+npm-deps
+install-deps
+package-json-resolution
+
+=== Node.js
+target
+hashbang
+
+=== Externs
+externs
+infer-externs
+use-only-custom-externs
+
+=== Names
+rename-prefix
+rename-prefix-namespace
+pseudo-names
+stable-names
+anon-fn-naming-policy
+
+=== Cache analysis
+cache-analysis
+cache-analysis-format
+
+=== Warnings
+warnings
+warning-handlers
+closure-warnings
+checked-arrays
+
+=== Elide
+elide-asserts
+elide-strict
+
+=== Closure
+closure-defines
+closure-extra-annotations
+closure-generate-exports
+closure-module-roots
+closure-output-charset
+closure-property-map-in
+closure-property-map-out
+closure-variable-map-in
+closure-variable-map-out
+
+=== Spec
+spec-skip-macros
+
+=== Report
+verbose
+compiler-stats
+
+=== Watch
+watch-fn
+watch-error-fn

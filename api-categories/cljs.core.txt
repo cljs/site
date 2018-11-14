@@ -342,6 +342,60 @@ obj-map
 count
 bounded-count
 
+=== Map
+map
+mapv
+map-indexed
+mapcat
+
+=== Combine
+concat
+interleave
+interpose
+
+=== Filter
+filter
+filterv
+remove
+
+=== Head/Tail
+first
+next
+rest
+
+=== Head/Tail+
+ffirst
+nnext
+nfirst
+fnext
+
+=== Nth
+nth
+nthnext
+nthrest
+
+=== Take
+take
+take-nth
+take-last
+take-while
+
+=== Drop
+drop
+drop-last
+drop-while
+
+=== While
+while
+
+=== For
+for
+
+=== Repeat
+cycle
+repeat
+repeatedly
+
 === JSON<>EDN
 js->clj
 clj->js

@@ -69,9 +69,12 @@ boolean?
 false?
 true?
 
-=== Null kind?
+=== Null?
 nil?
 undefined?
+
+=== Not null?
+some?
 
 === Any kind?
 any?
@@ -79,6 +82,10 @@ any?
 === String kind?
 string?
 char?
+
+=== String
+str
+subs
 
 === Cast
 boolean
@@ -152,7 +159,7 @@ vswap!
 vreset!
 volatile?
 
-=== Deref
+=== Atom/Delay
 deref
 
 === Atom Ref
@@ -179,10 +186,38 @@ vary-meta
 reset-meta!
 alter-meta!
 
-=== Create vars
+=== Vars
 def
 defonce
 goog-define
+declare
+
+=== Var meta
+var
+var?
+resolve
+
+=== Namespace
+ns
+ns*
+
+=== Namespace meta
+*ns*
+find-ns
+find-ns-obj
+find-macros-ns
+in-ns
+create-ns
+ns-imports
+ns-interns
+ns-interns*
+ns-name
+ns-publics
+ns-unmap
+
+=== Eval
+eval
+*eval*
 
 === Bindings
 let
@@ -223,6 +258,28 @@ some->>
 ->
 ->>
 as->
+
+=== Do one or more
+do
+dotimes
+
+=== Nested/Filtered loop
+for
+doseq
+
+=== Recursion
+loop
+recur
+while
+
+=== Lazy
+lazy-seq
+lazy-cat
+
+=== Lazy forcing
+doall
+dorun
+run!
 
 === Functions
 defn
@@ -307,6 +364,7 @@ sorted?
 counted?
 reversible?
 seqable?
+indexed?
 
 === Collection type?
 coll?
@@ -342,28 +400,15 @@ obj-map
 count
 bounded-count
 
-=== Map
-map
-mapv
-map-indexed
-mapcat
-
-=== Combine
-concat
-interleave
-interpose
-
-=== Filter
-filter
-filterv
-remove
-
 === Head/Tail
 first
+second
 next
 rest
+last
+butlast
 
-=== Head/Tail+
+=== Head/Tail nested
 ffirst
 nnext
 nfirst
@@ -385,16 +430,102 @@ drop
 drop-last
 drop-while
 
-=== While
-while
+=== Filter
+filter
+filterv
+remove
 
-=== For
-for
+=== Keep
+keep
+keep-indexed
+
+=== Map
+map
+mapv
+map-indexed
+mapcat
+replace
+
+=== Combine
+concat
+flatten
+merge
+merge-with
+interleave
+interpose
+
+=== Duplicates
+dedupe
+distinct
+frequencies
+
+=== Partition
+partition
+partition-all
+partition-by
+
+=== Split
+split-at
+split-with
+group-by
+
+=== Rearrange
+sort
+sort-by
+shuffle
+
+=== Collection add
+conj
+into
+assoc
+assoc-in
+
+=== Collection update
+update
+update-in
+
+=== Collection get
+get
+get-in
+select-keys
+peek
+
+=== Collection remove
+disj
+dissoc
+pop
+
+=== Collection clear
+empty
+not-empty
+
+=== Reverse
+rseq
+reverse
+
+=== Sub
+subseq
+rsubseq
+subvec
 
 === Repeat
 cycle
 repeat
+replicate
+iterate
+range
+
+=== Function
+partial
+constantly
 repeatedly
+comp
+complement
+some-fn
+every-pred
+fnil
+juxt
+memoize
 
 === JSON<>EDN
 js->clj

@@ -16,8 +16,12 @@ rem
 mod
 inc
 dec
-max
+
+=== Min/Max
 min
+max
+min-key
+max-key
 
 === Comparison
 =
@@ -28,11 +32,43 @@ not=
 <=
 >=
 compare
+identical?
 
 === Boolean
 and
 or
 not
+
+=== Number sign?
+pos?
+neg?
+zero?
+
+=== Integer sign?
+pos-int?
+neg-int?
+nat-int?
+
+=== Integer kind?
+integer?
+int?
+odd?
+even?
+
+=== Double kind?
+number?
+double?
+float?
+infinite?
+
+=== Boolean kind?
+boolean?
+false?
+true?
+
+=== Null kind?
+nil?
+undefined?
 
 === Bitwise
 bit-and

@@ -1,0 +1,389 @@
+=== Compiled
+*clojurescript-version*
+*target*
+
+=== Command Line
+*command-line-args*
+*main-cli-fn*
+
+=== Arithmetic
+*
++
+-
+/
+quot
+rem
+mod
+inc
+dec
+max
+min
+
+=== Comparison
+=
+==
+not=
+<
+>
+<=
+>=
+compare
+
+=== Boolean
+and
+or
+not
+
+=== Bitwise
+bit-and
+bit-and-not
+bit-clear
+bit-count
+bit-flip
+bit-not
+bit-or
+bit-set
+bit-shift-left
+bit-shift-right
+bit-shift-right-zero-fill
+bit-test
+bit-xor
+
+=== Cast
+boolean
+char
+int
+
+=== REPL results
+*1
+*2
+*3
+*e
+
+=== REPL load
+require
+require-macros
+import
+import-macros
+use
+use-macros
+refer-clojure
+load
+load-file
+load-namespace
+*loaded-libs*
+
+=== Exceptions
+try
+catch
+finally
+throw
+
+=== Assert
+assert
+*assert*
+
+=== Threading
+->
+->>
+as->
+cond->
+cond->>
+some->
+some->>
+
+=== Transient
+transient
+persistent!
+conj!
+pop!
+assoc!
+dissoc!
+disj!
+
+=== Atoms
+atom
+deref
+swap!
+reset!
+swap-vals!
+reset-vals!
+compare-and-set!
+add-watch
+remove-watch
+set-validator!
+get-validator
+
+=== Delay
+delay
+force
+
+=== Metadata
+meta
+with-meta
+vary-meta
+reset-meta!
+alter-meta!
+
+=== Create vars
+def
+defonce
+goog-define
+
+=== Bindings
+let
+let*
+letfn
+letfn*
+binding
+with-redefs
+
+=== Functions
+defn
+defn-
+fn
+fn*
+
+=== Macro
+defmacro
+macroexpand
+macroexpand-1
+gensym
+
+=== Multifunctions
+defmulti
+defmethod
+get-method
+methods
+prefer-method
+prefers
+remove-method
+remove-all-methods
+
+=== Protocol
+defprotocol
+extend-protocol
+
+=== Type
+deftype
+deftype*
+extend-type
+
+=== Record
+defrecord
+defrecord*
+
+=== Ad-hoc Instance
+reify
+specify
+specify!
+
+=== Time
+system-time
+time
+simple-benchmark
+
+=== Collection content?
+contains?
+distinct?
+empty?
+every?
+not-every?
+some
+not-any?
+
+=== Collection interface?
+sequential?
+associative?
+sorted?
+counted?
+reversible?
+seqable?
+
+=== Collection type?
+coll?
+seq?
+vector?
+list?
+map?
+set?
+
+=== JSON<>EDN
+js->clj
+clj->js
+
+=== Array
+array
+aget
+aset
+alength
+amap
+areduce
+aclone
+
+=== JS interop
+.
+..
+doto
+new
+
+=== JS syntax
+js*
+js-arguments
+js-comment
+js-debugger
+js-delete
+js-in
+js-inline-comment
+js-invoke
+js-keys
+js-mod
+js-obj
+js-reserved
+js-str
+this-as
+
+=== Random
+rand
+rand-int
+rand-nth
+random-uuid
+random-sample
+
+=== Print
+pr
+pr-str
+pr-str*
+pr-str-with-opts
+prn
+prn-str
+prn-str-with-opts
+
+=== Print (human)
+print
+print-str
+println
+println-str
+
+=== Print core
+string-print
+newline
+with-out-str
+flush
+
+=== Print settings
+*print-dup*
+*print-err-fn*
+*print-fn*
+*print-fn-bodies*
+*print-length*
+*print-level*
+*print-meta*
+*print-namespace-maps*
+*print-newline*
+*print-readably*
+*flush-on-newline*
+*out*
+set-print-fn!
+set-print-err-fn!
+enable-console-print!
+
+=== Tap
+add-tap
+remove-tap
+tap>
+*exec-tap-fn*
+
+=== Volatile
+volatile!
+vswap!
+vreset!
+
+=== Hierarchy
+make-hierarchy
+derive
+underive
+parents
+ancestors
+descendants
+isa?
+
+=== Regex
+re-find
+re-matches
+re-pattern
+re-seq
+
+=== Unchecked
+unchecked-add
+unchecked-add-int
+unchecked-byte
+unchecked-char
+unchecked-dec
+unchecked-dec-int
+unchecked-divide-int
+unchecked-double
+unchecked-float
+unchecked-get
+unchecked-inc
+unchecked-inc-int
+unchecked-int
+unchecked-long
+unchecked-multiply
+unchecked-multiply-int
+unchecked-negate
+unchecked-negate-int
+unchecked-remainder-int
+unchecked-set
+unchecked-short
+unchecked-subtract
+unchecked-subtract-int
+
+=== Coercive
+coercive-=
+coercive-boolean
+coercive-not
+coercive-not=
+
+=== MurmurHash3
+m3-C1
+m3-C2
+m3-fmix
+m3-hash-int
+m3-hash-unencoded-chars
+m3-mix-H1
+m3-mix-K1
+m3-seed
+
+=== ES6 Iteration
+es6-entries-iterator
+es6-iterable
+es6-iterator
+es6-iterator-seq
+es6-set-entries-iterator
+
+=== Chunk
+chunk
+chunk-append
+chunk-buffer
+chunk-cons
+chunk-first
+chunk-next
+chunk-rest
+
+=== Dummy Cast
+byte
+short
+long
+float
+double
+
+=== Dummy Cast Many
+booleans
+chars
+bytes
+shorts
+ints
+longs
+floats
+doubles

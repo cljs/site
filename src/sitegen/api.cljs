@@ -47,21 +47,20 @@
 ;; API Categories
 ;;---------------------------------------------------------------
 
-(declare type-or-protocol?)
-(defn get-ns-categories [ns]
-  (let [categories (read-string (io/slurp (str "api-categories/" ns ".edn")))
-        process-entry #(str ns "/" %)
-        process-entries #(mapv process-entry %)
-        process-category #(update % :entries process-entries)]
-    (mapv process-category categories)))
+(defn get-categories-file [ns-]
+  (let [txt (string/trim (io/slurp (str "api-categories/" ns- ".txt")))]
+    (vec (for [section (rest (string/split txt #"=== "))]
+           (let [lines (string/split-lines (string/trim section))]
+             {:title (first lines)
+              :entries (map #(str ns- "/" %) (rest lines))})))))
 
 (def categories {})
-
 (defn set-categories! []
   (set! categories
-    {"syntax" (get-ns-categories "syntax")
-     "cljs.core" (get-ns-categories "cljs.core")}))
+    {"syntax" (get-categories-file "syntax")
+     "cljs.core" (get-categories-file "cljs.core")}))
 
+(declare type-or-protocol?)
 (defn categorize-syms* [ns- syms]
   (when-let [cats (get categories ns-)]
     (let [all (set (map :full-name syms))

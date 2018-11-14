@@ -1,0 +1,82 @@
+=== Literals
+number
+string
+regex
+character
+keyword
+keyword-qualify
+symbol
+
+=== Special Symbols
+true
+false
+nil
+
+=== Symbolic Values
+NaN
+Inf
+-Inf
+
+=== Collections
+vector
+list
+map
+set
+ns-map
+ns-map-alias
+
+=== Commenting
+comment
+shebang
+ignore
+
+=== Function
+function
+arg
+rest
+
+=== Destructuring
+destructure-vector
+destructure-map
+
+=== Conventions
+predicate
+impure
+earmuffs
+unused
+whitespace
+comma
+
+=== Symbol Resolution
+dot
+namespace
+js-namespace
+Math-namespace
+
+=== Tagged Literals
+tagged-literal
+js-literal
+inst-literal
+uuid-literal
+queue-literal
+
+=== Quoting
+quote
+syntax-quote
+unquote
+unquote-splicing
+auto-gensym
+
+=== Vars
+meta
+var
+deref
+
+=== Reader Conditionals
+cond
+cond-splicing
+
+=== Misc
+dispatch
+unreadable
+eval

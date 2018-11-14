@@ -137,15 +137,6 @@ ex-cause
 assert
 *assert*
 
-=== Threading
-->
-->>
-as->
-cond->
-cond->>
-some->
-some->>
-
 === Transient
 transient
 persistent!
@@ -200,6 +191,38 @@ letfn
 letfn*
 binding
 with-redefs
+
+=== If
+if
+if-not
+if-some
+if-let
+
+=== When
+when
+when-not
+when-some
+when-first
+when-let
+
+=== Case
+case
+case*
+
+=== Cond
+cond
+condp
+
+=== Conditional threading
+cond->
+cond->>
+some->
+some->>
+
+=== Threading
+->
+->>
+as->
 
 === Functions
 defn

@@ -17,6 +17,7 @@ rem
 mod
 inc
 dec
+identity
 
 === Min/Max
 min
@@ -41,6 +42,7 @@ identical?
 <=
 >=
 compare
+comparator
 
 === Number sign?
 pos?
@@ -159,7 +161,7 @@ vswap!
 vreset!
 volatile?
 
-=== Atom/Delay
+=== Atom/Delay/Reduced
 deref
 
 === Atom Ref
@@ -195,7 +197,9 @@ declare
 === Var meta
 var
 var?
+exists?
 resolve
+set!
 
 === Namespace
 ns
@@ -214,6 +218,7 @@ ns-interns*
 ns-name
 ns-publics
 ns-unmap
+NS_CACHE
 
 === Eval
 eval
@@ -259,9 +264,10 @@ some->>
 ->>
 as->
 
-=== Do one or more
+=== Wrap
 do
-dotimes
+comment
+quote
 
 === Nested/Filtered loop
 for
@@ -269,8 +275,10 @@ doseq
 
 === Recursion
 loop
+loop*
 recur
 while
+dotimes
 
 === Lazy
 lazy-seq
@@ -286,6 +294,8 @@ defn
 defn-
 fn
 fn*
+fn?
+apply
 
 === Macro
 defmacro
@@ -323,6 +333,15 @@ deftype
 deftype*
 extend-type
 
+=== Type meta
+type
+type->str
+satisfies?
+instance?
+implements?
+is_proto_
+PROTOCOL_SENTINEL
+
 === Record
 defrecord
 defrecord*
@@ -332,6 +351,10 @@ reify
 specify
 specify!
 
+=== Tagged Literal
+tagged-literal
+tagged-literal?
+
 === Timing
 system-time
 time
@@ -340,13 +363,6 @@ simple-benchmark
 === Time instance
 inst-ms
 inst?
-
-=== Map Entry
-keys
-vals
-key
-val
-map-entry?
 
 === Collection content?
 contains?
@@ -365,6 +381,7 @@ counted?
 reversible?
 seqable?
 indexed?
+iterable?
 
 === Collection type?
 coll?
@@ -376,12 +393,10 @@ set?
 
 === Collection->Seq
 seq
-sequence
 
 === Seq->Collection
 vec
 set
-zipmap
 
 === Args->Collection
 list
@@ -447,6 +462,7 @@ mapcat
 replace
 
 === Combine
+cat
 concat
 flatten
 merge
@@ -499,6 +515,15 @@ pop
 empty
 not-empty
 
+=== Map entries
+keys
+vals
+zipmap
+key
+val
+find
+map-entry?
+
 === Reverse
 rseq
 reverse
@@ -527,6 +552,21 @@ fnil
 juxt
 memoize
 
+=== Transduce
+transduce
+eduction
+into
+sequence
+
+=== Reduce
+reduce
+reduce-kv
+reduced
+reduced?
+ensure-reduced
+unreduced
+reduceable?
+
 === JSON<>EDN
 js->clj
 clj->js
@@ -554,9 +594,12 @@ js-keys
 doto
 new
 
+=== JS arguments
+js-arguments
+copy-arguments
+
 === JS syntax
 js*
-js-arguments
 js-comment
 js-debugger
 js-delete

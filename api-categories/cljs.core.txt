@@ -566,6 +566,7 @@ reduced?
 ensure-reduced
 unreduced
 reduceable?
+reductions
 
 === JSON<>EDN
 js->clj

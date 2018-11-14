@@ -306,7 +306,7 @@
             [:tr
               (when-not empty-title?
                 [:td {:style "vertical-align:top; width:128px"}
-                  (:title cat) ": "])
+                  (:title cat)])
               [:td {:colspan (if empty-title? 2 1)}
                 (interpose " | "
                   (for [sym (:entries cat)]
@@ -361,7 +361,7 @@
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)
-       (common-layout {:head {:title (str "CLJS - " (docname-display (:full-name sym)))}})
+       (common-layout {:head {:title (str (docname-display (:full-name sym)))}})
        (hiccup/render)
        (urls/write! (urls/api-sym ns name-encode))))
 
@@ -371,7 +371,7 @@
     (let [page (ns-page api-type ns-)
           title (or (get-in api [:namespaces ns- :display-as]) ns-)]
       (->> page
-           (common-layout {:head {:title (str "CLJS - " title)}})
+           (common-layout {:head {:title (str title)}})
            (hiccup/render)
            (urls/write! filename)))))
 

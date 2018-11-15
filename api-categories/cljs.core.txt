@@ -89,6 +89,13 @@ char?
 str
 subs
 
+=== Regex
+re-find
+re-matches
+re-pattern
+re-seq
+regexp?
+
 === Cast
 boolean
 char
@@ -161,9 +168,6 @@ vswap!
 vreset!
 volatile?
 
-=== Atom/Delay/Reduced
-deref
-
 === Atom Ref
 atom
 swap!
@@ -180,6 +184,15 @@ get-validator
 delay
 force
 delay?
+
+=== Deref
+deref
+
+=== Pending
+realized?
+
+=== Locking
+locking
 
 === Metadata
 meta
@@ -345,6 +358,7 @@ PROTOCOL_SENTINEL
 === Record
 defrecord
 defrecord*
+record?
 
 === Ad-hoc Instance
 reify
@@ -393,6 +407,14 @@ set?
 
 === Collection->Seq
 seq
+cons
+
+=== JS->Seq
+prim-seq
+array-seq
+
+=== Tree->Seq
+tree-seq
 
 === Seq->Collection
 vec
@@ -462,7 +484,6 @@ mapcat
 replace
 
 === Combine
-cat
 concat
 flatten
 merge
@@ -558,6 +579,11 @@ eduction
 into
 sequence
 
+=== Transduce utils
+cat
+halt-when
+completing
+
 === Reduce
 reduce
 reduce-kv
@@ -585,6 +611,13 @@ amap
 areduce
 aclone
 
+=== JS array others
+make-array
+object-array
+to-array
+to-array-2d
+into-array
+
 === JS object
 js-obj
 js-keys
@@ -593,6 +626,7 @@ js-keys
 .
 ..
 doto
+memfn
 new
 
 === JS arguments
@@ -708,12 +742,18 @@ remove-tap
 tap>
 *exec-tap-fn*
 
-=== Regex
-re-find
-re-matches
-re-pattern
-re-seq
-regexp?
+=== Hashing
+hash
+hash-combine
+hash-keyword
+hash-string
+hash-string*
+hash-ordered-coll
+hash-unordered-coll
+mix-collection-hash
+string-hash-cache
+string-hash-cache-count
+add-to-string-hash-cache
 
 === Unchecked
 unchecked-add
@@ -795,6 +835,7 @@ long-array
 int-array
 
 === Iters
+iter
 array-iter
 nil-iter
 seq-iter

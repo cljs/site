@@ -298,7 +298,9 @@
         syms (get-ns-symbols api-type ns-)
         cats (categorize-syms ns- syms)]
     (list
-      [:h4 [:a {:href (str *root* (urls/pretty (ns-url ns-)))} title]]
+      [:h4
+        {:id ns-}
+        [:a {:href (str *root* (urls/pretty (ns-url ns-)))} title]]
       [:p (:summary ns-data)]
       [:table {:style "line-height: 1.6em"}
         (for [cat cats]

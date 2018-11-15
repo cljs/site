@@ -290,6 +290,9 @@ doseq
 loop
 loop*
 recur
+trampoline
+
+=== Other loops
 while
 dotimes
 
@@ -593,6 +596,10 @@ ensure-reduced
 unreduced
 reduceable?
 reductions
+
+=== Clone
+clone
+cloneable?
 
 === JSON<>EDN
 js->clj

@@ -213,6 +213,7 @@ var?
 exists?
 resolve
 set!
+test
 
 === Namespace
 ns

@@ -187,9 +187,11 @@ delay?
 
 === Deref
 deref
+IDeref
 
 === Pending
 realized?
+IPending
 
 === Locking
 locking

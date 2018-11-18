@@ -26,8 +26,9 @@
 
 (defn sym-doc-progress-color
   "Track documentation progress of a symbol by assigning it a color"
-  [{:keys [summary details examples]}]
-  (if (or summary details) (if examples "g" "y") "r"))
+  [{:keys [clj-equiv summary details examples]}]
+  #_(if (or summary details) (if examples "g" "y") "r")
+  (if clj-equiv "g"))
 
 ;;---------------------------------------------------------------
 ;; Sidebar Rendering
@@ -166,6 +167,11 @@
               [:td [:a {:href edn-url} " in edn"]])))
         [:td [:a {:href (:edit-url sym)} "Edit"]]]]
 
+    (when-let [s (protocol-summary sym)]
+      (list s [:hr]))
+    (when-let [s (implementation-summary sym)]
+      (list s [:hr]))
+    
     (when-let [usage (seq (:usage sym))]
       (list
         (for [u usage]
@@ -221,6 +227,30 @@
     (when-let [docstring (:docstring sym)]
       [:div.sep [:pre docstring]])))
 
+(defn protocol-summary [{:keys [protocols]}]
+  (when (seq protocols)
+    [:div
+      [:em "satisfies "
+        (interpose " "
+          (for [p (sort protocols)]
+            (if-let [sym (get-in api [:symbols (str "cljs.core/" p)])]
+              [:a {:class "code-link"
+                  :href (str *root* (urls/pretty (urls/api-sym-prev :library "cljs.core" (:name-encode sym))))}
+                [:code p]]
+              [:code p])))]]))
+
+(defn implementation-summary [{:keys [implementations]}]
+  (when (seq implementations)
+    [:div
+      [:em "implemented for "
+        (interpose " "
+          (for [p (sort implementations)]
+            (if-let [sym (get-in api [:symbols (str "cljs.core/" p)])]
+              [:a {:class "code-link"
+                  :href (str *root* (urls/pretty (urls/api-sym-prev :library "cljs.core" (:name-encode sym))))}
+                [:code p]]
+              [:code p])))]]))
+
 (defn sym-preview
   "Preview of a symbol."
   [sym]
@@ -235,6 +265,8 @@
     [:div {:style "position: absolute; right: 0; top: 0;"}
       [:a {:href (str *root* (urls/pretty (urls/api-sym (:ns sym) (:name-encode sym))))} "full details >"]]
     [:div.sep]
+    (protocol-summary sym)
+    (implementation-summary sym)
     (or
       (when-let [summary (:summary sym)]
         [:div (markdown-with-doc-biblio summary (:md-biblio sym) :preview? true)])

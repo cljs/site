@@ -35,6 +35,7 @@ not
 not=
 ==
 identical?
+IEquiv
 
 === Comparison
 <
@@ -43,6 +44,7 @@ identical?
 >=
 compare
 comparator
+IComparable
 
 === Number sign?
 pos?
@@ -172,13 +174,16 @@ volatile?
 atom
 swap!
 reset!
+compare-and-set!
 swap-vals!
 reset-vals!
-compare-and-set!
-add-watch
-remove-watch
 set-validator!
 get-validator
+
+=== Watch
+add-watch
+remove-watch
+IWatchable
 
 === Delay Ref
 delay
@@ -384,7 +389,7 @@ simple-benchmark
 inst-ms
 inst?
 
-=== Collection content?
+=== Coll content?
 contains?
 distinct?
 empty?
@@ -393,7 +398,7 @@ not-every?
 some
 not-any?
 
-=== Collection interface?
+=== Coll capability?
 sequential?
 associative?
 sorted?
@@ -403,7 +408,7 @@ seqable?
 indexed?
 iterable?
 
-=== Collection type?
+=== Coll type
 coll?
 seq?
 vector?
@@ -411,7 +416,25 @@ list?
 map?
 set?
 
-=== Collection->Seq
+=== Coll capability interfaces
+ISequential
+IAssociative
+ISorted
+ICounted
+IReversible
+ISeqable
+IIndexed
+IIterable
+
+=== Coll type interfaces
+ICollection
+ISeq
+IVector
+IList
+IMap
+ISet
+
+=== Coll->Seq
 seq
 cons
 
@@ -603,6 +626,7 @@ reductions
 === Clone
 clone
 cloneable?
+ICloneable
 
 === JSON<>EDN
 js->clj

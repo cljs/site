@@ -1,6 +1,23 @@
 #!/bin/bash
 
-set -e
+set -ex
+
+# Docset versions have two parts:
+#
+# 1.10.516/2
+# ^^^^^^^^   CLJS_VERSION
+#          ^ DOCSET_TAG
+
+# pull version from cljs-api.edn
+CLJS_VERSION=$(grep -m 1 ":version .*" ../cljs-api.edn | cut -d'"' -f 2)
+
+# USER CAN PASS DOCSET TAG AS FIRST ARG (defaults to 1)
+DOCSET_TAG="1"
+if [ ! -z "$1" ]; then
+  DOCSET_TAG="$1"
+fi
+
+echo "Creating Docset for ClojureScript $CLJS_VERSION/$DOCSET_TAG"
 
 repo=Dash-User-Contributions
 rm -rf $repo
@@ -35,12 +52,12 @@ echo "PR branch 'cljs' created."
 cp ../ClojureScript.tgz docsets/ClojureScript/
 echo "latest docset copied."
 
-git add docsets/ClojureScript/
+# updating version in json
+sed -i.bak -e "s|\"version\":.*|\"version\": \"$CLJS_VERSION/$DOCSET_TAG\",|" docsets/ClojureScript/docset.json
+rm docsets/ClojureScript/docset.json.bak
 
-echo
-echo "Now, update the version in $repo/docsets/ClojureScript/docset.json"
-echo "then commit and run:"
-echo
-echo "   git push origin HEAD -f"
-echo
-echo "then submit PR."
+git add docsets/ClojureScript/
+git commit -m "ClojureScript $CLJS_VERSION"
+git push origin HEAD -f
+
+open "https://github.com/shaunlebron/Dash-User-Contributions/compare/cljs?expand=1"

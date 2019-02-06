@@ -27,8 +27,8 @@
 (defn sym-doc-progress-color
   "Track documentation progress of a symbol by assigning it a color"
   [{:keys [clj-equiv summary details examples]}]
-  #_(if (or summary details) (if examples "g" "y") "r")
-  (if clj-equiv "g"))
+  (if (or summary details) (if examples "g" "y") "r")
+  #_(if clj-equiv "g"))
 
 ;;---------------------------------------------------------------
 ;; Sidebar Rendering

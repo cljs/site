@@ -41,14 +41,13 @@ $ npm run sitegen
 To publish the site to the [GitHub Pages deployment repo](https://github.com/cljs/cljs.github.io):
 
 ```
-$ ./publish.sh
+$ ./publish-site.sh
 ```
 
 To publish the docset to [Dash], run the following:
 
 ```
-$ cd docset
-$ ./docset-pr.sh
+$ ./publish-docset.sh
 ```
 
 [Dash]:https://kapeli.com/dash

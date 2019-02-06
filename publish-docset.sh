@@ -9,7 +9,7 @@ set -ex
 #          ^ DOCSET_TAG
 
 # pull version from cljs-api.edn
-CLJS_VERSION=$(grep -m 1 ":version .*" ../cljs-api.edn | cut -d'"' -f 2)
+CLJS_VERSION=$(grep -m 1 ":version .*" cljs-api.edn | cut -d'"' -f 2)
 
 # USER CAN PASS DOCSET TAG AS FIRST ARG (defaults to 1)
 DOCSET_TAG="1"
@@ -19,17 +19,13 @@ fi
 
 echo "Creating Docset for ClojureScript $CLJS_VERSION/$DOCSET_TAG"
 
+# Go into docset workspace
+cd docset
 repo=Dash-User-Contributions
 rm -rf $repo
-
-if [ ! -d "$repo" ]; then
-  git clone git@github.com:shaunlebron/${repo}.git
-  cd $repo
-  git remote add upstream git@github.com:Kapeli/${repo}.git
-  cd ..
-fi
-
+git clone git@github.com:shaunlebron/${repo}.git
 cd $repo
+git remote add upstream git@github.com:Kapeli/${repo}.git
 
 # reset unsaved changes and go to master branch
 git reset --hard

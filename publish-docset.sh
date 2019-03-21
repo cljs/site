@@ -9,7 +9,7 @@ set -ex
 #          ^ DOCSET_TAG
 
 # pull version from cljs-api.edn
-CLJS_VERSION=$(grep -m 1 ":version .*" cljs-api.edn | cut -d'"' -f 2)
+CLJS_VERSION=$(grep -m 1 ":version " cljs-api.edn | cut -d'"' -f 2 | tr -d '+')
 
 # USER CAN PASS DOCSET TAG AS FIRST ARG (defaults to 1)
 DOCSET_TAG="1"

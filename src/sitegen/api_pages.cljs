@@ -81,7 +81,7 @@
       "+" (if moved-from
             (list
               "previously "
-              [:a {:href (urls/pretty (urls/api-item (get-item moved-from)))} moved-from])
+              [:a {:href (str *root* (urls/pretty (urls/api-item (get-item moved-from))))} moved-from])
             (if (= 1 (count history))
               (str "since v" version)
               (str "added v" version)))
@@ -136,7 +136,7 @@
     (when-let [moved-to (:moved-to sym)]
       [:div
         [:em [:strong "MOVED"] ", please see "
-          [:a {:href (urls/pretty (urls/api-item (get-item moved-to)))} moved-to]]])
+          [:a {:href (str *root* (urls/pretty (urls/api-item (get-item moved-to))))} moved-to]]])
     [:table
       [:tr
         [:td (if (= "option" (:type sym))

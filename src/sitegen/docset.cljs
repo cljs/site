@@ -57,7 +57,8 @@
    "warning"             "Error"})
 
 (defn docset-entries []
-  (binding [urls/*case-sensitive* false]
+  (binding [urls/*case-sensitive* false
+            *docset?* true]
     (doall
       (concat
         ;; Sections
@@ -209,6 +210,7 @@
     (mkdirs docset-docs-path)
 
     (println "Generating docset pages...")
+    (urls/set-case-collisions! api)
     (create-pages!)
 
     ;; copy over resources

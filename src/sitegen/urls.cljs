@@ -1,9 +1,8 @@
 (ns sitegen.urls
   (:require
     [clojure.string :as string]
+    [sitegen.state :refer [*docset?*]]
     [util.io :as io]))
-
-(def md5 (js/require "md5"))
 
 (def domain "http://cljsinfo.github.io")
 
@@ -17,11 +16,28 @@
       (string/join "/" (repeat n ".."))
       ".")))
 
+(defn index-lookup-map
+  "convert vector to an index lookup map. e.g. [:foo :bar] -> {:foo 0, :bar 1}"
+  [v]
+  (into {} (map-indexed #(vector %2 %1) v)))
+
 (def ^:dynamic *case-sensitive* true)
-(defn protect-case [filename]
-  (if-not *case-sensitive*
-    (str filename "-" (md5 filename))
-    filename))
+(def *case-collisions* (atom nil))
+(defn set-case-collisions! [api]
+  (reset! *case-collisions*
+    (->> (vals (:symbols api))
+         (map :full-name-encode)
+         (group-by #(.toLowerCase %))
+         (keep (fn [[k v]] (when (< 1 (count v)) [k (index-lookup-map v)])))
+         (into {}))))
+
+(defn protect-case [ns name]
+  (if *case-sensitive*
+    name
+    (let [full-name (str ns "/" name)]
+      (if-let [index-of (@*case-collisions* (.toLowerCase full-name))]
+        (str name "-" (index-of full-name))
+        name))))
 
 (def ^:dynamic *pretty-links* true)
 (defn pretty [url]
@@ -44,7 +60,9 @@
 (def  api-dir                               "/api/")
 (def  api-index                             "/api/index.html")
 (defn api-ns          [ns]             (str "/api/" ns "/index.html"))
-(defn api-sym         [ns name-encode] (str "/api/" ns "/" (protect-case name-encode) ".html"))
+(defn api-sym         [ns name-encode] (str "/api/" ns "/"
+                                         (if *docset?* (str ns " ") "") ; put ns in filename for Dash search results
+                                         (protect-case ns name-encode) ".html"))
 (defn api-compiler-ns [ns]             (str "/api/compiler/" ns "/index.html"))
 
 (defn api-item

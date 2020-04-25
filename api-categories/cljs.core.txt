@@ -631,10 +631,14 @@ ICloneable
 === JSON<>EDN
 js->clj
 clj->js
+key->js
 
 === JS kind?
 array?
 object?
+js-iterable?
+js-symbol?
+uri?
 
 === JS array
 array

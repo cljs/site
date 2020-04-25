@@ -41,10 +41,12 @@ foreign-libs
 npm-deps
 install-deps
 package-json-resolution
+deps-cmd
 
 === Node.js
 target
 hashbang
+nodejs-rt
 
 === Externs
 externs

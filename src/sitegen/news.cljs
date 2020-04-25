@@ -62,7 +62,14 @@
         add-url
         add-title))
 
+(defn verify-posts! [data]
+  (let [valid? (set (get-in api [:history :versions]))]
+    (doseq [v (map :version data)]
+      (when-not (valid? v)
+        (println "ERROR: news post for unknown version" v)))))
+
 (defn set-posts! [data]
+  (verify-posts! data)
   (set! api/version-has-news-post? (set (map :version data)))
   (set! posts data))
 

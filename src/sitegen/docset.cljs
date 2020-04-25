@@ -14,7 +14,7 @@
     [sitegen.news :as news]
     [sitegen.state :refer [*docset?*]]))
 
-(def sqlite3 (js/require "sqlite3"))
+(def Database (js/require "better-sqlite3"))
 (def child-process (js/require "child_process"))
 (def spawn-sync (.-spawnSync child-process))
 
@@ -62,66 +62,41 @@
     (doall
       (concat
         ;; Sections
-        [{:$name "Overview" :$type "Section" :$path urls/api-index}
-         {:$name "Versions" :$type "Section" :$path urls/versions}]
+        [{:name "Overview" :type "Section" :path urls/api-index}
+         {:name "Versions" :type "Section" :path urls/versions}]
 
         ;; News Posts
         (for [post news/posts]
-          {:$name (str "Release " (:version post))
-           :$type "Event"
-           :$path (:url post)})
+          {:name (str "Release " (:version post))
+           :type "Event"
+           :path (:url post)})
 
         ;; Namespaces
         (for [api-type [:syntax :library :compiler]
               ns- (get-in api [:api api-type :namespace-names])]
-          {:$name (or (get-in api [:namespaces ns- :display-as]) ns-)
-           :$type "Namespace"
-           :$path (urls/api-ns* api-type ns-)})
+          {:name (or (get-in api [:namespaces ns- :display-as]) ns-)
+           :type "Namespace"
+           :path (urls/api-ns* api-type ns-)})
 
         ;; Symbols
         (for [sym (vals (:symbols api))]
-          {:$name (or (:display-as sym) (:name sym))
-           :$type (type->dash (:type sym))
-           :$path (urls/api-sym (:ns sym) (:name-encode sym))})))))
+          {:name (or (:display-as sym) (:name sym))
+           :type (type->dash (:type sym))
+           :path (urls/api-sym (:ns sym) (:name-encode sym))})))))
 
 ;;-----------------------------------------------------------------------------
 ;; Database (Dash index)
 ;;-----------------------------------------------------------------------------
 
-(defn sqlite-error [sql params error]
-  (println "SQL error occured:")
-  (println "  query:" sql)
-  (println "  params:" params)
-  (println "  error:" error)
-  (js/process.exit 1))
-
-(defn run-db
-  ([db sql]
-   (run-db db sql nil))
-  ([db sql params]
-   (let [done-chan (chan)
-         params (when params (clj->js params))
-         callback (fn [error]
-                    (when error (sqlite-error sql params error))
-                    (close! done-chan))]
-     (if params
-       (.run db sql params callback)
-       (.run db sql callback))
-     done-chan)))
-
 (defn build-db! []
-  (go
-    (let [db (new sqlite3.Database db-path)]
-      (<! (run-db db "DROP TABLE IF EXISTS searchIndex"))
-      (<! (run-db db "CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)"))
-      (<! (run-db db "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)"))
-
-      ;; Run insertions in parallel
-      (doseq [q (mapv
-                  #(run-db db "INSERT INTO searchIndex(name, type, path) VALUES ($name, $type, $path)" %)
-                  (docset-entries))]
-        (<! q))
-      (.close db))))
+  (let [db (new Database db-path)]
+    (.run (.prepare db "DROP TABLE IF EXISTS searchIndex"))
+    (.run (.prepare db "CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)"))
+    (.run (.prepare db "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)"))
+    (let [insert (.prepare db "INSERT INTO searchIndex(name, type, path) VALUES (?, ?, ?)")]
+      (doseq [e (docset-entries)]
+        (.run insert (:name e) (:type e) (:path e))))
+    (.close db)))
 
 ;;-----------------------------------------------------------------------------
 ;; Docset pages
@@ -221,7 +196,7 @@
 
     ;; reset/create tables
     (println "Creating index database...")
-    (<! (build-db!))
+    (build-db!)
 
     ;; create the tar file
     (println "Creating final docset tar file...")

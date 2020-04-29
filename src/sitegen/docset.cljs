@@ -95,7 +95,8 @@
     (.run (.prepare db "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)"))
     (let [insert (.prepare db "INSERT INTO searchIndex(name, type, path) VALUES (?, ?, ?)")]
       (doseq [e (docset-entries)]
-        (.run insert (:name e) (:type e) (:path e))))
+        (let [fix-path #(.slice % 1)] ;; remove leading slash (zeal needs this)
+          (.run insert (:name e) (:type e) (fix-path (:path e))))))
     (.close db)))
 
 ;;-----------------------------------------------------------------------------

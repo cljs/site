@@ -636,6 +636,7 @@ key->js
 === JS kind?
 array?
 object?
+js-fn?
 js-iterable?
 js-symbol?
 uri?

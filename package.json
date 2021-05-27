@@ -11,9 +11,5 @@
   "devDependencies": {
     "express": "^4.16.4",
     "opn": "^5.4.0"
-  },
-  "scripts": {
-    "sitegen": "node sitegen.js",
-    "server": "node server.js"
   }
 }

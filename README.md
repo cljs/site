@@ -27,7 +27,7 @@ Static server:
 
 ```
 $ ./build-server
-$ npm run server
+$ node server
 ```
 
 Site and Docset generator:
@@ -35,19 +35,19 @@ Site and Docset generator:
 ```
 $ ./build-client
 $ ./build-sitegen
-$ npm run sitegen
+$ node sitegen
 ```
 
 To publish the site to the [GitHub Pages deployment repo](https://github.com/cljs/cljs.github.io):
 
 ```
-$ ./publish-site.sh
+$ ./publish-site
 ```
 
 To publish the docset to [Dash], run the following:
 
 ```
-$ ./publish-docset.sh
+$ ./publish-docset
 ```
 
 [Dash]:https://kapeli.com/dash

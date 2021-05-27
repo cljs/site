@@ -418,4 +418,9 @@
  {:date "2021-04-07"
   :version "1.10.844"
   :author "David Nolen"
-  :google-group-msg "clojurescript/c/tTa8tuffmGw/m/S72Y2GtTCAAJ"}]
+  :google-group-msg "clojurescript/c/tTa8tuffmGw/m/S72Y2GtTCAAJ"}
+ {:date "2021-05-25"
+  :version "1.10.866"
+  :author "David Nolen"
+  :google-group-msg "clojurescript/c/kGAehAL9Kug/m/-tf3BRTbAwAJ"}
+  ]

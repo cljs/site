@@ -1,4 +1,4 @@
-clj -m cljs.main \
+clj -M -m cljs.main \
   -t node \
   -o sitegen.js \
   -c sitegen.core

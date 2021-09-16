@@ -22,9 +22,9 @@
   (into {} (map-indexed #(vector %2 %1) v)))
 
 (def ^:dynamic *case-sensitive* true)
-(def *case-collisions* (atom nil))
+(def case-collisions (atom nil))
 (defn set-case-collisions! [api]
-  (reset! *case-collisions*
+  (reset! case-collisions
     (->> (vals (:symbols api))
          (map :full-name-encode)
          (group-by #(.toLowerCase %))
@@ -35,7 +35,7 @@
   (if *case-sensitive*
     name
     (let [full-name (str ns "/" name)]
-      (if-let [index-of (@*case-collisions* (.toLowerCase full-name))]
+      (if-let [index-of (@case-collisions (.toLowerCase full-name))]
         (str name "-" (index-of full-name))
         name))))
 

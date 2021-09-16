@@ -124,6 +124,31 @@
     (when-let [summary (:summary sym)]
       [:div (markdown-with-doc-biblio summary (:md-biblio sym))])])
 
+(defn protocol-summary [{:keys [protocols]}]
+  (when (seq protocols)
+    [:div
+      [:em "satisfies "
+        (interpose " "
+          (for [p (sort protocols)]
+            (if-let [sym (get-in api [:symbols (str "cljs.core/" p)])]
+              [:a {:class "code-link"
+                  :href (str *root* (urls/pretty (urls/api-sym-prev :library "cljs.core" (:name-encode sym))))}
+                [:code p]]
+              [:code p])))]]))
+
+(defn implementation-summary [{:keys [implementations]}]
+  (when (seq implementations)
+    [:div
+      [:em "implemented for "
+        (interpose " "
+          (for [p (sort implementations)]
+            (if-let [sym (get-in api [:symbols (str "cljs.core/" p)])]
+              [:a {:class "code-link"
+                  :href (str *root* (urls/pretty (urls/api-sym-prev :library "cljs.core" (:name-encode sym))))}
+                [:code p]]
+              [:code p])))]]))
+
+
 (defn sym-page
   "Full view of a symbol."
   [sym]
@@ -226,30 +251,6 @@
           [:div [:code u]])])
     (when-let [docstring (:docstring sym)]
       [:div.sep [:pre docstring]])))
-
-(defn protocol-summary [{:keys [protocols]}]
-  (when (seq protocols)
-    [:div
-      [:em "satisfies "
-        (interpose " "
-          (for [p (sort protocols)]
-            (if-let [sym (get-in api [:symbols (str "cljs.core/" p)])]
-              [:a {:class "code-link"
-                  :href (str *root* (urls/pretty (urls/api-sym-prev :library "cljs.core" (:name-encode sym))))}
-                [:code p]]
-              [:code p])))]]))
-
-(defn implementation-summary [{:keys [implementations]}]
-  (when (seq implementations)
-    [:div
-      [:em "implemented for "
-        (interpose " "
-          (for [p (sort implementations)]
-            (if-let [sym (get-in api [:symbols (str "cljs.core/" p)])]
-              [:a {:class "code-link"
-                  :href (str *root* (urls/pretty (urls/api-sym-prev :library "cljs.core" (:name-encode sym))))}
-                [:code p]]
-              [:code p])))]]))
 
 (defn sym-preview
   "Preview of a symbol."

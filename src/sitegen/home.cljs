@@ -9,7 +9,7 @@
     [:script
       (str "location.href = "
            \"
-           (urls/pretty urls/news-index)
+           (urls/pretty urls/api-index)
            \")]])
 
 (defn _404 []

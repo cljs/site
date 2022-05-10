@@ -1,9 +1,9 @@
 (ns sitegen.api
   (:require
-    [cljs.reader :refer [read-string]]
     [clojure.string :as string]
     [clojure.set :as set]
     [util.io :as io]
+    [me.raynes.fs :as fs]
     [sitegen.urls :as urls]))
 
 ;;---------------------------------------------------------------
@@ -26,12 +26,12 @@
 
 (declare set-categories!)
 (defn update! []
-  (let [downloaded? (io/path-exists? api-filename)]
+  (let [downloaded? (fs/exists? api-filename)]
     (when-not downloaded?
       (println "Downloading latest API...")
-      (->> (io/slurp api-url)
-           (io/spit api-filename)))
-    (set! api (read-string (io/slurp api-filename)))
+      (->> (slurp api-url)
+           (spit api-filename)))
+    (set! api (read-string (slurp api-filename)))
     (set! version (:version api))
     (set-categories!)))
 
@@ -48,7 +48,7 @@
 ;;---------------------------------------------------------------
 
 (defn parse-categories-file [ns- file]
-  (let [txt (string/trim (io/slurp file))]
+  (let [txt (string/trim (slurp file))]
     (vec (for [section (rest (string/split txt #"=== "))]
            (let [lines (string/split-lines (string/trim section))]
              {:title (first lines)
@@ -56,8 +56,8 @@
 
 (def categories {})
 (defn set-categories! []
-  (let [files (io/glob "api-categories/*.txt")
-        names (map #(io/basename % ".txt") files)
+  (let [files (fs/glob "api-categories/*.txt")
+        names (map #(fs/base-name % ".txt") files)
         parsed (map #(parse-categories-file %1 %2) names files)]
     (set! categories (zipmap names parsed))))
 

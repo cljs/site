@@ -3,7 +3,7 @@
     [clojure.java.shell :refer [sh]]
     [clojure.java.jdbc :as jdbc]
     [me.raynes.fs :as fs]
-    [util.hiccup :as hiccup]
+    [hiccup.core :refer [html]]
     [sitegen.api :as api :refer [api]]
     [sitegen.urls :as urls :refer [*root*]]
     [sitegen.api-pages :as api-pages]
@@ -109,7 +109,7 @@
     (binding [*root* (urls/get-root url)]
       (->> (versions-page)
            (docset-layout {:head {:title "CLJS Versions"}})
-           (hiccup/render)
+           (html)
            (urls/write! url)))))
 
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
@@ -117,7 +117,7 @@
     (binding [*root* (urls/get-root url)]
       (->> (api-pages/sym-page sym)
            (docset-layout {:head {:title (str "CLJS - " (docname-display (:full-name sym)))}})
-           (hiccup/render)
+           (html)
            (urls/write! url)))))
 
 (defn create-ns-page! [api-type ns-]
@@ -127,7 +127,7 @@
       (let [page (api-pages/ns-page api-type ns-)]
         (->> page
              (docset-layout {:head {:title (str "CLJS - " ns-)}})
-             (hiccup/render)
+             (html)
              (urls/write! url))))))
 
 (defn create-index-page! []
@@ -135,7 +135,7 @@
     (binding [*root* (urls/get-root url)]
       (->> (api-pages/index-page-body)
            (docset-layout {:head {:title "CLJS API"}})
-           (hiccup/render)
+           (html)
            (urls/write! url)))))
 
 (defn create-pages! []

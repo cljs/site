@@ -4,7 +4,7 @@
     [util.markdown :as markdown]
     [util.console :as console]
     [util.highlight :refer [highlight-code]]
-    [util.hiccup :as hiccup]
+    [hiccup.core :refer [html]]
     [sitegen.urls :as urls :refer [*root*]]
     [sitegen.layout :refer [common-layout sidebar-layout]]
     [sitegen.state :refer [*docset?*]]
@@ -396,7 +396,7 @@
 (defn create-sym-page! [{:keys [ns name-encode] :as sym}]
   (->> (sym-page sym)
        (common-layout {:head {:title (str (docname-display (:full-name sym)))}})
-       (hiccup/render)
+       (html)
        (urls/write! (urls/api-sym ns name-encode))))
 
 (defn create-ns-page! [api-type ns-]
@@ -406,13 +406,13 @@
           title (or (get-in api [:namespaces ns- :display-as]) ns-)]
       (->> page
            (common-layout {:head {:title (str title)}})
-           (hiccup/render)
+           (html)
            (urls/write! filename)))))
 
 (defn create-index-page! []
   (->> (index-page)
        (common-layout {:head {:title "CLJS API"}})
-       (hiccup/render)
+       (html)
        (urls/write! urls/api-index)))
 
 (defn ns-has-page? [ns-]

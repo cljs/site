@@ -1,6 +1,6 @@
 (ns sitegen.home
   (:require
-    [util.hiccup :as hiccup]
+    [hiccup.core :refer [html]]
     [sitegen.layout :refer [common-layout]]
     [sitegen.urls :as urls]))
 
@@ -21,13 +21,13 @@
 (defn render-home! []
   (->> (home)
        (common-layout nil)
-       (hiccup/render)
+       (html)
        (urls/write! urls/home)))
 
 (defn render-404! []
   (->> (_404)
        (common-layout nil)
-       (hiccup/render)
+       (html)
        (urls/write! urls/_404)))
 
 (defn render! []

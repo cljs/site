@@ -1,6 +1,6 @@
 (ns sitegen.versions
   (:require
-    [util.hiccup :as hiccup]
+    [hiccup.core :refer [html]]
     [sitegen.urls :as urls :refer [*root*]]
     [sitegen.api :refer [api version master-version? version-has-news-post?]]
     [sitegen.layout :refer [common-layout]]))
@@ -66,7 +66,7 @@
 (defn create-versions-page! []
   (->> (versions-page)
        (common-layout {:head {:title "CLJS Versions"}})
-       (hiccup/render)
+       (html)
        (urls/write! urls/versions)))
 
 (defn render! []

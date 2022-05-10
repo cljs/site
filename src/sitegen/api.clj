@@ -2,7 +2,6 @@
   (:require
     [clojure.string :as string]
     [clojure.set :as set]
-    [util.io :as io]
     [me.raynes.fs :as fs]
     [sitegen.urls :as urls]))
 

@@ -4,7 +4,6 @@
     [clojure.java.jdbc :as jdbc]
     [me.raynes.fs :as fs]
     [util.hiccup :as hiccup]
-    [util.io :refer [delete mkdirs copy]]
     [sitegen.api :as api :refer [api]]
     [sitegen.urls :as urls :refer [*root*]]
     [sitegen.api-pages :as api-pages]
@@ -165,18 +164,18 @@
   (println "Creating ClojureScript docset...")
 
   (println "Clearing previous docset folder...")
-  (delete docset-path)
-  (mkdirs docset-docs-path)
+  (fs/delete-dir docset-path)
+  (fs/mkdirs docset-docs-path)
 
   (println "Generating docset pages...")
   (urls/set-case-collisions! api)
   (create-pages!)
 
   ;; copy over resources
-  (copy "docset/icon.png" (str docset-path "/icon.png"))
-  (copy "docset/Info.plist" (str docset-path "/Contents/Info.plist"))
-  (copy "output/css" (str docset-docs-path "/css"))
-  (copy "output/img" (str docset-docs-path "/img"))
+  (fs/copy "docset/icon.png" (str docset-path "/icon.png"))
+  (fs/copy "docset/Info.plist" (str docset-path "/Contents/Info.plist"))
+  (fs/copy "output/css" (str docset-docs-path "/css"))
+  (fs/copy "output/img" (str docset-docs-path "/img"))
 
   ;; reset/create tables
   (println "Creating index database...")

@@ -1,7 +1,6 @@
 (ns sitegen.api-pages
   (:require
     [clojure.string :as string]
-    [util.io :as io]
     [util.markdown :as markdown]
     [util.console :as console]
     [util.highlight :refer [highlight-code]]
@@ -132,7 +131,7 @@
           (for [p (sort protocols)]
             (if-let [sym (get-in api [:symbols (str "cljs.core/" p)])]
               [:a {:class "code-link"
-                  :href (str *root* (urls/pretty (urls/api-sym-prev :library "cljs.core" (:name-encode sym))))}
+                   :href (str *root* (urls/pretty (urls/api-sym-prev :library "cljs.core" (:name-encode sym))))}
                 [:code p]]
               [:code p])))]]))
 
@@ -144,7 +143,7 @@
           (for [p (sort implementations)]
             (if-let [sym (get-in api [:symbols (str "cljs.core/" p)])]
               [:a {:class "code-link"
-                  :href (str *root* (urls/pretty (urls/api-sym-prev :library "cljs.core" (:name-encode sym))))}
+                   :href (str *root* (urls/pretty (urls/api-sym-prev :library "cljs.core" (:name-encode sym))))}
                 [:code p]]
               [:code p])))]]))
 

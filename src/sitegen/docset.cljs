@@ -1,8 +1,5 @@
 (ns sitegen.docset
-  (:require-macros
-    [cljs.core.async.macros :refer [go]])
   (:require
-    [cljs.core.async :refer [<! chan close!]]
     [util.hiccup :as hiccup]
     [util.io :refer [delete mkdirs copy]]
     [sitegen.api :as api :refer [api]]
@@ -11,7 +8,6 @@
     [sitegen.layout :as layout]
     [sitegen.api :refer [docname-display]]
     [sitegen.versions :refer [versions-page]]
-    [sitegen.news :as news]
     [sitegen.state :refer [*docset?*]]))
 
 (def Database (js/require "better-sqlite3"))
@@ -65,12 +61,6 @@
         [{:name "Overview" :type "Section" :path urls/api-index}
          {:name "Versions" :type "Section" :path urls/versions}]
 
-        ;; News Posts
-        (for [post news/posts]
-          {:name (str "Release " (:version post))
-           :type "Event"
-           :path (:url post)})
-
         ;; Namespaces
         (for [api-type [:syntax :library :compiler]
               ns- (get-in api [:api api-type :namespace-names])]
@@ -110,14 +100,6 @@
       [:div.container
         content
         (layout/body-footer)]]])
-
-(defn create-news-page! [post]
-  (let [url (:url post)]
-    (binding [*root* (urls/get-root url)]
-      (->> (news/post-page-body post)
-           (docset-layout nil)
-           (hiccup/render)
-           (urls/write! url)))))
 
 (defn create-versions-page! []
   (let [url urls/versions]
@@ -164,8 +146,6 @@
 
     (create-index-page!)
     (create-versions-page!)
-    (doseq [post news/posts]
-      (create-news-page! post))
 
     (doseq [api-type [:syntax :options :library :compiler]]
       (doseq [ns- (get-in api [:api api-type :namespace-names])]
@@ -178,33 +158,32 @@
 ;;-----------------------------------------------------------------------------
 
 (defn create! []
-  (go
-    (println "Creating ClojureScript docset...")
+  (println "Creating ClojureScript docset...")
 
-    (println "Clearing previous docset folder...")
-    (delete docset-path)
-    (mkdirs docset-docs-path)
+  (println "Clearing previous docset folder...")
+  (delete docset-path)
+  (mkdirs docset-docs-path)
 
-    (println "Generating docset pages...")
-    (urls/set-case-collisions! api)
-    (create-pages!)
+  (println "Generating docset pages...")
+  (urls/set-case-collisions! api)
+  (create-pages!)
 
-    ;; copy over resources
-    (copy "docset/icon.png" (str docset-path "/icon.png"))
-    (copy "docset/Info.plist" (str docset-path "/Contents/Info.plist"))
-    (copy "output/css" (str docset-docs-path "/css"))
-    (copy "output/img" (str docset-docs-path "/img"))
+  ;; copy over resources
+  (copy "docset/icon.png" (str docset-path "/icon.png"))
+  (copy "docset/Info.plist" (str docset-path "/Contents/Info.plist"))
+  (copy "output/css" (str docset-docs-path "/css"))
+  (copy "output/img" (str docset-docs-path "/img"))
 
-    ;; reset/create tables
-    (println "Creating index database...")
-    (build-db!)
+  ;; reset/create tables
+  (println "Creating index database...")
+  (build-db!)
 
-    ;; create the tar file
-    (println "Creating final docset tar file...")
-    (spawn-sync "tar"
-      #js["--exclude='.DS_Store'" "-czf" tar-name docset-name]
-      #js{:cwd work-dir :stdio "inherit"})
+  ;; create the tar file
+  (println "Creating final docset tar file...")
+  (spawn-sync "tar"
+    #js["--exclude='.DS_Store'" "-czf" tar-name docset-name]
+    #js{:cwd work-dir :stdio "inherit"})
 
-    (println)
-    (println "Created:" docset-path)
-    (println "Created:" tar-path)))
+  (println)
+  (println "Created:" docset-path)
+  (println "Created:" tar-path))

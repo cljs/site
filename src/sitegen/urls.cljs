@@ -50,11 +50,6 @@
 (def  home                                  "/index.html")
 (def  _404                                  "/404.html")
 
-(def  news-dir                              "/news/")
-(def  news-index                            "/news/index.html")
-(def  news-feed                             "/news/feed.xml")
-(defn news-post  [title]               (str "/news/" title ".html"))
-
 (def  versions                              "/versions.html")
 
 (def  api-dir                               "/api/")

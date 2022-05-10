@@ -2,7 +2,7 @@
   (:require
     [clojure.string :as string]
     [sitegen.state :refer [*docset?*]]
-    [util.io :as io]))
+    [me.raynes.fs :as fs]))
 
 (def domain "http://cljsinfo.github.io")
 
@@ -78,10 +78,10 @@
   (str (pretty (api-ns* api-type ns)) "#" name-encode))
 
 (def ^:dynamic *out-dir* "output")
-(defn write! [url content] (io/spit (str *out-dir* url) content))
+(defn write! [url content] (spit (str *out-dir* url) content))
 (defn make-dir! [url]
   (let [url (if (string/ends-with? url "/index.html")
               (string/replace url "/index.html" "")
               url)
         path (str *out-dir* url)]
-    (io/mkdirs path)))
+    (fs/mkdirs path)))

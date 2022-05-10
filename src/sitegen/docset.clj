@@ -1,5 +1,8 @@
 (ns sitegen.docset
   (:require
+    [clojure.java.shell :refer [sh]]
+    [clojure.java.jdbc :as jdbc]
+    [me.raynes.fs :as fs]
     [util.hiccup :as hiccup]
     [util.io :refer [delete mkdirs copy]]
     [sitegen.api :as api :refer [api]]
@@ -9,11 +12,6 @@
     [sitegen.api :refer [docname-display]]
     [sitegen.versions :refer [versions-page]]
     [sitegen.state :refer [*docset?*]]))
-
-(def Database (js/require "better-sqlite3"))
-(def child-process (js/require "child_process"))
-(def spawn-sync (.-spawnSync child-process))
-
 
 ;; code derived from Lokeshwaran's (@dlokesh) project:
 ;; https://github.com/dlokesh/clojuredocs-docset
@@ -29,6 +27,10 @@
 
 (def docset-docs-path (str docset-path "/Contents/Resources/Documents"))
 (def db-path (str docset-path "/Contents/Resources/docSet.dsidx"))
+
+(def sqlite-db {:classname "org.sqlite.JDBC"
+                :subprotocol "sqlite"
+                :subname db-path})
 
 (def type->dash
   {"var"                 "Variable"
@@ -79,15 +81,17 @@
 ;;-----------------------------------------------------------------------------
 
 (defn build-db! []
-  (let [db (new Database db-path)]
-    (.run (.prepare db "DROP TABLE IF EXISTS searchIndex"))
-    (.run (.prepare db "CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)"))
-    (.run (.prepare db "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)"))
-    (let [insert (.prepare db "INSERT INTO searchIndex(name, type, path) VALUES (?, ?, ?)")]
-      (doseq [e (docset-entries)]
-        (let [fix-path #(.slice % 1)] ;; remove leading slash (zeal needs this)
-          (.run insert (:name e) (:type e) (fix-path (:path e))))))
-    (.close db)))
+  (jdbc/with-connection sqlite-db
+    (jdbc/do-commands
+      "DROP TABLE IF EXISTS searchIndex"
+      "CREATE TABLE searchIndex(id INTEGER PRIMARY KEY, name TEXT, type TEXT, path TEXT)"
+      "CREATE UNIQUE INDEX anchor ON searchIndex (name, type, path)")
+    (apply jdbc/insert-records :searchIndex
+      (for [e (docset-entries)]
+        (let [fix-path #(subs % 1)] ;; remove leading slash (zeal needs this)
+          {:name (:name e)
+           :type (:type e)
+           :path (fix-path (:path e))})))))
 
 ;;-----------------------------------------------------------------------------
 ;; Docset pages
@@ -180,9 +184,7 @@
 
   ;; create the tar file
   (println "Creating final docset tar file...")
-  (spawn-sync "tar"
-    #js["--exclude='.DS_Store'" "-czf" tar-name docset-name]
-    #js{:cwd work-dir :stdio "inherit"})
+  (sh "tar" "--exclude='.DS_Store'" "-czf" tar-name docset-name :dir work-dir)
 
   (println)
   (println "Created:" docset-path)

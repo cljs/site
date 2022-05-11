@@ -1,53 +1,35 @@
-# ClojureScript site
+# ClojureScript API docs site
 
 Hosted at <http://cljs.github.io/api/>.
 
-[clojurescript.org](https://clojurescript.org/) now exists, but this is here mainly for:
-- API docs (for website and Dash)
-- release post index (announcements from mailing list)
-
-In the future, I'd like to see this integrated into the official site.
-
 ## Development
 
-This is a static site generator written in CLJS, running on Node.
+This is a static site generator using [clj].
 
-Prerequisites:
-
-- [Clojure](https://clojure.org/guides/getting_started)
-- [Node](https://nodejs.org/)
-
-Fetch depencies:
+Run:
 
 ```
-$ npm install
-```
-
-Static server:
-
-```
-$ ./build-server
-$ node server
-```
-
-Site and Docset generator:
-
-```
-$ ./build-client
-$ ./build-sitegen
-$ node sitegen
+clj -Mrun
 ```
 
 To publish the site to the [GitHub Pages deployment repo](https://github.com/cljs/cljs.github.io):
 
 ```
-$ ./publish-site
+./publish-site
 ```
 
 To publish the docset to [Dash], run the following:
 
 ```
-$ ./publish-docset
+./publish-docset
 ```
 
+## Known issues
+
+These are outstanding issues leftover from porting the site generator from node.js to clojure:
+
+- Markdown link references aren’t processed by clj-markdown
+- Syntax not highlighted
+
 [Dash]:https://kapeli.com/dash
+[clj]:https://clojure.org/guides/getting_started

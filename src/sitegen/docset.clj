@@ -145,7 +145,6 @@
             *docset?* true]
     (doseq [ns (keys (:namespaces api))]
       (urls/make-dir! (urls/api-ns ns)))
-    (urls/make-dir! urls/news-dir)
 
     (create-index-page!)
     (create-versions-page!)

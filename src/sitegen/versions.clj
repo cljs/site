@@ -2,7 +2,7 @@
   (:require
     [hiccup.core :refer [html]]
     [sitegen.urls :as urls :refer [*root*]]
-    [sitegen.api :refer [api version master-version? version-has-news-post?]]
+    [sitegen.api :refer [api version master-version?]]
     [sitegen.layout :refer [common-layout]]))
 
 (defn abbrev-gclosure-lib
@@ -13,9 +13,6 @@
 
 (defn version-display [v]
   (cond
-    (version-has-news-post? v)
-    [:a {:href (str *root* (urls/pretty (urls/news-post v)))} v]
-
     (master-version? v)
     [:span {:style "opacity: 0.5"} v]
 

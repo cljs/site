@@ -11,7 +11,6 @@
 
 (def api nil)
 (def version nil)
-(def version-has-news-post? nil)
 
 (defn get-item [full-name]
   (or (get-in api [:symbols full-name])
@@ -33,14 +32,6 @@
     (set! api (read-string (slurp api-filename)))
     (set! version (:version api))
     (set-categories!)))
-
-(defn pre-releases
-  "List pre-releases that came before a main release."
-  [version]
-  (let [all-versions (get-in api [:history :versions])
-        priors (loop [[v & rest] all-versions]
-                 (if (= v version) rest (recur rest)))]
-    (take-while #(not (version-has-news-post? %)) priors)))
 
 ;;---------------------------------------------------------------
 ;; API Categories

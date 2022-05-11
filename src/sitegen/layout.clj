@@ -78,7 +78,6 @@
         [:li.navbar-item [:a.navbar-link-logo [:img.navbar-logo {:src "/img/cljs-white.svg"}]]]
         [:li.navbar-item [:a.navbar-title "ClojureScript"]]
         [:li.navbar-item [:a.navbar-link {:href (str *root* "/api")} "API"]]
-        [:li.navbar-item [:a.navbar-link {:href (str *root* "/news")} "News"]]
         [:li.navbar-item [:a.navbar-link {:href (str *root* "https://github.com/clojure/clojurescript") :target "_blank"} "GitHub"]]]]])
 
 (defn body-footer []

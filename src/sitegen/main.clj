@@ -1,4 +1,4 @@
-(ns sitegen.core
+(ns sitegen.main
   (:require
     [sitegen.api-pages :as api-pages]
     [sitegen.api :as api]

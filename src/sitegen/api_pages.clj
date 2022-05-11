@@ -11,7 +11,6 @@
                          get-item
                          master-version?
                          version
-                         version-has-news-post?
                          hide-lib-ns?
                          lib-namespaces
                          compiler-namespaces

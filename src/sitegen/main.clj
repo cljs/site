@@ -13,5 +13,7 @@
   (versions/render!)
 
   (api-pages/render!)
-  (docset/create!))
+  (docset/create!)
+
+  (System/exit 0))
 

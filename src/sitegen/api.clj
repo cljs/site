@@ -29,8 +29,8 @@
       (println "Downloading latest API...")
       (->> (slurp api-url)
            (spit api-filename)))
-    (set! api (read-string (slurp api-filename)))
-    (set! version (:version api))
+    (alter-var-root #'api (fn [_] (read-string (slurp api-filename))))
+    (alter-var-root #'version (fn [_] (:version api)))
     (set-categories!)))
 
 ;;---------------------------------------------------------------
@@ -49,7 +49,7 @@
   (let [files (fs/glob "api-categories/*.txt")
         names (map #(fs/base-name % ".txt") files)
         parsed (map #(parse-categories-file %1 %2) names files)]
-    (set! categories (zipmap names parsed))))
+    (alter-var-root #'categories (fn [_] (zipmap names parsed)))))
 
 (declare type-or-protocol?)
 (defn categorize-syms* [ns- syms]

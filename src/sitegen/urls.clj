@@ -11,7 +11,7 @@
 ;; all generated links.
 (def ^:dynamic *root* "")
 (defn get-root [url]
-  (let [n (dec (get (frequencies url) "/"))]
+  (let [n (dec (get (frequencies url) \/))]
     (if (pos? n)
       (string/join "/" (repeat n ".."))
       ".")))

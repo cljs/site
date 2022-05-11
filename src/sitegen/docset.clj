@@ -173,8 +173,8 @@
   ;; copy over resources
   (fs/copy "docset/icon.png" (str docset-path "/icon.png"))
   (fs/copy "docset/Info.plist" (str docset-path "/Contents/Info.plist"))
-  (fs/copy "output/css" (str docset-docs-path "/css"))
-  (fs/copy "output/img" (str docset-docs-path "/img"))
+  (fs/copy-dir "output/css" (str docset-docs-path "/css"))
+  (fs/copy-dir "output/img" (str docset-docs-path "/img"))
 
   ;; reset/create tables
   (println "Creating index database...")

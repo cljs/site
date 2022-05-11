@@ -2,7 +2,6 @@
   (:require
     [clojure.string :as string]
     [util.markdown :as markdown]
-    [util.console :as console]
     [util.highlight :refer [highlight-code]]
     [hiccup.core :refer [html]]
     [sitegen.urls :as urls :refer [*root*]]
@@ -435,7 +434,7 @@
                   (sort-by :full-name))]
     (create-index-page!)
     (doseq [sym syms :when (sym-has-page? sym)]
-      (console/replace-line "Creating page for" (:full-name sym))
+      (println "Creating page for" (:full-name sym))
       (create-sym-page! sym))
-    (console/replace-line "Done creating API pages."))
+    (println "Done creating API pages."))
   (println))

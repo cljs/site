@@ -15,5 +15,3 @@
   (api-pages/render!)
   (docset/create!))
 
-(set! *main-cli-fn* -main)
-(enable-console-print!)

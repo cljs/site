@@ -77,7 +77,7 @@
         (println "The following" ns- "entries are not recognized:")
         (doseq [s unrecognized]
           (println "  -" s))
-        (js/process.exit 1))
+        (System/exit 1))
       (cond-> cats
         (seq uncat)
         (conj {:title "Uncategorized" :entries (sort uncat)})

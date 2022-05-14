@@ -3,7 +3,7 @@
         org.xerial/sqlite-jdbc    {:mvn/version "3.7.2"}
         clj-commons/fs            {:mvn/version "1.6.307"}
         hiccup/hiccup             {:mvn/version "1.0.5"}
-        markdown-clj/markdown-clj {:mvn/version "1.11.1"}}
+        org.commonmark/commonmark {:mvn/version "0.18.1"}}
 
  :aliases
  {:run {:main-opts ["-m" "sitegen.main"]}}}

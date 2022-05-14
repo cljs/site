@@ -56,7 +56,7 @@
 (def  api-index                             "/api/index.html")
 (defn api-ns          [ns]             (str "/api/" ns "/index.html"))
 (defn api-sym         [ns name-encode] (str "/api/" ns "/"
-                                         (if *docset?* (str ns " ") "") ; put ns in filename for Dash search results
+                                         (if *docset?* (str ns "_") "") ; put ns in filename for Dash search results
                                          (protect-case ns name-encode) ".html"))
 (defn api-compiler-ns [ns]             (str "/api/compiler/" ns "/index.html"))
 

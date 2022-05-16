@@ -7,11 +7,15 @@
     [org.commonmark.node Node FencedCodeBlock Code]
     [org.commonmark.parser Parser]
     [org.commonmark.renderer NodeRenderer]
-    [org.commonmark.renderer.html CoreHtmlNodeRenderer HtmlRenderer HtmlNodeRendererFactory]))
+    [org.commonmark.renderer.html HtmlRenderer HtmlNodeRendererFactory]
+    [org.commonmark.ext.gfm.tables TablesExtension]))
+
+;;------------------------------------------------------------------------------
+;; Render code blocks and inline code with our highlighter.
+;;------------------------------------------------------------------------------
 
 (defmulti render-node (fn [ctx node] (type node)))
 
-;; Render a fenced code block using our syntax highlighter.
 (defmethod render-node FencedCodeBlock [ctx node]
   (doto (.getWriter ctx)
     (.line)
@@ -20,10 +24,16 @@
                                              (.getInfo node))]])) ;; lang
     (.line)))
 
-;; Render inline code using our syntax highlighter.
 (defmethod render-node Code [ctx node]
   (doto (.getWriter ctx)
     (.raw (hiccup/html [:code.syntax (highlight-code (.getLiteral node) "clj")]))))
+
+;;------------------------------------------------------------------------------
+;; Setup Renderer
+;;------------------------------------------------------------------------------
+
+(def extensions
+  [(TablesExtension/create)])
 
 ;; Thanks to Ethan McCue for figuring out how to translate this to Clojure interop:
 ;; https://github.com/commonmark/commonmark-java#customize-html-rendering
@@ -35,17 +45,32 @@
             (reify NodeRenderer
               (getNodeTypes [_]      #{FencedCodeBlock Code})
               (render       [_ node] (render-node ctx node))))))
+      (.extensions extensions)
       (.build)))
 
-(def parser (.build (Parser/builder)))
+(def parser
+  (-> (Parser/builder)
+      (.extensions extensions)
+      (.build)))
 
 (defn render [md]
   (->> md
        (.parse parser)
        (.render html-renderer)))
 
+
 (comment
-  (render "We want to highlight `defn`.
+
+  (render "
+Here is a link: <http://example.com>
+
+Table:
+
+| foo | bar |
+|----:|:---:|
+| 1   |  2  |
+
+We want to highlight `defn`.
 
 This is a link [foo].
 

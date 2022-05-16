@@ -4,6 +4,7 @@
         clj-commons/fs            {:mvn/version "1.6.307"}
         hiccup/hiccup             {:mvn/version "1.0.5"}
         org.commonmark/commonmark {:mvn/version "0.18.1"}
+        org.commonmark/commonmark-ext-gfm-tables {:mvn/version "0.18.1"}
         venantius/glow            {:mvn/version "0.1.6"}}
 
  :aliases

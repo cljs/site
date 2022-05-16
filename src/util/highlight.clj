@@ -35,7 +35,6 @@
 
    :reader-char   ""})
 
-
 (defn highlight-code [code lang]
   (if (= "clj" lang)
     (try
@@ -45,6 +44,9 @@
         (println "FAILED TO HIGHLIGHT")
         code))
     code))
+
+(defn syntax-code-block [code lang]
+  [:div.syntax [:pre [:code (highlight-code code lang)]]])
 
 (defn get-css []
   (ghtml/generate-css github-colors))

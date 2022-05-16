@@ -2,7 +2,7 @@
   (:require
     [clojure.string :as string]
     [util.markdown :as markdown]
-    [util.highlight :as highlight]
+    [util.highlight :refer [highlight-code]]
     [hiccup.core :refer [html]]
     [sitegen.urls :as urls :refer [*root*]]
     [sitegen.layout :refer [common-layout sidebar-layout]]
@@ -91,7 +91,7 @@
       (:title source) " @ "
       [:a {:href (:url source)}
         (str repo ":" filename)]]
-    (highlight/syntax-code-block (:code source) "clj")
+    [:pre [:code.syntax (highlight-code (:code source) "clj")]]
     [:hr]))
 
 (defn markdown-with-doc-biblio

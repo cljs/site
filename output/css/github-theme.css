@@ -1,83 +1,35 @@
-.syntax pre {
-  background: ;
-}
 
-.syntax pre .definition {
-  color: #0086b3;
-}
+/* GitHub style color scheme for clojure glow highlighter:
+ * https://github.com/venantius/glow */
 
-.syntax pre .core-fn {
-  color: #0086b3;
-}
+code.syntax .background   { color: inherit }
 
-.syntax pre .variable {
-  color: #0086b3;
-}
+/* parens */
+code.syntax .s-exp        { color: inherit }
 
-.syntax pre .number {
-  color: #008080;
-}
+/* primitives */
+code.syntax .comment      { color: #999988 }
+code.syntax .number       { color: #008080 }
+code.syntax .symbol       { color: inherit }
+code.syntax .boolean      { color: #008080 }
+code.syntax .keyword      { color: #990073 }
+code.syntax .nil          { color: #008080 }
 
-.syntax pre .s-exp {
-  color: ;
-}
+/* strings */
+code.syntax .string       { color: #dd1144 }
+code.syntax .regex        { color: #dd1144 }
+code.syntax .character    { color: #dd1144 }
 
-.syntax pre .symbol {
-  color: ;
-}
+/* types of symbols
+ * see: https://github.com/venantius/glow/tree/master/resources/keywords */
+code.syntax .conditional  { color: #0086b3 }
+code.syntax .definition   { color: #0086b3 }
+code.syntax .exception    { color: #0086b3 }
+code.syntax .core-fn      { color: #0086b3 }
+code.syntax .macro        { color: #0086b3 }
+code.syntax .repeat       { color: #0086b3 }
+code.syntax .special-form { color: #0086b3 }
+code.syntax .variable     { color: #0086b3 }
 
-.syntax pre .special-form {
-  color: #0086b3;
-}
+code.syntax .reader-char  { color: inherit }
 
-.syntax pre .background {
-  color: ;
-}
-
-.syntax pre .string {
-  color: #dd1144;
-}
-
-.syntax pre .keyword {
-  color: #990073;
-}
-
-.syntax pre .macro {
-  color: #0086b3;
-}
-
-.syntax pre .reader-char {
-  color: ;
-}
-
-.syntax pre .nil {
-  color: #008080;
-}
-
-.syntax pre .comment {
-  color: #999988;
-}
-
-.syntax pre .repeat {
-  color: #0086b3;
-}
-
-.syntax pre .regex {
-  color: #dd1144;
-}
-
-.syntax pre .exception {
-  color: #0086b3;
-}
-
-.syntax pre .boolean {
-  color: #008080;
-}
-
-.syntax pre .character {
-  color: #dd1144;
-}
-
-.syntax pre .conditional {
-  color: #0086b3;
-}

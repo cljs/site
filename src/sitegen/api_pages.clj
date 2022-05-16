@@ -91,7 +91,7 @@
       (:title source) " @ "
       [:a {:href (:url source)}
         (str repo ":" filename)]]
-    [:pre [:code (highlight-code (:code source) "clj")]]
+    [:div.syntax [:pre [:code (highlight-code (:code source) "clj")]]]
     [:hr]))
 
 (defn markdown-with-doc-biblio

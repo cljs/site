@@ -1,7 +1,6 @@
 (ns util.markdown
   (:require
-    [clojure.string :as str]
-    [markdown.core :refer [md-to-html-string]])
+    [clojure.string :as str])
   (:import
     [org.commonmark.node Node]
     [org.commonmark.parser Parser]

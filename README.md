@@ -24,12 +24,5 @@ To publish the docset to [Dash], run the following:
 ./publish-docset
 ```
 
-## Known issues
-
-These are outstanding issues leftover from porting the site generator from node.js to clojure:
-
-- Markdown link references aren’t processed by clj-markdown
-- Syntax not highlighted
-
 [Dash]:https://kapeli.com/dash
 [clj]:https://clojure.org/guides/getting_started

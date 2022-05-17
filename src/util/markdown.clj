@@ -24,9 +24,10 @@
                                              (.getInfo node))]])) ;; lang
     (.line)))
 
-(defmethod render-node Code [ctx node]
-  (doto (.getWriter ctx)
-    (.raw (hiccup/html [:code.syntax (highlight-code (.getLiteral node) "clj")]))))
+;; highlighting is pretty eratic, disable for now
+#_(defmethod render-node Code [ctx node]
+    (doto (.getWriter ctx)
+      (.raw (hiccup/html [:code.syntax (highlight-code (.getLiteral node) "clj")]))))
 
 ;;------------------------------------------------------------------------------
 ;; Setup Renderer
@@ -43,7 +44,7 @@
         (reify HtmlNodeRendererFactory
           (create [_ ctx]
             (reify NodeRenderer
-              (getNodeTypes [_]      #{FencedCodeBlock Code})
+              (getNodeTypes [_]      #{FencedCodeBlock})
               (render       [_ node] (render-node ctx node))))))
       (.extensions extensions)
       (.build)))

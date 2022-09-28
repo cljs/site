@@ -43,6 +43,7 @@
    "special form (repl)" "Statement" ;;     (avaiable in next Dash version)
    "tagged literal"      "Tag"
    "syntax"              "Operator"  ;; <-- Pending "Syntax"
+   "special tag"         "Tag"
    "special symbol"      "Constant"
    "symbolic value"      "Constant"
    "special namespace"   "Namespace"

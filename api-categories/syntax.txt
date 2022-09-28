@@ -51,6 +51,7 @@ comma
 dot
 namespace
 js-namespace
+js-tag
 Math-namespace
 
 === Tagged Literals

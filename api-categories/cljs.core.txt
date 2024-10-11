@@ -18,6 +18,7 @@ mod
 inc
 dec
 identity
+abs
 
 === Min/Max
 min
@@ -67,6 +68,7 @@ number?
 double?
 float?
 infinite?
+NaN?
 
 === Boolean kind?
 boolean?
@@ -102,6 +104,12 @@ regexp?
 boolean
 char
 int
+
+=== Parse
+parse-boolean
+parse-double
+parse-long
+parse-uuid
 
 === Bitwise
 bit-and
@@ -529,10 +537,13 @@ frequencies
 partition
 partition-all
 partition-by
+partitionv
+partitionv-all
 
 === Split
 split-at
 split-with
+splitv-at
 group-by
 
 === Rearrange
@@ -549,6 +560,8 @@ assoc-in
 === Collection update
 update
 update-in
+update-keys
+update-vals
 
 === Collection get
 get

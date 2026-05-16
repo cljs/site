@@ -6,6 +6,14 @@
   --header-height: 6.5rem;
 }
 
+pre, code {
+  overflow-x: scroll;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
 code {
   font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Consolas, monospace;
   -webkit-font-smoothing: antialiased;

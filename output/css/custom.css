@@ -2,6 +2,10 @@
  * This is just temporary CSS that I took from getskeleton.com's own custom.css
  * */
 
+:root {
+  --header-height: 6.5rem;
+}
+
 code {
   font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Consolas, monospace;
   -webkit-font-smoothing: antialiased;
@@ -11,8 +15,12 @@ code {
   white-space: nowrap;
   background: #F5F5F5;
   /* border: 1px solid #E1E1E1; */
-  border-radius: 4px; }
+  border-radius: 4px;
+}
 
+[id] {
+  scroll-margin-top: calc(var(--header-height) + 1em);
+}
 a.code-link {
   border-bottom: 0;
 }
@@ -33,7 +41,7 @@ a.code-link {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 6.5rem;
+  height: var(--header-height);
   background: #fff;
   z-index: 99;
   margin-bottom: 48px;

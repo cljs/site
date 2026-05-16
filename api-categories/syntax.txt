@@ -51,8 +51,11 @@ comma
 dot
 namespace
 js-namespace
-js-tag
 Math-namespace
+
+=== Special Tags
+js-tag
+async-tag
 
 === Tagged Literals
 tagged-literal

@@ -19,15 +19,13 @@
 (defn sidebar-layout [& columns]
   (case (count columns)
     1 (first columns)
-    2 [:div.container
-        [:div.row
-          [:div.three.columns {:style "overflow-x: hidden"} (first columns)]
-          [:div.nine.columns (second columns)]]]
-    3 [:div.container
-        [:div.row
-          [:div.three.columns (first columns)]
-          [:div.three.columns (second columns)]
-          [:div.six.columns (nth columns 2)]]]
+    2 [:div.row
+       [:div.three.columns {:style "overflow-x: hidden"} (first columns)]
+       [:div.nine.columns (second columns)]]
+    3 [:div.row
+       [:div.three.columns (first columns)]
+       [:div.three.columns (second columns)]
+       [:div.six.columns (nth columns 2)]]
     nil))
 
 (defn head
@@ -73,12 +71,13 @@
 
 (defn body-header []
   [:nav.navbar
-    [:div.container
-      [:ul.navbar-list
-        [:li.navbar-item [:a.navbar-link-logo [:img.navbar-logo {:src "/img/cljs-white.svg"}]]]
-        [:li.navbar-item [:a.navbar-title "ClojureScript"]]
-        [:li.navbar-item [:a.navbar-link {:href (str *root* "/api")} "API"]]
-        [:li.navbar-item [:a.navbar-link {:href (str *root* "https://github.com/clojure/clojurescript") :target "_blank"} "GitHub"]]]]])
+   [:a.navbar-title {:href (str *root* "/api")}
+    [:img {:src "/img/cljs-white.svg"}]
+    "ClojureScript API"]
+   [:div.github-links
+    [:div "github:"]
+    [:a {:href "https://github.com/cljs/api" :target "_blank"} "api"]
+    [:a {:href "https://github.com/cljs/site" :target "_blank"} "site"]]])
 
 (defn body-footer []
   [:footer.site-footer

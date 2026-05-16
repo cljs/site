@@ -2,10 +2,6 @@
  * This is just temporary CSS that I took from getskeleton.com's own custom.css
  * */
 
-body {
-  font-family: "Open Sans", sans-serif;
-}
-
 code {
   font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Consolas, monospace;
   -webkit-font-smoothing: antialiased;
@@ -21,10 +17,6 @@ a.code-link {
   border-bottom: 0;
 }
 
-.container {
-  width: 800px;
-}
-
 .sep {
   margin-top: 18px;
 }
@@ -35,49 +27,45 @@ a.code-link {
 
 /* Navbar */
 .navbar {
-  display: block;
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 6.5rem;
   background: #fff;
   z-index: 99;
   margin-bottom: 48px;
-  border-bottom: 1px solid #eee; }
-.navbar > .container {
-  width: 100%; }
-.navbar-list {
-  list-style: none;
-  margin-bottom: 0; }
-.navbar-item {
-  position: relative;
-  float: left;
-  margin-bottom: 0; }
+  border-bottom: 1px solid #eee;
+}
 .navbar-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: 18px;
-  font-weight: 300;
-  margin-right: 75px;
+  font-weight: bold;
   text-decoration: none;
-  line-height: 6.5rem;
-  color: #222; }
+  color: #222;
+  img {
+    height: 38px;
+  }
+}
 .navbar-link {
   font-weight: 300;
   margin-right: 35px;
   text-decoration: none;
   line-height: 6.5rem;
-  color: #222; }
-.navbar-link-logo {
-  display:none;
-  margin-right: 15px;
+  color: #222;
 }
-.navbar-logo {
-  height: 38px;
-  margin-left: 0;
-  padding-left: 0;
-  padding-right: 0;
-  margin-right: 0;
-  margin-top: 12px;
-  vertical-align: middle; }
-.navbar-link.active {
-  color: #33C3F0; }
+.github-links {
+  display: flex;
+  gap: 8px;
+  a {
+    display: inline;
+    border-bottom: 1px solid rgba(114, 137, 144, 0.5)
+  }
+}
 
 .cljs-legal {
   margin-bottom: 3.5rem;

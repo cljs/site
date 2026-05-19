@@ -20,7 +20,8 @@
   (case (count columns)
     1 (first columns)
     2 [:div.row
-       [:div.three.columns {:style "overflow-x: hidden"} (first columns)]
+       [:div.three.columns {:style "overflow-x: hidden; margin-bottom: 2em"}
+        (first columns)]
        [:div.nine.columns (second columns)]]
     3 [:div.row
        [:div.three.columns (first columns)]

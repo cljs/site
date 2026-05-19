@@ -364,11 +364,12 @@
         (str " (master)"))
       " | " [:a {:href (str *root* (urls/pretty urls/versions))} "Version Table"]]
     (when-not *docset?*
-      [:p.dash-section
+      [:div.dash-section
         [:img.dash-logo {:src (str *root* "/img/dash.png")}]
-        "Get these docs for "
-        [:a {:href "https://kapeli.com/dash"} "Dash"]
-        " under User Contributed downloads."])
+        [:div
+          "Get these docs for "
+          [:a {:href "https://kapeli.com/dash"} "Dash"]
+          " under User Contributed downloads."]])
     [:style "tr:last-child td {border-bottom:0}"]
     [:hr]
     (ns-preview :syntax "syntax")

@@ -47,12 +47,23 @@
     (for [ns- (compiler-namespaces)]
       [:div [:a {:href (str *root* (urls/pretty (urls/api-compiler-ns ns-)))} ns-]])])
 
+(defn left-arrow []
+  ;; <!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+  [:svg {:viewBox "0 0 512 512"
+         :height "0.8em"}
+   [:path {:fill "currentColor"
+           :d "M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"}]])
+  
+
 (defn ns-sidebar [api-type ns-]
   (let [title (or (get-in api [:namespaces ns- :display-as]) ns-)
         syms (get-ns-symbols api-type ns-)
         cats (categorize-syms ns- syms)]
     [:div
-      [:a {:href (str *root* (urls/pretty urls/api-index))} "< Back to Overview"]
+      [:a {:href (str *root* (urls/pretty urls/api-index))
+           :style {:display "flex" :align-items "center"}}
+       (left-arrow)
+       " Overview"]
       [:div.sep]
       (for [cat cats]
         (list

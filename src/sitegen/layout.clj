@@ -42,8 +42,6 @@
     (when base
       [:base {:href base}])
 
-    [:link {:rel "stylesheet" :href "https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700"}]
-    [:link {:rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"}]
     [:link {:rel "stylesheet" :href (str *root* "/css/normalize.css")}]
     [:link {:rel "stylesheet" :href (str *root* "/css/skeleton.css")}]
     [:link {:rel "stylesheet" :href (str *root* "/css/custom.css")}]
